@@ -1,0 +1,5866 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--color-foreground);
+  background: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  min-height: 100svh;
+  font-variation-settings: 'slnt' 0;
+}
+
+:root {
+  --hover-transition-duration: 0.25s;
+  --hover-transition-timing: ease-out;
+  --submenu-animation-speed: 360ms;
+}
+
+html {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--color-foreground-rgb) / var(--opacity-40)) var(--color-background);
+  scroll-behavior: smooth;
+}
+
+@media (min-width: 990px) {
+  html:has(.page-wrapper),
+  html:has(.page-wrapper) body {
+    height: 100dvh;
+    overflow: hidden;
+  }
+}
+
+html[scroll-lock],
+html[scroll-lock] .page-wrapper {
+  overflow: hidden;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  transition: margin-right var(--animation-speed) var(--animation-timing-fade-out);
+}
+
+@media (min-width: 990px) {
+  .page-wrapper {
+    height: 100dvh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--color-foreground-rgb) / var(--opacity-40)) var(--color-background);
+  }
+
+  .page-wrapper--drawer-open shopify-account::part(dialog) {
+    translate: calc(-1 * var(--theme-drawer-width, var(--sidebar-width)));
+  }
+}
+
+.page-wrapper--drawer-open {
+  margin-right: var(--theme-drawer-width, var(--sidebar-width));
+  transition-timing-function: var(--animation-timing-fade-in);
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+  border-radius: var(--style-border-radius-inputs);
+}
+
+/** override ios and firefox defaults */
+select {
+  background-color: var(--color-background);
+  color: currentcolor;
+}
+
+.product-card,
+.collection-card,
+.predictive-search-results__card--product,
+.predictive-search-results__card {
+  position: relative;
+  transition: transform var(--hover-transition-duration) var(--hover-transition-timing),
+    box-shadow var(--hover-transition-duration) var(--hover-transition-timing);
+  z-index: var(--layer-flat);
+}
+
+.product-card__link {
+  position: absolute;
+  inset: 0;
+}
+
+.product-card__content {
+  position: relative;
+  cursor: pointer;
+}
+
+dialog {
+  /* the ::backdrop inherits from the originating element, custom properties must be set on the dialog element */
+  --backdrop-color-rgb: var(--color-shadow-rgb);
+
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+.wrap-text {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+p:empty {
+  display: none;
+}
+
+:first-child:is(p, h1, h2, h3, h4, h5, h6),
+:first-child:empty + :where(p, h1, h2, h3, h4, h5, h6) {
+  margin-block-start: 0;
+}
+
+/* Remove bottom margin from last text item, or previous to last if the last is empty */
+:last-child:is(p, h1, h2, h3, h4, h5, h6),
+:where(p, h1, h2, h3, h4, h5, h6):nth-child(2):has(+ :last-child:empty) {
+  margin-block-end: 0;
+}
+
+/* view transitions */
+
+/*
+ * The cross-document (MPA) opt-in `@view-transition { navigation: auto }` is declared per-layout
+ * (layout/theme.liquid and layout/password.liquid), because this stylesheet is shared by both layouts
+ * and a static stylesheet can't read theme settings.
+ * It is gated on the same `settings.page_transition_enabled or settings.transition_to_main_product` condition as the
+ * render blocker, so the opt-in and its opt-out switch can never disagree. The rules below only
+ * take effect once an `@view-transition` opt-in is active, so they are inert without it.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  /* Keep page interactive while view transitions are running */
+  :root {
+    view-transition-name: none;
+  }
+
+  /* Have the root transition during page navigation */
+  html:active-view-transition-type(page-navigation),
+  html:active-view-transition-type(product-image-transition) {
+    view-transition-name: root-custom;
+  }
+
+  ::view-transition {
+    pointer-events: none;
+  }
+
+  html:active-view-transition-type(page-navigation) main[data-page-transition-enabled='true'] {
+    view-transition-name: main-content;
+  }
+
+  html:active-view-transition-type(page-navigation) main[data-product-transition='true'][data-template*='product'] {
+    view-transition-name: none;
+  }
+
+  ::view-transition-old(main-content) {
+    animation: var(--view-transition-old-main-content);
+  }
+
+  ::view-transition-new(main-content) {
+    animation: var(--view-transition-new-main-content);
+  }
+
+  html:active-view-transition-type(product-image-transition) {
+    [data-view-transition-type='product-image-transition'] {
+      view-transition-name: product-image-transition;
+    }
+
+    [data-view-transition-type='product-details'] {
+      view-transition-name: product-details;
+    }
+  }
+
+  ::view-transition-group(product-image-transition) {
+    z-index: 1;
+  }
+
+  ::view-transition-group(product-image-transition),
+  ::view-transition-group(product-details) {
+    animation-duration: var(--animation-speed);
+    animation-timing-function: var(--animation-easing);
+  }
+
+  ::view-transition-old(product-image-transition),
+  ::view-transition-new(product-image-transition) {
+    block-size: 100%;
+    overflow: hidden;
+    object-fit: cover;
+    animation-duration: 0.25s;
+    animation-timing-function: var(--animation-easing);
+  }
+
+  ::view-transition-new(product-details) {
+    animation: var(--view-transition-new-main-content);
+  }
+}
+
+/* Focus */
+*:focus-visible {
+  outline: var(--focus-outline-width) solid currentcolor;
+  outline-offset: var(--focus-outline-offset);
+}
+
+@supports not selector(:focus-visible) {
+  *:focus {
+    outline: var(--focus-outline-width) solid currentcolor;
+    outline-offset: var(--focus-outline-offset);
+  }
+}
+
+.focus-inset {
+  outline-offset: calc(var(--focus-outline-width) * -1);
+}
+
+/* Layout */
+.content-for-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-for-layout > .shopify-section:last-child {
+  flex-grow: 1;
+}
+
+/* Set up page widths & margins. Gutters grow to the device safe-area insets (viewport-fit=cover)
+   so section backgrounds bleed edge-to-edge while content stays clear of the notch; taking the
+   larger of both insets keeps the centered page grid symmetric. */
+.page-width-wide,
+.page-width-normal,
+.page-width-narrow,
+.page-width-content {
+  --page-margin: max(16px, var(--safe-area-inset-left, 0px), var(--safe-area-inset-right, 0px));
+}
+
+@media screen and (min-width: 750px) {
+  .page-width-wide,
+  .page-width-normal,
+  .page-width-narrow,
+  .page-width-content {
+    --page-margin: max(40px, var(--safe-area-inset-left, 0px), var(--safe-area-inset-right, 0px));
+  }
+}
+
+.page-width-wide {
+  /* NOTE: This results in a page width of 2400px because of how we set up margins with grid */
+  --page-content-width: var(--wide-page-width);
+  --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+}
+
+.page-width-normal {
+  --page-content-width: var(--normal-page-width);
+  --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+}
+
+.page-width-narrow {
+  /* NOTE: This results in a page width of 1400px because of how we set up margins with grid */
+  --page-content-width: var(--narrow-page-width);
+  --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+}
+
+.page-width-content {
+  --page-content-width: var(--normal-content-width);
+  --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+}
+
+/* Section width full vs. page
+   The reason we use a grid to contain the section is to allow for the section to have a
+   full-width background image even if the section content is constrained by the page width. Do not try
+   to rewrite this to max-width: --page-width; margin: 0 auto;, it doesn't work. */
+.section {
+  --full-page-grid-central-column-width: min(
+    var(--page-width) - var(--page-margin) * 2,
+    calc(100% - var(--page-margin) * 2)
+  );
+  --full-page-grid-margin: minmax(var(--page-margin), 1fr);
+  --full-page-grid-with-margins: var(--full-page-grid-margin) var(--full-page-grid-central-column-width)
+    var(--full-page-grid-margin);
+
+  /* Utility variable gives the grid's first column width. Provides an offset width for components like carousels */
+  --util-page-margin-offset: max(
+    var(--page-margin),
+    calc((100% - min(var(--page-content-width), 100% - var(--page-margin) * 2)) / 2)
+  );
+
+  /* Offset for full-width sections to account for the page margin,
+  used for Marquee — note that --util-page-margin-offset doesn't work here */
+  --full-page-margin-inline-offset: calc(((100vw - var(--full-page-grid-central-column-width)) / 2) * -1);
+
+  width: 100%;
+
+  /* This is required to make background images work, which are <img> rendered absolutely */
+  position: relative;
+
+  /* Set up the grid */
+  display: grid;
+  grid-template-columns: var(--full-page-grid-with-margins);
+  min-height: var(--section-min-height, 'auto');
+}
+
+/* Place all direct children in the center column by default */
+.section > * {
+  grid-column: 2;
+}
+
+/* Make the actual section background transparent, and instead apply it to a separate sibling element to enable stacking with hero shadow  */
+.shopify-section:not(.header-section) :is(.section, .cart-summary) {
+  background: transparent;
+}
+
+.shopify-section:not(.header-section):has(.section) {
+  position: relative;
+}
+
+.shopify-section:not(.header-section) .section-background {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: var(--layer-section-background);
+  background-color: var(--color-background);
+}
+
+/* For page-width sections, all content goes in the center column */
+.section--page-width > * {
+  grid-column: 2;
+}
+
+/* For full-width sections, content spans all columns */
+.section--full-width > * {
+  grid-column: 1 / -1;
+}
+
+@media screen and (max-width: 749px) {
+  .section--mobile-full-width > * {
+    grid-column: 1 / -1;
+  }
+}
+
+/* For full-width sections with margin, content still spans full width but with space on the sides */
+.section--full-width.section--full-width-margin > * {
+  grid-column: 1 / -1;
+
+  @media screen and (min-width: 750px) {
+    padding-left: var(--page-margin);
+    padding-right: var(--page-margin);
+  }
+}
+
+/* Some section content break out to full width of the page */
+.section > .force-full-width {
+  grid-column: 1 / -1;
+}
+
+.section--height-small {
+  --section-min-height: var(--section-height-small);
+}
+
+.section--height-medium {
+  --section-min-height: var(--section-height-medium);
+}
+
+.section--height-large {
+  --section-min-height: var(--section-height-large);
+}
+
+.section--height-full-screen {
+  --section-min-height: 100svh;
+}
+
+.section-content-wrapper.section-content-wrapper {
+  min-height: calc(var(--section-min-height, 'auto') - var(--section-height-offset, 0px));
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Utility */
+
+.hidden {
+  /* stylelint-disable-next-line declaration-no-important */
+  display: none !important;
+}
+
+@media screen and (max-width: 749px) {
+  .hidden--mobile,
+  .mobile\:hidden {
+    /* stylelint-disable-next-line declaration-no-important */
+    display: none !important;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .hidden--desktop,
+  .desktop\:hidden {
+    /* stylelint-disable-next-line declaration-no-important */
+    display: none !important;
+  }
+}
+
+.hide-when-empty:empty {
+  /* stylelint-disable-next-line declaration-no-important */
+  display: none !important;
+}
+
+.visually-hidden:not(:focus, :active) {
+  /* stylelint-disable-next-line declaration-no-important */
+  position: absolute !important;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  /* stylelint-disable-next-line declaration-no-important */
+  word-wrap: normal !important;
+}
+
+.contents {
+  display: contents;
+}
+
+.flex {
+  display: flex;
+  gap: var(--gap-md);
+}
+
+.grid {
+  --centered-column-number: 12;
+  --full-width-column-number: 14;
+  --centered: column-1 / span var(--centered-column-number);
+  --full-width: column-0 / span var(--full-width-column-number);
+
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 750px) {
+  .grid {
+    display: grid;
+    gap: 0;
+    grid-template-columns: var(--margin-4xl) repeat(var(--centered-column-number), minmax(0, 1fr)) var(--margin-4xl);
+    grid-template-areas: 'column-0 column-1 column-2 column-3 column-4 column-5 column-6 column-7 column-8 column-9 column-10 column-11 column-12 column-13';
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .grid {
+    grid-template-columns:
+      1fr repeat(
+        var(--centered-column-number),
+        minmax(0, calc((var(--page-width) - var(--page-margin) * 2) / var(--centered-column-number)))
+      )
+      1fr;
+  }
+}
+
+.flip-x {
+  scale: -1 1;
+}
+
+.list-unstyled {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.text-left {
+  --text-align: left;
+
+  text-align: left;
+}
+
+.text-center {
+  --text-align: center;
+
+  text-align: center;
+}
+
+.text-right {
+  --text-align: right;
+
+  text-align: right;
+}
+
+.text-inherit {
+  color: inherit;
+}
+
+.user-select-text {
+  user-select: text;
+}
+
+.justify-left {
+  justify-content: left;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-right {
+  justify-content: right;
+}
+
+.svg-wrapper {
+  color: currentcolor;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  pointer-events: none;
+}
+
+.svg-wrapper--smaller {
+  width: var(--icon-size-2xs);
+  height: var(--icon-size-2xs);
+}
+
+.svg-wrapper--small {
+  width: var(--icon-size-xs);
+  height: var(--icon-size-xs);
+}
+
+.svg-wrapper > svg {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+}
+
+.relative {
+  position: relative;
+}
+
+/* Icons */
+.icon-success,
+.icon-error {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  flex-shrink: 0;
+}
+
+.icon-success {
+  color: var(--color-success);
+}
+
+.icon-error {
+  fill: var(--color-error);
+}
+
+.icon-default {
+  fill: currentColor;
+}
+
+[data-placeholder='true'] * {
+  cursor: default;
+}
+
+/* Base text and heading styles */
+body,
+.paragraph:not(.button),
+.paragraph > *,
+.text-block.paragraph :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-paragraph--family);
+  font-style: var(--font-paragraph--style);
+  font-weight: var(--font-paragraph--weight);
+  font-size: var(--font-paragraph--size);
+  line-height: var(--font-paragraph--line-height);
+  text-transform: var(--font-paragraph--case);
+  -webkit-font-smoothing: antialiased;
+  color: var(--color, var(--color-foreground));
+}
+
+/* Ensure inputs with type presets maintain minimum 16px on mobile to prevent iOS zoom */
+@media screen and (max-width: 1200px) {
+  input.paragraph.paragraph,
+  input.paragraph.paragraph:not([type]),
+  textarea.paragraph.paragraph,
+  select.paragraph.paragraph {
+    font-size: max(1rem, var(--font-paragraph--size));
+  }
+}
+
+.paragraph > small {
+  font-size: smaller;
+}
+
+/* Typography presets */
+
+h1,
+.h1.h1,
+.text-block.h1 > *,
+.text-block.h1 :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-h1--family);
+  font-style: var(--font-h1--style);
+  font-weight: var(--font-h1--weight);
+  font-size: var(--font-h1--size);
+  line-height: var(--font-h1--line-height);
+  letter-spacing: var(--font-h1--letter-spacing);
+  text-transform: var(--font-h1--case);
+  color: var(--color);
+}
+
+@media screen and (max-width: 1200px) {
+  input.h1.h1,
+  textarea.h1.h1,
+  select.h1.h1 {
+    font-size: max(1rem, var(--font-h1--size));
+  }
+}
+
+h2,
+.h2.h2,
+.text-block.h2 > *,
+.text-block.h2 :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-h2--family);
+  font-style: var(--font-h2--style);
+  font-weight: var(--font-h2--weight);
+  font-size: var(--font-h2--size);
+  line-height: var(--font-h2--line-height);
+  letter-spacing: var(--font-h2--letter-spacing);
+  text-transform: var(--font-h2--case);
+  color: var(--color);
+}
+
+@media screen and (max-width: 1200px) {
+  input.h2.h2,
+  textarea.h2.h2,
+  select.h2.h2 {
+    font-size: max(1rem, var(--font-h2--size));
+  }
+}
+
+h3,
+.h3,
+.h3.h3,
+.text-block.h3 > *,
+.text-block.h3 :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-h3--family);
+  font-style: var(--font-h3--style);
+  font-weight: var(--font-h3--weight);
+  font-size: var(--font-h3--size);
+  line-height: var(--font-h3--line-height);
+  letter-spacing: var(--font-h3--letter-spacing);
+  text-transform: var(--font-h3--case);
+  color: var(--color);
+}
+
+@media screen and (max-width: 1200px) {
+  input.h3,
+  textarea.h3,
+  select.h3 {
+    font-size: max(1rem, var(--font-h3--size));
+  }
+}
+
+h4,
+.h4.h4,
+.text-block.h4 > *,
+.text-block.h4 :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-h4--family);
+  font-style: var(--font-h4--style);
+  font-weight: var(--font-h4--weight);
+  font-size: var(--font-h4--size);
+  line-height: var(--font-h4--line-height);
+  letter-spacing: var(--font-h4--letter-spacing);
+  text-transform: var(--font-h4--case);
+  color: var(--color);
+}
+
+@media screen and (max-width: 1200px) {
+  input.h4.h4,
+  textarea.h4.h4,
+  select.h4.h4 {
+    font-size: max(1rem, var(--font-h4--size));
+  }
+}
+
+h5,
+.h5.h5,
+.text-block.h5 > *,
+.text-block.h5 :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-h5--family);
+  font-style: var(--font-h5--style);
+  font-weight: var(--font-h5--weight);
+  font-size: var(--font-h5--size);
+  line-height: var(--font-h5--line-height);
+  letter-spacing: var(--font-h5--letter-spacing);
+  text-transform: var(--font-h5--case);
+  color: var(--color);
+}
+
+@media screen and (max-width: 1200px) {
+  input.h5.h5,
+  textarea.h5.h5,
+  select.h5.h5 {
+    font-size: max(1rem, var(--font-h5--size));
+  }
+}
+
+h6,
+.h6.h6,
+.text-block.h6 > *,
+.text-block.h6 :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-h6--family);
+  font-style: var(--font-h6--style);
+  font-weight: var(--font-h6--weight);
+  font-size: var(--font-h6--size);
+  line-height: var(--font-h6--line-height);
+  letter-spacing: var(--font-h6--letter-spacing);
+  text-transform: var(--font-h6--case);
+  color: var(--color);
+}
+
+@media screen and (max-width: 1200px) {
+  input.h6.h6,
+  textarea.h6.h6,
+  select.h6.h6 {
+    font-size: max(1rem, var(--font-h6--size));
+  }
+}
+
+:first-child:is(.h1, .h2, .h3, .h4, .h5, .h6) {
+  margin-block-start: 0;
+}
+
+:last-child:is(.h1, .h2, .h3, .h4, .h5, .h6) {
+  margin-block-end: 0;
+}
+
+/* Links */
+a {
+  color: currentcolor;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 0.075em;
+  text-underline-offset: 0.125em;
+  transition: text-decoration-color var(--animation-speed) var(--animation-easing),
+    color var(--animation-speed) var(--animation-easing);
+}
+
+:is(h1, h2, h3, h4, h5, h6, p) > a:hover {
+  color: rgb(var(--color-rgb, var(--color-foreground-rgb)) / 0.7);
+}
+
+/* Add underline to text using our paragraph styles only. */
+p:not(.h1, .h2, .h3, .h4, .h5, .h6) a:where(:not(.button, .button-secondary)),
+.rte :is(p, ul, ol, table):not(.h1, .h2, .h3, .h4, .h5, .h6) a:where(:not(.button, .button-secondary)) {
+  text-decoration-color: currentcolor;
+
+  &:hover {
+    text-decoration-color: currentcolor;
+    color: rgb(var(--color-rgb, var(--color-foreground-rgb)) / 0.7);
+  }
+}
+
+.container-background-image {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+/* iOS fix: hide the default arrow on the summary */
+summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Buttons */
+.button,
+.button-secondary,
+.button-custom,
+button.shopify-payment-button__button--unbranded {
+  --text-align: center;
+
+  display: grid;
+  align-content: center;
+  text-decoration: none;
+  text-align: var(--text-align);
+  color: var(--button-color);
+  appearance: none;
+  background-color: var(--button-background-color);
+  border: none;
+  font-family: var(--font-paragraph--family);
+  font-style: var(--font-paragraph--style);
+  font-weight: var(--font-paragraph--weight);
+  font-size: var(--font-paragraph--size);
+  line-height: var(--font-paragraph--line-height);
+  margin-block: 0;
+  transition: color var(--animation-speed) var(--animation-easing),
+    box-shadow var(--animation-speed) var(--animation-easing),
+    background-color var(--animation-speed) var(--animation-easing);
+  cursor: pointer;
+  width: fit-content;
+  box-shadow: inset 0 0 0 var(--button-border-width) var(--button-border-color);
+  padding-block: var(--button-padding-block);
+  padding-inline: var(--button-padding-inline);
+}
+
+.button {
+  font-family: var(--button-font-family-primary);
+  text-transform: var(--button-text-case-primary);
+  border-radius: var(--style-border-radius-buttons-primary);
+}
+
+.button:not(.button-secondary, .button-unstyled) {
+  outline-color: var(--button-focus-outline-color, var(--button-background-color));
+}
+
+.button-secondary {
+  font-family: var(--button-font-family-secondary);
+  text-transform: var(--button-text-case-secondary);
+  border-radius: var(--style-border-radius-buttons-secondary);
+}
+
+button.shopify-payment-button__button--unbranded {
+  font-family: var(--button-font-family-primary);
+  text-transform: var(--button-text-case-primary);
+}
+
+textarea,
+input:not([type='checkbox'], [type='radio']) {
+  background-color: var(--color-input-background);
+  border-color: var(--color-input-border);
+}
+
+textarea::placeholder,
+input::placeholder {
+  color: rgb(var(--color-input-text-rgb) / var(--opacity-muted-text));
+}
+
+textarea:not(:placeholder-shown)::placeholder,
+input:not(:placeholder-shown)::placeholder {
+  opacity: 0;
+}
+
+/* The declaration above is messing with buttons that have an attribute of hidden as it overwrites the display value */
+.button[hidden] {
+  display: none;
+}
+
+.button[aria-disabled='true'],
+.button-secondary[aria-disabled='true'],
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button,
+button.shopify-payment-button__button--unbranded {
+  --button-color: var(--color-primary-button-text);
+  --button-background-color: var(--color-primary-button-background);
+  --button-border-color: var(--color-primary-button-border);
+  --button-border-width: var(--style-border-width-primary);
+  --button-focus-outline-color: var(--color-primary-button-focus-outline);
+}
+
+.button:hover,
+button.shopify-payment-button__button--unbranded:hover:not([disabled]) {
+  --button-color: var(--color-primary-button-hover-text);
+  --button-background-color: var(--color-primary-button-hover-background);
+  --button-border-color: var(--color-primary-button-hover-border);
+}
+
+.button-secondary {
+  --button-color: var(--color-secondary-button-text);
+  --button-background-color: var(--color-secondary-button-background);
+  --button-border-color: var(--color-secondary-button-border);
+  --button-border-width: var(--style-border-width-secondary);
+}
+
+.button-secondary:hover {
+  --button-color: var(--color-secondary-button-hover-text);
+  --button-background-color: var(--color-secondary-button-hover-background);
+  --button-border-color: var(--color-secondary-button-hover-border);
+}
+
+.button-custom {
+  --button-color: var(--color-primary-button-text);
+  --button-background-color: var(--color-primary-button-background);
+  --button-border-color: var(--color-primary-button-border);
+  --button-border-width: var(--style-border-width-secondary);
+  --button-focus-outline-color: var(--color-primary-button-focus-outline);
+
+  font-family: var(--button-font-family-primary);
+  text-transform: var(--button-text-case-primary);
+  border-radius: var(--style-border-radius-buttons-primary);
+  outline-color: var(--button-focus-outline-color, var(--button-background-color));
+}
+
+.button-custom:hover {
+  --button-color: var(--color-primary-button-hover-text);
+  --button-background-color: var(--color-primary-button-hover-background);
+  --button-border-color: var(--color-primary-button-hover-border);
+}
+
+/* Needed to override the default Shopify styles */
+button.shopify-payment-button__button--unbranded:hover:not([disabled]) {
+  background-color: var(--button-background-color);
+}
+
+.button-unstyled {
+  display: block;
+  padding: 0;
+  background-color: inherit;
+  color: var(--color-foreground);
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+  font-family: var(--font-paragraph--family);
+  font-style: var(--font-paragraph--style);
+  font-size: var(--font-paragraph--size);
+}
+
+.button-unstyled:hover {
+  background-color: inherit;
+}
+
+/* Default hover dim for link-style buttons, scoped via :where() so component-specific
+   hover rules (.facets__clear-all-link, .header-actions__action, etc.) still win. */
+:where(.button-unstyled):hover {
+  --hover-color-rgb: var(--color-foreground-rgb);
+
+  color: rgb(var(--hover-color-rgb) / var(--opacity-70));
+}
+
+.button-unstyled--with-icon {
+  color: var(--color-foreground);
+  display: flex;
+  gap: var(--gap-2xs);
+  align-items: center;
+}
+
+.button-unstyled--transparent {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* Caret icon transition */
+.icon-caret svg {
+  transition: transform var(--animation-speed) var(--animation-easing);
+}
+
+summary {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
+  padding-block: var(--padding-sm);
+}
+
+summary:hover {
+  color: rgb(var(--color-foreground-rgb) / var(--opacity-80));
+}
+
+/* Animate the UI elements in only after the view transition is complete */
+.close-button {
+  position: fixed;
+
+  /* Keep the fixed close button clear of the status bar and right-side notch (viewport-fit=cover) */
+  top: max(var(--margin-lg), var(--safe-area-inset-top, 0px));
+  right: max(var(--margin-lg), var(--safe-area-inset-right, 0px));
+  width: var(--minimum-touch-target);
+  height: var(--minimum-touch-target);
+  z-index: var(--layer-flat);
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* For the outline radius */
+  border-radius: 50%;
+}
+
+/* This triggers iOS < 16.4. The outline bug is not recognized as a lack of @supports */
+
+@supports not (background-color: rgb(from red 150 g b / alpha)) {
+  /**
+    There is a bug in safari < 16.4 that causes the outline to not follow the elements border radius. This is a workaround.
+    Using element selector to increase specificity.
+  **/
+
+  .close-button:focus-visible {
+    outline: none;
+    overflow: visible;
+  }
+
+  .close-button:focus-visible::after {
+    content: '';
+    position: absolute;
+    inset: calc(-1 * var(--focus-outline-offset));
+    border: var(--focus-outline-width) solid currentColor;
+    border-radius: 50%;
+    display: inherit;
+  }
+}
+
+.dialog--closed .close-button {
+  animation: elementSlideOutBottom calc(var(--animation-speed) * 0.5) var(--animation-easing) forwards;
+}
+
+.close-button:hover {
+  background-color: transparent;
+  opacity: 0.8;
+}
+
+.close-button svg {
+  width: var(--icon-size-xs);
+  height: var(--icon-size-xs);
+}
+
+/* Product media */
+.product-media {
+  display: flex;
+  flex: 1;
+}
+
+.sticky-content {
+  position: sticky;
+  top: var(--sticky-header-offset, 0);
+  z-index: var(--layer-flat);
+}
+
+@media screen and (min-width: 750px) {
+  .sticky-content--desktop,
+  .sticky-content--desktop.full-height--desktop > .group-block {
+    position: sticky;
+    top: var(--sticky-header-offset, 0);
+    z-index: var(--layer-flat);
+  }
+}
+
+/* Spacing style */
+.spacing-style {
+  --spacing-scale: var(--spacing-scale-md);
+
+  @media screen and (min-width: 990px) {
+    --spacing-scale: var(--spacing-scale-default);
+  }
+
+  /* Must disable this, when you use these with calc and another unit type, things break — see logo.liquid */
+  /* stylelint-disable length-zero-no-unit */
+  --padding-block: 0px;
+  --padding-block-start: var(--padding-block, 0px);
+  --padding-block-end: var(--padding-block, 0px);
+  --padding-inline: 0px;
+  --padding-inline-start: var(--padding-inline, 0px);
+  --padding-inline-end: var(--padding-inline, 0px);
+  --margin-block: 0px;
+  --margin-block-start: var(--margin-block, 0px);
+  --margin-block-end: var(--margin-block, 0px);
+  --margin-inline: 0px;
+  --margin-inline-start: var(--margin-inline, 0px);
+  --margin-inline-end: var(--margin-inline, 0px);
+
+  padding-block: calc(var(--padding-block-start) + var(--section-top-offset, 0px)) var(--padding-block-end);
+  padding-inline: var(--padding-inline-start) var(--padding-inline-end);
+  margin-block: var(--margin-block-start) var(--margin-block-end);
+  margin-inline: var(--margin-inline-start) var(--margin-inline-end);
+
+  /* Optional per-section mobile padding, set via `*-mobile` settings and emitted by
+     snippets/spacing-style.liquid. Falls back to the scaled desktop value when unset. */
+  @media screen and (max-width: 749px) {
+    padding-block: calc(var(--padding-block-start-mobile, var(--padding-block-start)) + var(--section-top-offset, 0px))
+      var(--padding-block-end-mobile, var(--padding-block-end));
+    padding-inline: var(--padding-inline-start-mobile, var(--padding-inline-start))
+      var(--padding-inline-end-mobile, var(--padding-inline-end));
+  }
+}
+
+/* Custom properties inherit, so a section's mobile padding would otherwise apply
+   again at every nested .spacing-style descendant. Reset it to guaranteed-invalid
+   so each element falls back to its own desktop value; any descendant that sets
+   its own mobile padding still wins, because that value is printed inline. */
+@media screen and (max-width: 749px) {
+  .spacing-style .spacing-style {
+    --padding-block-start-mobile: initial;
+    --padding-block-end-mobile: initial;
+    --padding-inline-start-mobile: initial;
+    --padding-inline-end-mobile: initial;
+  }
+}
+
+/* Size style */
+.size-style {
+  width: var(--size-style-width-mobile, var(--size-style-width));
+  height: var(--size-style-height-mobile, var(--size-style-height));
+
+  @media screen and (min-width: 750px) {
+    width: var(--size-style-width);
+    height: var(--size-style-height);
+  }
+}
+
+/* Custom Typography style */
+.custom-typography,
+.custom-typography > * {
+  font-family: var(--font-family);
+  font-weight: var(--font-weight);
+  text-transform: var(--text-transform);
+  text-wrap: var(--text-wrap);
+  line-height: var(--line-height);
+  letter-spacing: var(--letter-spacing);
+}
+
+.custom-typography {
+  h1 {
+    line-height: var(--line-height--display, var(--line-height));
+  }
+
+  h2,
+  h3,
+  h4 {
+    line-height: var(--line-height--heading, var(--line-height));
+  }
+
+  p {
+    line-height: var(--line-height--body, var(--line-height));
+  }
+}
+
+.custom-font-size,
+.custom-font-size > * {
+  font-size: var(--font-size);
+}
+
+.custom-font-weight,
+.custom-font-weight > * {
+  font-weight: var(--font-weight);
+}
+
+/* Border override style */
+.border-style {
+  border-width: var(--border-width);
+  border-style: var(--border-style);
+  border-color: var(--border-color);
+  border-radius: var(--border-radius);
+}
+
+/* Gap scaling style */
+.gap-style,
+.layout-panel-flex {
+  --gap-scale: var(--spacing-scale-md);
+
+  @media screen and (min-width: 990px) {
+    --gap-scale: var(--spacing-scale-default);
+  }
+}
+
+.layout-panel-flex {
+  display: flex;
+  gap: var(--gap);
+  height: 100%;
+}
+
+.shopify-block:has(> [shopify-block-empty]) {
+  display: none;
+}
+
+.layout-panel-flex--row {
+  flex-flow: row var(--flex-wrap);
+  justify-content: var(--horizontal-alignment);
+  align-items: var(--vertical-alignment);
+}
+
+.layout-panel-flex--column {
+  flex-flow: column var(--flex-wrap);
+  align-items: var(--horizontal-alignment);
+  justify-content: var(--vertical-alignment);
+}
+
+@media screen and (max-width: 749px) {
+  .mobile-column {
+    flex-flow: column nowrap;
+    align-items: var(--horizontal-alignment);
+    justify-content: var(--vertical-alignment-mobile);
+  }
+
+  .layout-panel-flex--row:not(.mobile-column) {
+    flex-wrap: var(--flex-wrap-mobile);
+    height: auto;
+
+    > .menu {
+      flex: 1 1 min-content;
+    }
+
+    > .text-block {
+      flex: 1 1 var(--max-width--display-tight);
+    }
+
+    > .image-block {
+      flex: 1 1 var(--size-style-width-mobile-min);
+    }
+
+    > .button {
+      flex: 0 0 fit-content;
+    }
+
+    > .group-block--height-fill {
+      height: calc(var(--section-min-height, auto) - var(--section-height-offset, 0px));
+    }
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .layout-panel-flex {
+    flex-direction: var(--flex-direction);
+  }
+}
+
+/* Form fields */
+.field {
+  position: relative;
+  width: 100%;
+  display: flex;
+  transition: box-shadow var(--animation-speed) ease;
+}
+
+.field__input {
+  flex-grow: 1;
+  text-align: left;
+  border-radius: var(--style-border-radius-inputs);
+  transition: box-shadow var(--animation-speed) ease, background-color var(--animation-speed) ease;
+  padding: var(--input-padding);
+  box-shadow: var(--input-box-shadow);
+  background-color: var(--color-input-background);
+  color: var(--color-input-text);
+  border: none;
+  outline: none;
+  font-size: var(--font-paragraph--size);
+
+  &:autofill {
+    background-color: var(--color-input-background);
+    color: var(--color-input-text);
+  }
+}
+
+.field__input:focus {
+  box-shadow: var(--input-box-shadow-focus);
+}
+
+.field__input--button-radius {
+  border-radius: var(--style-border-radius-buttons-primary);
+}
+
+.field__input--button-padding {
+  padding-inline: var(--padding-3xl);
+}
+
+.field__label {
+  color: rgb(var(--color-input-text-rgb) / var(--opacity-80));
+  font-size: var(--font-paragraph--size);
+  left: var(--input-padding-x);
+  top: 50%;
+  transform: translateY(-50%);
+  margin-bottom: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: top var(--animation-speed) ease, font-size var(--animation-speed) ease;
+}
+
+/* RTE styles */
+.rte,
+.shopify-policy__title {
+  :is(h1, h2, h3, h4, h5, h6) {
+    margin-block: clamp(1.5rem, 1em * 3.3, 2.5rem) var(--font-heading--spacing);
+  }
+
+  :first-child:is(p, h1, h2, h3, h4, h5, h6),
+  :first-child:empty + :is(p, h1, h2, h3, h4, h5, h6) {
+    margin-block-start: 0;
+  }
+
+  ul,
+  ol {
+    margin-block-start: 0;
+    padding-inline-start: 1.5em;
+  }
+
+  /* Only apply margin-block-end to the higher level list, not nested lists */
+  :is(ul, ol):not(:is(ul, ol) :is(ul, ol)) {
+    margin-block-end: 1em;
+  }
+
+  blockquote {
+    margin-inline: 1.5em 2.3em;
+    margin-block: 3.8em;
+    padding-inline-start: 0.8em;
+    border-inline-start: 1.5px solid rgb(var(--color-foreground-rgb) / var(--opacity-25));
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .rte-table-wrapper {
+    overflow-x: auto;
+  }
+
+  table {
+    /* stylelint-disable-next-line declaration-no-important */
+    width: 100% !important;
+    border-collapse: collapse;
+  }
+
+  tr:not(:has(td)),
+  thead {
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-5));
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  tr:has(td) {
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  }
+
+  th,
+  td {
+    text-align: start;
+    padding-inline: var(--padding-md);
+    padding-block: var(--padding-sm);
+  }
+}
+
+.shopify-policy__container {
+  padding-block: var(--padding-xl);
+}
+
+/* Radio buttons and checkboxes - shared base styles */
+:where(input[type='radio']),
+:where(input[type='checkbox']) {
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  aspect-ratio: 1;
+  margin: 0;
+  margin-inline-end: var(--padding-3xs);
+  padding: 0;
+  border: var(--checkbox-border);
+  appearance: none;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+/* Radio buttons */
+input[type='radio'] {
+  border-radius: var(--style-border-radius-50);
+  background: transparent;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+:where(input[type='radio']):checked {
+  border-color: var(--color-foreground);
+  background: var(--color-background);
+}
+
+:where(input[type='radio']):checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(var(--checkbox-size) / 2);
+  height: calc(var(--checkbox-size) / 2);
+  background: var(--color-foreground);
+  border-radius: var(--style-border-radius-50);
+  transition: background 0.2s ease;
+}
+
+:where(input[type='radio']):disabled {
+  border-color: var(--input-disabled-border-color);
+  background-color: var(--input-disabled-background-color);
+  cursor: not-allowed;
+}
+
+:where(input[type='radio']):disabled:checked::after {
+  background: var(--input-disabled-background-color);
+}
+
+:where(input[type='radio']):not(:disabled):hover {
+  border-color: rgb(var(--color-foreground-rgb) / var(--opacity-40-60));
+  background-color: rgb(var(--color-foreground-rgb) / var(--opacity-5));
+}
+
+:where(input[type='radio']):not(:disabled):hover:checked {
+  border-color: var(--color-foreground);
+  background-color: var(--color-background);
+}
+
+:where(input[type='radio']):not(:disabled):hover:checked::after {
+  background: rgb(var(--color-foreground-rgb) / var(--opacity-85));
+}
+
+/* Checkboxes */
+:where(input[type='checkbox']) {
+  border-radius: var(--checkbox-border-radius);
+  background-color: var(--color-background);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+:where(input[type='checkbox']):checked {
+  background-color: var(--color-foreground);
+  border-color: var(--color-foreground);
+}
+
+:where(input[type='checkbox']):checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  background-color: var(--color-background);
+  mask-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.75439 10.7485L7.68601 14.5888C7.79288 14.7288 7.84632 14.7988 7.91174 14.8242C7.96907 14.8466 8.03262 14.8469 8.09022 14.8253C8.15596 14.8007 8.21026 14.7314 8.31886 14.5927L15.2475 5.74658' stroke='black' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+:where(input[type='checkbox']):not(:disabled):hover {
+  border-color: rgb(var(--color-foreground-rgb) / var(--opacity-40-60));
+  background-color: rgb(var(--color-foreground-rgb) / var(--opacity-5));
+}
+
+:where(input[type='checkbox']):not(:disabled):hover:checked {
+  border-color: var(--color-foreground);
+  background-color: rgb(var(--color-foreground-rgb) / var(--opacity-85));
+}
+
+:where(input[type='checkbox']):disabled {
+  background-color: var(--input-disabled-background-color);
+  border-color: var(--input-disabled-border-color);
+  cursor: not-allowed;
+}
+
+:where(input[type='checkbox']):disabled:checked::after {
+  background-color: var(--input-disabled-text-color);
+}
+
+/* Shared styles for radio buttons and checkboxes */
+:where(input[type='radio']) + label,
+:where(input[type='checkbox']) + label {
+  display: inline;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+:where(input[type='radio']):disabled + label,
+:where(input[type='checkbox']):disabled + label {
+  color: var(--input-disabled-text-color);
+  cursor: not-allowed;
+}
+
+/* Animation declarations - to be kept at the bottom of the file for ease of find */
+@keyframes grow {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes move-and-fade {
+  from {
+    transform: translate(var(--start-x, 0), var(--start-y, 0));
+    opacity: var(--start-opacity, 0);
+  }
+
+  to {
+    transform: translate(var(--end-x, 0), var(--end-y, 0));
+    opacity: var(--end-opacity, 1);
+  }
+}
+
+@keyframes slideInTopViewTransition {
+  from {
+    transform: translateY(100px);
+  }
+}
+
+@keyframes elementSlideInTop {
+  from {
+    margin-top: var(--padding-sm);
+    opacity: 0;
+  }
+
+  to {
+    margin-top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes elementSlideOutTop {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(var(--padding-sm));
+    opacity: 0;
+  }
+}
+
+@keyframes elementSlideOutBottom {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(calc(-1 * var(--padding-sm)));
+    opacity: 0;
+  }
+}
+
+@keyframes thumbnailsSlideInTop {
+  from {
+    transform: translateY(calc(-50% + var(--margin-lg)));
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(-50%);
+    opacity: 1;
+  }
+}
+
+@keyframes thumbnailsSlideOutTop {
+  from {
+    transform: translateY(-50%);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(calc(-50% + var(--margin-lg)));
+    opacity: 0;
+  }
+}
+
+@keyframes thumbnailsSlideInBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes thumbnailsSlideOutBottom {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes search-element-slide-in-bottom {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes search-element-slide-out-bottom {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+}
+
+@keyframes backdropFilter {
+  from {
+    backdrop-filter: brightness(1);
+  }
+
+  to {
+    backdrop-filter: brightness(0.75);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideInTop {
+  from {
+    transform: translateY(var(--padding-sm));
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideOutTop {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(var(--padding-sm));
+    opacity: 0;
+  }
+}
+
+/* Slideshow Arrow Hover Animation - must stay in base.css for proper CSS cascade */
+
+slideshow-container[animate-arrows]:hover > slideshow-arrows .slideshow-control,
+slideshow-component:focus-within > slideshow-container[animate-arrows] > slideshow-arrows .slideshow-control {
+  animation: arrowsSlideIn var(--animation-speed) var(--animation-easing) forwards;
+}
+
+@keyframes arrowsSlideIn {
+  from {
+    transform: translate(var(--padding-sm), 0);
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.section-resource-list,
+.section-carousel {
+  row-gap: var(--gap);
+}
+
+.section-resource-list__content {
+  display: flex;
+  flex-direction: column;
+  align-items: var(--horizontal-alignment);
+  gap: var(--gap);
+  width: 100%;
+}
+
+.section-resource-list__header:is(:empty, :has(.group-block-content:empty)),
+.section-resource-list__content:empty {
+  display: none;
+}
+
+:where(.section-resource-list.section--full-width) product-card[data-product-transition] > .group-block,
+:where(.section-carousel.section--full-width) product-card[data-product-transition] > .group-block {
+  @media screen and (max-width: 749px) {
+    padding-inline: max(var(--padding-xs), var(--padding-inline-start))
+      max(var(--padding-xs), var(--padding-inline-end));
+  }
+}
+
+/* Base styles */
+.group-block,
+.group-block-content {
+  position: relative;
+}
+
+.group-block:has(> video-background-component) {
+  overflow: hidden;
+}
+
+.group-block-content {
+  height: 100%;
+  width: 100%;
+}
+
+/* Container styles */
+.section-content-wrapper.section-content-wrapper:where(.layout-panel-flex) .group-block--fill {
+  flex: 1;
+}
+
+/* Flex behavior for width variants */
+.layout-panel-flex--row > .group-block--width-fit {
+  flex: 0;
+}
+
+.layout-panel-flex--row > .group-block--width-fill {
+  flex: 1;
+}
+
+.layout-panel-flex--row > .group-block--width-custom {
+  flex-basis: var(--size-style-width);
+}
+
+/* The rule above sizes custom-width children from the desktop var only, so a block's
+   `width_mobile` is ignored inside a row panel. Honour it below the mobile breakpoint. */
+@media screen and (max-width: 749px) {
+  .layout-panel-flex--row > .group-block--width-custom {
+    flex-basis: var(--size-style-width-mobile, var(--size-style-width));
+  }
+}
+
+/* Dimension utilities - Height */
+.group-block--height-fit {
+  height: auto;
+}
+
+.group-block--height-custom,
+.group-block--height-fill {
+  height: var(--size-style-height);
+}
+
+/* Flex behavior for height variants */
+.layout-panel-flex--column > .group-block--height-fit {
+  flex: 0 1 auto;
+}
+
+.layout-panel-flex--column > .group-block--height-fill {
+  flex: 1;
+}
+
+.layout-panel-flex--column > .group-block--height-custom {
+  flex-basis: var(--size-style-height);
+}
+
+/* Global scrollbar styles */
+
+/* Webkit browsers */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--color-foreground-rgb) / var(--opacity-40));
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+  transition: background-color 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(var(--color-foreground-rgb) / var(--opacity-60));
+}
+
+/* Prevent iOS zoom on input focus by ensuring minimum 16px font size on mobile */
+@media screen and (max-width: 1200px) {
+  input,
+  textarea,
+  select,
+  /* Higher specificity to override type preset classes like .paragraph, .h1, etc. */
+  .paragraph.paragraph input,
+  .paragraph.paragraph textarea,
+  .paragraph.paragraph select,
+  .h1.h1 input,
+  .h1.h1 textarea,
+  .h1.h1 select,
+  .h2.h2 input,
+  .h2.h2 textarea,
+  .h2.h2 select,
+  .h3.h3 input,
+  .h3.h3 textarea,
+  .h3.h3 select,
+  .h4.h4 input,
+  .h4.h4 textarea,
+  .h4.h4 select,
+  .h5.h5 input,
+  .h5.h5 textarea,
+  .h5.h5 select,
+  .h6.h6 input,
+  .h6.h6 textarea,
+  .h6.h6 select {
+    font-size: max(1rem, 100%);
+  }
+}
+
+/* When the header is transparent, and when there is no header-section below it, offset the first main-section with
+ * the height of the header
+ */
+main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
+  &.spacing-style,
+  .spacing-style {
+    --section-top-offset: calc(var(--header-height) * var(--transparent-header-offset-boolean));
+
+    /* Any nested sections should not be offset */
+    .spacing-style {
+      --section-top-offset: 0px;
+    }
+  }
+
+  /* Make sticky content immediately stick to the top of the page */
+  .sticky-content {
+    margin-top: calc(var(--header-height) * var(--transparent-header-offset-boolean) * -1);
+  }
+}
+
+
+/* ============================================================================
+   Galway — scoped section styles
+
+   Every selector below is namespaced under a `galway-*` class that a section or
+   block opts into via its `css_class` setting. Nothing here can reach a section
+   or block that does not set that class, so Horizon's own components are
+   untouched. Values are the Galway design tokens:
+     hairline #ebebeb · rule #000 · chip border #d5d5d5 · surface #f8f8f8
+     media zoom 1.04 · long duration .5s · ease
+   ============================================================================ */
+
+.galway-hairline-tokens,
+:root {
+  --galway-hairline: #ebebeb;
+  --galway-media-zoom: 1.04;
+  --galway-dur-long: 0.5s;
+  --galway-dur-short: 0.1s;
+}
+
+/* --- Trust bar: hairline between cells, hairline under the strip ---------- */
+.galway-trust-bar {
+  border-block-end: 1px solid var(--galway-hairline);
+}
+
+/* Collection mobile comp has no trust strip — homepage keeps it. */
+@media screen and (max-width: 749px) {
+  .shopify-section:has(.galway-trust-bar--collection) {
+    display: none;
+  }
+}
+
+.galway-trust-cell + .galway-trust-cell {
+  border-inline-start: 1px solid var(--galway-hairline);
+}
+
+/* --- Collection cards: exact comp ratios, hover zoom, underlined title ----- */
+/* The ratio selectors carry an extra attribute so they outrank the per-block
+   `--ratio` that resource-image.liquid prints into an inline <style>. */
+.galway-cat-wide .collection-card[data-block-id] {
+  --ratio: 16 / 11;
+}
+
+.galway-cat-tall .collection-card[data-block-id] {
+  --ratio: 16 / 15.4;
+}
+
+.galway-cat-third .collection-card[data-block-id] {
+  --ratio: 4 / 3;
+}
+
+/* The card box is sized by --ratio; the image must fill it or the overlay
+   paints over a bare strip above the photo. */
+.galway-collection-card .resource-image {
+  height: 100%;
+  width: 100%;
+}
+
+/* `height: 100%` cannot resolve here: the parent's height comes from
+   aspect-ratio, so the percentage has no definite basis and the image falls
+   back to the intrinsic 16/9 of its width/height attributes. Pin it instead. */
+.galway-collection-card .resource-image__image {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+  transition: transform var(--galway-dur-long) ease;
+}
+
+.galway-collection-card:hover .resource-image__image {
+  transform: scale(var(--galway-media-zoom));
+}
+
+.galway-collection-card .collection-card__content :is(h1, h2, h3, h4, h5, h6, p) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+  transition: text-decoration-thickness var(--galway-dur-short) ease;
+}
+
+.galway-collection-card:hover .collection-card__content :is(h1, h2, h3, h4, h5, h6, p) {
+  text-decoration-thickness: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galway-collection-card .resource-image__image {
+    transition: none;
+  }
+
+  .galway-collection-card:hover .resource-image__image {
+    transform: none;
+  }
+}
+
+/* --- Brand feature icons rendered on a dark ground ------------------------ */
+.galway-icon-inverse .galway-icon-img {
+  filter: brightness(0) invert(1);
+}
+
+/* --- Inline section links: comp sets these plain, underline on hover ------ */
+.galway-plain-link a {
+  text-decoration: none;
+}
+
+.galway-plain-link a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* --- Product card: hairline above the spec/blurb block -------------------- */
+.galway-card-meta {
+  border-block-start: 1px solid var(--galway-hairline);
+}
+
+/* --- Best-seller cards: equal height, sale price, full-width Quick Add ----- */
+/* Do not use `.product-grid > *` — Horizon puts an inline <script> in the
+   <ul>, and `display: flex` on that script paints the source as a grid cell. */
+.galway-product-grid .product-grid__item,
+.galway-product-grid .resource-list__item {
+  display: flex;
+}
+
+.galway-product-grid .product-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Pushes the detail block down so every Quick Add sits on the same baseline,
+   whether or not that product has swatches. */
+.galway-product-grid .galway-card-meta {
+  margin-block-start: auto;
+}
+
+.galway-product-grid .add-to-cart-button:not(.quick-add__button) {
+  display: none;
+}
+
+/* The card already carries an explicit Quick Add button, so the theme's
+   image-overlay quick-add is suppressed here to avoid two add controls. */
+.galway-product-grid .quick-add,
+.galway-product-grid .product-card__quick-add {
+  display: none;
+}
+
+.galway-product-grid .price-item--sale,
+.galway-product-grid .price__sale .price-item:not(.compare-at-price) {
+  color: #c0392b;
+}
+
+.galway-product-grid .compare-at-price {
+  color: #8a8a89;
+  text-decoration: line-through;
+}
+
+/* --- Collection hero: fill the min-height so copy sits on the photo ------- */
+.galway-collection-hero .custom-section-content,
+.galway-collection-hero .section-content-wrapper {
+  min-height: var(--section-min-height, 70svh);
+  width: 100%;
+}
+
+.galway-collection-hero .galway-hero-title {
+  --font-h1--size: clamp(2.25rem, 6.2vw, 4.5rem);
+}
+
+/* --- In-grid promo tile: stretch to the product-card cell ----------------- */
+.galway-product-grid .galway-promo-tile-item {
+  display: flex;
+}
+
+.galway-promo-tile.group-block {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+}
+
+.galway-promo-tile .group-block-content {
+  width: 100%;
+  margin-top: auto;
+}
+
+@media screen and (min-width: 750px) {
+  .galway-product-grid .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* --- Type scale: comp sizes that differ from the global h1-h6 presets ------ */
+/* hero 92 -> 42, featured 38 -> 28, why card 24 -> 19.
+   These redefine the preset's own size variable rather than fighting
+   `.text-block.hN :is(h1..h6)` on specificity, so the preset still drives
+   family, weight, leading and tracking. */
+.galway-hero-title {
+  --font-h1--size: clamp(2.625rem, 8.8vw, 5.75rem);
+}
+
+.galway-feature-copy {
+  --font-h3--size: clamp(1.75rem, 3.2vw, 2.375rem);
+}
+
+.galway-why-card {
+  --font-h4--size: clamp(1.1875rem, 1.9vw, 1.5rem);
+}
+
+.galway-sticky-intro {
+  --font-h3--size: clamp(1.75rem, 3.2vw, 2.375rem);
+}
+
+.galway-categories.spacing-style,
+.galway-categories .spacing-style {
+  --padding-block-start: 104px;
+}
+
+.galway-why.spacing-style,
+.galway-why .spacing-style,
+.section.galway-why {
+  --padding-block-start: 112px;
+  --padding-block-end: 112px;
+}
+
+.galway-faq.spacing-style,
+.galway-faq .spacing-style,
+.galway-reviews.spacing-style,
+.galway-reviews {
+  --padding-block-start: 104px;
+  --padding-block-end: 104px;
+}
+
+/* --- Hero CTAs: 66 × 14/48, matching #gb-hero-cta ------------------------- */
+.galway-hero .button {
+  min-height: 66px;
+  padding-block: 14px;
+  padding-inline: 48px;
+  font-size: 1rem;
+}
+
+.galway-hero .button:hover {
+  opacity: 1;
+}
+
+/* Shop Women's is a ghost on the photo; fill white on hover. */
+.galway-hero .hero-cta .button:last-child:hover,
+.galway-hero .group-block-content > .button:last-child:hover {
+  background: #fff;
+  color: #00182d;
+}
+
+/* --- Featured product: 520px shot, 400px teaser, right-edge bleed --------- */
+/* Desktop only — tablet (≤989) uses the stacked mobile treatment. */
+@media screen and (min-width: 990px) {
+  .layout-panel-flex--row > .galway-feature-media {
+    height: 520px;
+  }
+
+  .galway-feature-media .resource-image,
+  .galway-feature-media .resource-image__image {
+    height: 520px;
+    object-fit: contain;
+  }
+
+  .layout-panel-flex--row > .galway-feature-next {
+    height: 400px;
+  }
+
+  .galway-feature-next .resource-image,
+  .galway-feature-next .resource-image__image {
+    height: 320px;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  /* Comp pads 64 0 64 32 — teaser hangs off the right gutter. */
+  .galway-feature .slideshow-container,
+  .galway-feature slideshow-slides,
+  .galway-feature .slideshow__slide {
+    padding-inline-end: 0;
+  }
+}
+
+/* --- Reviews: testimonial cards are 300px min in the comp ----------------- */
+.galway-reviews .card,
+.galway-reviews .group-block.card,
+.galway-reviews [class*='card']:not(img) {
+  min-height: 0;
+}
+
+.galway-reviews .slideshow-slides > *,
+.galway-reviews .carousel-slides > *,
+.galway-reviews .resource-list__item {
+  min-height: 300px;
+}
+
+/* --- Mobile (402px comp) -------------------------------------------------- */
+@media screen and (max-width: 749px) {
+  /* --hero-min-height is printed inline by the section, so the consuming
+     property is overridden rather than the variable. */
+  .hero.galway-hero,
+  .hero.galway-hero .hero__container {
+    min-height: 460px !important;
+    height: auto !important;
+  }
+
+  /* Comp mobile banner is 210px. */
+  .galway-collection-hero.section,
+  .galway-collection-hero .custom-section-content,
+  .galway-collection-hero .section-content-wrapper {
+    min-height: 210px;
+  }
+
+  /* Comp scrolls the trust strip sideways rather than wrapping it. */
+  .galway-trust-bar .section-content-wrapper {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .galway-trust-bar .section-content-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .galway-trust-cell {
+    white-space: nowrap;
+    padding: 14px 18px;
+  }
+
+  /* Comp sets the rewards band to a fixed 340px on mobile rather than a vh share. */
+  .section.galway-rewards {
+    min-height: 340px;
+  }
+
+  /* Category cards go 2-up at a single 4/5 ratio. */
+  .galway-cat-wide .collection-card[data-block-id],
+  .galway-cat-tall .collection-card[data-block-id],
+  .galway-cat-third .collection-card[data-block-id] {
+    --ratio: 4 / 5;
+  }
+
+  .galway-collection-card .collection-card__content :is(h1, h2, h3, h4, h5, h6, p) {
+    font-size: 1.0625rem;
+  }
+
+  /* Header columns are sized for the two-up desktop row; let them collapse,
+     and bring the stacked gaps down to the comp's 14-18px. */
+  .galway-cat-header,
+  .galway-cat-header > .group-block {
+    height: auto;
+  }
+
+  .galway-cat-header > .group-block-content {
+    gap: 14px;
+  }
+
+  /* Comp keeps each trust label on one line and scrolls the strip instead. */
+  .galway-trust-cell .text-block,
+  .galway-trust-cell .text-block p {
+    white-space: nowrap;
+    text-wrap: nowrap;
+  }
+
+  /* Comp stacks the category section at 18px, not the scaled desktop 56px. */
+  .galway-categories > .custom-section-content > .section-content-wrapper {
+    gap: 18px;
+  }
+
+  /* Comp runs the category cards as a 10px grid on mobile. */
+  .galway-categories .group-block-content.layout-panel-flex--row {
+    gap: 10px;
+  }
+
+  /* --- Featured slide, mobile ------------------------------------------
+     Comp order at 402px: eyebrow, heading, [media | Up Next], chips, price+CTA.
+     The chips and CTA live inside the copy column for the desktop layout, so
+     that column is flattened with `display: contents` and the resulting flat
+     children are re-ordered. The body paragraph and the "up next" product name
+     are not in the mobile comp. */
+  /* --gap is printed inline on the slide's row, so the property is set here.
+     16px is what makes media (100% - 92px) + Up Next (76px) share one line. */
+  .galway-feature .slide__content > .group-block-content {
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    height: auto;
+  }
+
+  .galway-feature-copy,
+  .galway-feature-copy > .group-block-content {
+    display: contents;
+  }
+
+  .galway-feature-copy > .group-block-content > * {
+    width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(1) {
+    order: 1;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(2) {
+    order: 2;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(3) {
+    display: none;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(4) {
+    order: 5;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(5) {
+    order: 6;
+  }
+
+  /* Comp puts the price first and the button second on mobile. */
+  .galway-feature-copy > .group-block-content > *:nth-child(5) > .group-block-content {
+    justify-content: space-between;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(5) > .group-block-content > *:first-child {
+    order: 2;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(5) > .group-block-content > *:last-child {
+    order: 1;
+  }
+
+  /* Outranks `.layout-panel-flex--row > .group-block--width-custom`, which
+     otherwise sizes these from the desktop width variable. */
+  .layout-panel-flex--row > .galway-feature-media {
+    order: 3;
+    flex: 0 0 calc(100% - 92px);
+    width: calc(100% - 92px);
+    height: 280px;
+  }
+
+  .galway-feature-media .resource-image,
+  .galway-feature-media .resource-image__image {
+    height: 280px;
+  }
+
+  .layout-panel-flex--row > .galway-feature-next {
+    order: 4;
+    flex: 0 0 76px;
+    width: 76px;
+    opacity: 0.5;
+
+    /* Comp lets the teaser bleed past the right gutter. */
+    margin-inline-end: -16px;
+  }
+
+  .galway-feature-next .resource-image,
+  .galway-feature-next .resource-image__image {
+    height: 150px;
+  }
+
+  .galway-feature-next > .group-block-content {
+    gap: 8px;
+    justify-items: center;
+  }
+
+  /* Vertical "Up Next" label, and the product name is desktop-only. */
+  .galway-feature-next > .group-block-content > *:nth-child(1) p {
+    writing-mode: vertical-rl;
+    font-size: 0.5625rem;
+  }
+
+  .galway-feature-next > .group-block-content > *:nth-child(3) {
+    display: none;
+  }
+
+  /* Static + centered — Horizon's controls-on-media is absolute/bottom,
+     and the desktop justify-start rule otherwise left-aligns the track. */
+  .galway-feature slideshow-controls,
+  .galway-feature slideshow-controls[pagination-position],
+  .galway-feature slideshow-controls[controls-on-media],
+  .galway-feature slideshow-controls[controls-on-media][pagination-position='center'] {
+    position: static;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    justify-content: center;
+    padding-inline: 16px;
+    padding-block-end: 24px;
+    gap: 14px;
+    pointer-events: auto;
+  }
+
+  /* Comp has a track + 01/03, no arrow pair. */
+  .galway-feature .slideshow-control--previous,
+  .galway-feature .slideshow-control--next,
+  .galway-feature .slideshow-controls__arrows {
+    display: none !important;
+  }
+
+  /* Price: 20px. Chip rule below used to hit this too (9px). */
+  .galway-feature-copy > .group-block-content > *:nth-child(5) .text-block,
+  .galway-feature-copy > .group-block-content > *:nth-child(5) .text-block > * {
+    font-size: 1.25rem;
+  }
+
+  /* --- Visibility: desktop-only modules in the 402px mock --------------- */
+  .galway-hide-mobile,
+  .galway-why-intro,
+  .galway-trust-points,
+  .galway-cat-midlayers,
+  .galway-hero-intro > .group-block-content > :first-child {
+    display: none !important;
+  }
+
+  .galway-hide-desktop {
+    display: revert !important;
+  }
+
+  /* FAQ sits above Rewards on the 402px mock. */
+  #MainContent.content-for-layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .shopify-section:has(.galway-rewards) {
+    order: 1;
+  }
+
+  /* --- Hero: 42px display, stacked 52px CTAs ---------------------------- */
+  .galway-hero .button {
+    min-height: 52px;
+    width: 100%;
+    padding-block: 0;
+    padding-inline: 20px;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+
+  .hero.galway-hero,
+  .hero.galway-hero .hero__container {
+    height: auto !important;
+    min-height: 460px !important;
+  }
+
+  /* --- Trust: 3 cells, 24px icons, grey rail ---------------------------- */
+  .galway-trust-bar {
+    background: #f8f8f8;
+  }
+
+  .galway-trust-cell .galway-icon-img,
+  .galway-trust-cell img {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* --- Categories: title, 2×2 grid, View All underneath ----------------- */
+  .galway-categories .custom-section-content > .section-content-wrapper,
+  .galway-categories > .section-content-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .galway-cat-header,
+  .galway-cat-header > .group-block-content {
+    display: contents;
+  }
+
+  .galway-cat-meta {
+    order: 10;
+  }
+
+  .galway-cat-meta .text-block:first-child,
+  .galway-cat-meta .divider,
+  .galway-cat-meta .group-block-content > .divider-block,
+  .galway-categories .galway-cat-meta [class*='divider'] {
+    display: none !important;
+  }
+
+  .galway-cat-meta .galway-plain-link,
+  .galway-cat-meta .galway-plain-link a {
+    border-block-end: 1px solid #000;
+    padding-block-end: 4px;
+    width: fit-content;
+  }
+
+  .galway-categories h2 {
+    font-size: 1.75rem;
+    line-height: 1.05;
+  }
+
+  /* --- Featured: 3 chips, 28px heading, Shop Now + price ----------------- */
+  .galway-feature-copy {
+    --font-h3--size: 1.75rem;
+  }
+
+  /* Each chip carries a background colour, so Horizon emits a <style> tag
+     before it; the row has 8 children for 4 chips. Counting with nth-child
+     therefore hid from chip 2 onward. nth-of-type counts the divs only. */
+  .galway-feature-copy > .group-block-content > *:nth-child(4) > .group-block-content > div:nth-of-type(n + 4) {
+    display: none;
+  }
+
+  .galway-product-grid h2 {
+    font-size: 1.75rem;
+    line-height: 1.05;
+  }
+
+  /* --- Why Galway: stacked cards, 22/18 pad, 34px icons ----------------- */
+  .galway-why h2,
+  .galway-why-card {
+    --font-h2--size: 1.75rem;
+    --font-h4--size: 1.1875rem;
+  }
+
+  .galway-why-card.group-block,
+  .galway-why-card {
+    padding: 22px 18px !important;
+    gap: 10px;
+  }
+
+  .galway-why-card .galway-icon-img,
+  .galway-why-card img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .galway-why .group-block-content.layout-panel-flex--row {
+    gap: 12px;
+  }
+
+  /* --- Reviews: 28px heading, 80% rail ---------------------------------- */
+  .galway-reviews h2 {
+    font-size: 1.75rem;
+    line-height: 1.05;
+  }
+
+  .galway-reviews .slideshow-controls__arrows,
+  .galway-reviews .slideshow-control--previous,
+  .galway-reviews .slideshow-control--next {
+    display: none;
+  }
+
+  .galway-reviews .slideshow-controls__counter,
+  .galway-reviews .carousel-controls__counter {
+    font-size: 0;
+    letter-spacing: 0;
+  }
+
+  .galway-reviews .slideshow-controls__counter::after,
+  .galway-reviews .carousel-controls__counter::after {
+    content: "Swipe →";
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #5c5c5b;
+  }
+
+  .galway-reviews .slideshow-slides,
+  .galway-reviews .carousel-slides,
+  .galway-reviews [class*='slides'] {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-inline: -16px;
+    padding-inline: 16px;
+  }
+
+  .galway-reviews .slideshow-slides > *,
+  .galway-reviews .carousel-slides > *,
+  .galway-reviews .resource-list__item {
+    flex: 0 0 80%;
+    min-height: 220px;
+  }
+
+  /* --- Rewards: 28px heading, 340px band -------------------------------- */
+  .galway-rewards h2 {
+    font-size: 1.75rem;
+    line-height: 1.05;
+  }
+
+  .section.galway-rewards .overlay,
+  .galway-rewards .section-overlay,
+  .galway-rewards .background-overlay {
+    background: linear-gradient(180deg, rgba(0, 24, 45, 0.25), rgba(0, 24, 45, 0.85));
+  }
+
+  /* --- FAQ: stacked, 28px heading --------------------------------------- */
+  .galway-faq h2,
+  .galway-sticky-intro h2 {
+    font-size: 1.75rem;
+    line-height: 1.05;
+  }
+
+  .galway-sticky-intro p {
+    display: none;
+  }
+
+  /* Mobile header: hamburger + logo + search/cart. No account. */
+  header-actions .account-button,
+  .account-button.header-actions__action {
+    display: none !important;
+  }
+}
+
+/* --- FAQ: the intro column tracks the reader past the accordion ----------- */
+@media screen and (min-width: 990px) {
+  .galway-sticky-intro {
+    position: sticky;
+    top: calc(var(--header-height, 84px) + 36px);
+    align-self: flex-start;
+  }
+}
+
+/* --- Featured-product slider controls: square arrows, 2px track, counter --- */
+/* The section also paints a floating arrow pair over the media; the comp has a
+   single control row, so only the ones inside slideshow-controls are kept. */
+.galway-feature slideshow-arrows {
+  display: none;
+}
+
+/* Slides have no `image_1` — Horizon fills the hole with hero-apparel SVG.
+   It sits absolute behind the 3-col content and flashes on swipe. */
+.galway-feature slideshow-slide {
+  background-color: #f8f8f8;
+}
+
+.galway-feature .slide__image-container {
+  display: none;
+}
+
+/* The comp groups prev/next, then the track, then the counter, at the bottom
+   left of the copy column. Horizon emits prev and next as two separate
+   `__arrows` divs either side of the pagination, so they are re-ordered here. */
+.galway-feature slideshow-controls[pagination-position] {
+  --color-active: #00182d;
+  --color: #d5d5d5;
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-inline: 0;
+  padding-block-end: 0;
+  mix-blend-mode: normal;
+  background: none;
+}
+
+@media screen and (min-width: 990px) {
+  .galway-feature slideshow-controls[pagination-position] {
+    justify-content: flex-start;
+  }
+}
+
+.galway-feature .slideshow-controls__arrows {
+  gap: 8px;
+}
+
+/* Parent gap is 20px; pull the split prev/next groups to the comp's 8px. */
+.galway-feature .slideshow-controls__arrows:first-child {
+  order: 1;
+  margin-inline-end: -12px;
+}
+
+.galway-feature .slideshow-controls__arrows:last-child {
+  order: 2;
+}
+
+.galway-feature .slideshow-controls__bar {
+  order: 3;
+  margin-inline-start: 0;
+}
+
+.galway-feature .slideshow-controls__counter {
+  order: 4;
+}
+
+.galway-feature .slideshow-control--previous,
+.galway-feature .slideshow-control--next {
+  opacity: 1;
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  min-height: 46px;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: transparent;
+  color: #000;
+  outline: none;
+  box-shadow: none;
+  transition: background var(--galway-dur-short) ease, color var(--galway-dur-short) ease;
+}
+
+.galway-feature .slideshow-control--previous:hover,
+.galway-feature .slideshow-control--next:hover,
+.galway-feature .slideshow-control--previous:focus-visible,
+.galway-feature .slideshow-control--next:focus-visible {
+  background: #000;
+  color: #fff;
+  outline: none;
+  box-shadow: none;
+}
+
+.galway-feature .slideshow-controls__bar {
+  display: flex;
+  flex: 0 1 220px;
+  gap: 0;
+  max-width: 220px;
+  padding: 0;
+  margin-block: 0;
+  list-style: none;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.galway-feature .slideshow-controls__bar li {
+  flex: 1;
+}
+
+.galway-feature .slideshow-controls__bar button {
+  width: 100%;
+  height: 2px;
+  margin: 0;
+  border-radius: 0;
+
+  /* Literal values - Horizon redefines --color / --color-active on the button
+     itself, so the variables resolve to white here. */
+  background: #d5d5d5;
+  box-shadow: none;
+}
+
+.galway-feature .slideshow-controls__bar button::after {
+  display: none;
+}
+
+.galway-feature .slideshow-controls__bar button[aria-selected='true'] {
+  background: #00182d;
+  box-shadow: none;
+}
+
+.galway-feature .slideshow-controls__counter {
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  background: none;
+  backdrop-filter: none;
+  color: #5c5c5b;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.galway-feature .slideshow-controls__counter .slash {
+  margin-inline: 0.35em;
+  padding-inline: 0;
+  color: inherit;
+  opacity: 1;
+}
+
+/* Comp puts the control row in the copy column, 18px under the CTA — not under
+   the 520px media. Reserve that row on the copy, then pin slideshow-controls
+   to it. Only the active slide is the anchor so off-screen copies don't win.
+   Desktop only — below 990 the copy is display:contents (no anchor box). */
+@media screen and (min-width: 990px) {
+  .galway-feature-copy > .group-block-content::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 46px;
+    margin-block-start: 18px;
+  }
+
+  .galway-feature slideshow-slide[aria-hidden='false'] .galway-feature-copy {
+    anchor-name: --galway-feature-copy;
+  }
+
+  .galway-feature slideshow-controls,
+  .galway-feature slideshow-controls[pagination-position],
+  .galway-feature slideshow-controls[controls-on-media],
+  .galway-feature slideshow-controls[controls-on-media][pagination-position='center'] {
+    position: absolute;
+    position-anchor: --galway-feature-copy;
+    inset: auto;
+    left: anchor(left);
+    right: anchor(right);
+    bottom: anchor(bottom);
+    top: auto;
+    width: auto;
+    max-width: none;
+    height: 46px;
+    min-height: 46px;
+    padding: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .galway-feature slideshow-controls button {
+    pointer-events: auto;
+  }
+}
+
+/* --- Hero: comp floors the opener at 700px before the vh share applies ---- */
+@media screen and (min-width: 750px) {
+  .hero.galway-hero,
+  .hero.galway-hero .hero__container {
+    min-height: max(700px, var(--hero-min-height, 0px));
+  }
+}
+
+/* --- Reviews: the carousel section hardcodes a 12px gap; comp is 48px.
+   It lays out as a grid, so only the row gap is set - a plain `gap` would
+   also add a column gap and indent the header. --------------------------- */
+.galway-reviews.section-carousel {
+  row-gap: 48px;
+}
+
+/* Reviews arrows: header, right of "4.8 Average · Verified Buyers", on the
+   ink hairline. Horizon paints them over the card rail at opacity 0. */
+@media screen and (min-width: 750px) {
+  .galway-reviews-header.spacing-style,
+  .galway-reviews-header {
+    --padding-block-end: 0px;
+  }
+
+  .galway-reviews-title {
+    margin-block-end: 15px;
+  }
+
+  .galway-reviews-meta {
+    anchor-name: --galway-reviews-meta;
+    min-height: 46px;
+    padding-block-end: 14px;
+    border-block-end: 1px solid #00182d;
+  }
+
+  .galway-reviews-meta > .group-block-content {
+    min-height: 46px;
+    justify-content: flex-end;
+  }
+
+  .galway-reviews-meta .divider {
+    display: none;
+  }
+
+  .galway-reviews slideshow-component,
+  .galway-reviews slideshow-container {
+    position: static;
+  }
+
+  .galway-reviews slideshow-arrows,
+  .galway-reviews .carousel-content slideshow-arrows {
+    position: absolute;
+    position-anchor: --galway-reviews-meta;
+    inset: auto;
+    top: anchor(top);
+    right: anchor(right);
+    left: auto;
+    bottom: auto;
+    width: auto;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 0;
+    padding-inline: 0;
+    margin: 0;
+    z-index: 2;
+    mix-blend-mode: normal;
+    pointer-events: none;
+  }
+
+  .galway-reviews slideshow-arrows .slideshow-control,
+  .galway-reviews slideshow-arrows .slideshow-control.slideshow-control--shape-square,
+  .galway-reviews .slideshow-control--next {
+    pointer-events: auto;
+    opacity: 1;
+    animation: none;
+    transform: none;
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    min-height: 46px;
+    padding: 0;
+    margin-inline-start: 0;
+    border: 1px solid #000;
+    border-radius: 0;
+    background: #fff;
+    color: #000;
+    outline: none;
+    box-shadow: none;
+  }
+
+  .galway-reviews slideshow-arrows .slideshow-control:hover,
+  .galway-reviews slideshow-arrows .slideshow-control:focus-visible {
+    background: #000;
+    color: #fff;
+    outline: none;
+    box-shadow: none;
+  }
+
+  .galway-reviews .slideshow-control[disabled],
+  .galway-reviews .carousel-content .slideshow-control[disabled] {
+    display: flex;
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+/* --- Featured-product slider: product shots sit on the grey card ---------- */
+.galway-feature-media img,
+.galway-feature-media svg {
+  object-fit: contain;
+}
+
+/* The featured slide reuses a product card purely for its imagery; the card's
+   own quick-add control is not part of this section in the comp. */
+.galway-feature-media .quick-add,
+.galway-feature-media .product-card__quick-add {
+  display: none;
+}
+
+.galway-feature-next {
+  opacity: 0.42;
+  transition: opacity 0.25s ease;
+}
+
+.galway-feature-next:hover {
+  opacity: 0.78;
+}
+
+/* --- Footer: desktop 4-col + logo hairline, mobile accordion stack -------- */
+.galway-footer-nl,
+.galway-footer-cols,
+.galway-footer-utils {
+  --galway-footer-muted: #ababaa;
+  --galway-footer-hairline: rgba(255, 255, 255, 0.18);
+  color: #c7c7c7;
+}
+
+.galway-footer-nl .footer-content {
+  padding-block-start: 104px;
+  padding-block-end: 96px;
+}
+
+.galway-footer-nl-inner {
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+.galway-footer-nl-inner .text-block p {
+  max-width: 48ch;
+  margin-inline: auto;
+}
+
+.galway-footer-nl .email-signup-block {
+  width: 100%;
+  max-width: 680px;
+  margin-inline: auto;
+}
+
+.galway-footer-nl .email-signup__button {
+  font-family: var(--font-accent--family);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.galway-footer-nl-inner rte-formatter:nth-of-type(2) {
+  display: none;
+}
+
+.galway-footer-cols .footer-content {
+  border-block-start: 1px solid var(--galway-footer-hairline);
+}
+
+.galway-footer-cols .menu__heading {
+  font-family: var(--font-accent--family);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--galway-footer-muted);
+}
+
+.galway-footer-cols .menu__item,
+.galway-footer-cols .menu__item a {
+  font-family: var(--font-heading--family);
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+  color: inherit;
+}
+
+.galway-footer-cols .menu__item a:hover,
+.galway-footer-cols a:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.galway-footer-cols a {
+  text-decoration: none;
+}
+
+.galway-footer-desktop-only .text-block:first-child,
+.galway-footer-desktop-only .text-block:nth-child(3) {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+}
+
+.galway-footer-desktop-only .text-block:nth-child(2) {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  border-block-end: 1px solid rgba(255, 255, 255, 0.4);
+  padding-block-end: 4px;
+  width: fit-content;
+}
+
+.galway-footer-col-region .social-icons__wrapper {
+  gap: 14px;
+}
+
+.galway-footer-col-region .social-icons__icon-wrapper,
+.galway-footer-col-region .social-icons__icon-wrapper:has(.social-icons__icon path) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+}
+
+.galway-footer-col-region .social-icons__icon-wrapper a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.galway-footer-col-region .social-icons__icon {
+  width: 17px;
+  height: 17px;
+  color: #fff;
+}
+
+.galway-footer-col-region > .group-block-content > .text-block {
+  display: none;
+}
+
+.galway-footer-logo-rule .group-block-content {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+}
+
+.galway-footer-logo-rule .group-block-content::before,
+.galway-footer-logo-rule .group-block-content::after {
+  content: "";
+  height: 1px;
+  background: var(--galway-footer-hairline);
+}
+
+.galway-footer-logo-rule .logo-block {
+  width: auto;
+  max-height: none;
+}
+
+.galway-footer-logo-rule .logo-block__image-wrapper {
+  height: 22px;
+}
+
+.galway-footer-logo-rule .logo-block__image {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+  height: 22px;
+  width: auto;
+}
+
+.galway-footer-utils .utilities,
+.galway-footer-utils.utilities {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  border-block-start: none;
+  color: var(--galway-footer-muted);
+  font-family: var(--font-body--family);
+  font-size: 0.75rem;
+}
+
+.galway-footer-utils .utilities > *,
+.galway-footer-utils.utilities > * {
+  justify-self: center;
+  text-align: center;
+}
+
+.galway-footer-utils .policy_list--inline {
+  gap: 24px;
+}
+
+.galway-footer-utils a:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@media screen and (min-width: 750px) {
+  .galway-footer-utils .utilities,
+  .galway-footer-utils.utilities {
+    display: flex;
+    grid-template-columns: none;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .galway-footer-nl .footer-content {
+    padding-block-start: 40px;
+    padding-block-end: 12px;
+  }
+
+  .galway-footer-nl-inner rte-formatter:nth-of-type(1),
+  .galway-footer-nl-inner .note_newsletter,
+  .galway-footer-nl-inner .text-block.custom {
+    display: none;
+  }
+
+  .galway-footer-nl-inner rte-formatter:nth-of-type(2) {
+    display: block;
+  }
+
+  .galway-footer-nl-inner {
+    width: 100%;
+  }
+
+  .galway-footer-nl .email-signup-block {
+    display: block;
+    max-width: none;
+  }
+
+  .galway-footer-nl .email-signup__input-group--integrated,
+  .galway-footer-nl .email-signup__input {
+    background: #fff;
+    border-color: #fff;
+    color: #00182d;
+  }
+
+  .galway-footer-nl .email-signup__input::placeholder {
+    color: #ababaa;
+  }
+
+  .galway-footer-nl .email-signup__button {
+    font-size: 0;
+    background: #fff;
+    color: #00182d;
+  }
+
+  .galway-footer-nl .email-signup__button::after {
+    content: "Submit";
+    font-family: var(--font-accent--family);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .galway-footer-cols .footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-block-start: none;
+  }
+
+  .galway-footer-cols .footer-content > .galway-footer-col-shop,
+  .galway-footer-cols .footer-content > :has(.galway-footer-col-shop) {
+    order: 1;
+  }
+
+  .galway-footer-cols .footer-content > .galway-footer-col-service,
+  .galway-footer-cols .footer-content > :has(.galway-footer-col-service) {
+    order: 2;
+  }
+
+  .galway-footer-cols .footer-content > .galway-footer-col-about,
+  .galway-footer-cols .footer-content > :has(.galway-footer-col-about) {
+    order: 3;
+  }
+
+  .galway-footer-cols .footer-content > .galway-footer-col-region,
+  .galway-footer-cols .footer-content > :has(.galway-footer-col-region) {
+    order: 4;
+  }
+
+  .galway-footer-cols .footer-content > .galway-footer-logo-rule,
+  .galway-footer-cols .footer-content > :has(.galway-footer-logo-rule) {
+    order: 5;
+  }
+
+  .galway-footer-logo-rule {
+    padding-block-start: 8px;
+  }
+
+  .galway-footer-desktop-only,
+  .galway-footer-col-about .text-block,
+  .galway-footer-col-service .text-block {
+    display: none !important;
+  }
+
+  .galway-footer-col-region > .group-block-content > .text-block {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 16px;
+    border-block-start: 1px solid var(--galway-footer-hairline);
+    border-block-end: 1px solid var(--galway-footer-hairline);
+    font-family: var(--font-heading--family);
+    font-size: 17px;
+    color: #fff;
+  }
+
+  .galway-footer-col-region > .group-block-content > .text-block::after {
+    content: "+";
+    opacity: 0.5;
+    font-family: var(--font-body--family);
+    font-size: 17px;
+  }
+
+  .galway-footer-cols .menu--accordion .menu__heading,
+  .galway-footer-cols .menu--accordion .menu__heading__accordion {
+    font-family: var(--font-heading--family);
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #fff;
+    padding-block: 16px;
+  }
+
+  .galway-footer-cols .menu--dividers .menu__details {
+    border-block-start: 1px solid var(--galway-footer-hairline);
+    border-block-end: none;
+  }
+
+  .galway-footer-col-region .menu--dividers .menu__details {
+    border-block-end: 1px solid var(--galway-footer-hairline);
+  }
+
+  .galway-footer-cols .menu__heading__toggle {
+    opacity: 0.5;
+  }
+
+  .galway-footer-logo-rule .logo-block__image-wrapper,
+  .galway-footer-logo-rule .logo-block__image {
+    height: 18px;
+  }
+
+  .galway-footer-logo-rule .group-block-content::before,
+  .galway-footer-logo-rule .group-block-content::after {
+    display: none;
+  }
+
+  .galway-footer-utils .policy_list--inline {
+    display: none;
+  }
+
+  .galway-footer-utils .utilities,
+  .galway-footer-utils.utilities {
+    font-size: 11px;
+  }
+}
+
+/* --- Product page --------------------------------------------------------- */
+.galway-pdp-title {
+  --font-h2--size: clamp(1.75rem, 3vw, 2.75rem);
+}
+
+/* Comp price row: 30px regular in the display face, a 14px secondary shipping
+   note under it, and the review count at 14px medium beside the stars. */
+/* Horizon styles the price through `.text-block.h4 > *`, so the size has to be
+   set on that child - a rule on `product-price` itself is overridden by it. */
+.galway-pdp-price-row .text-block.h4 > * {
+  font-family: var(--font-heading--family);
+  font-size: 1.875rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+@media screen and (max-width: 749px) {
+  .galway-pdp-price-row .text-block.h4 > * {
+    font-size: 1.25rem;
+  }
+}
+
+.galway-pdp-price-row .rating-count {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.galway-pdp-price-row [class*='shipping_note'] p {
+  color: #5c5c5b;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.galway-quote {
+  border-inline-start: 2px solid var(--galway-hairline);
+}
+
+.galway-pdp-chips {
+  border-block: 1px solid var(--galway-hairline);
+}
+
+.galway-pdp-chip + .galway-pdp-chip {
+  border-inline-start: 1px solid var(--galway-hairline);
+}
+
+/* Comp keeps the three features side by side on a phone; the group's fill
+   width makes them wrap to one per row otherwise. */
+@media screen and (max-width: 749px) {
+  .galway-pdp-chips > .group-block-content {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: 14px;
+  }
+
+  .galway-pdp-chips > .group-block-content > .group-block {
+    width: auto;
+  }
+
+  /* The chips lay out as a row on mobile, which centres each icon against a
+     label of a different depth and staggers them. The comp stacks icon over
+     label, centred - that also puts every icon on the same line. */
+  .galway-pdp-chips > .group-block-content > .group-block > .group-block-content {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .galway-pdp-chip .text-block p {
+    font-size: 0.5625rem;
+  }
+
+  /* The icon PNGs are not all the same aspect, so a fixed box keeps the three
+     on one line rather than letting each wrapper size to its own artwork. */
+  .galway-pdp-chip .icon-block {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    height: 26px;
+  }
+
+  /* The icon block's width setting is emitted inline, so only `!important`
+     reaches it. A uniform box is what keeps the three icons on one line - the
+     PNGs have different aspect ratios. */
+  .galway-pdp-chip .icon-block img {
+    width: 26px !important;
+    height: 26px !important;
+    object-fit: contain;
+  }
+}
+
+.galway-complete .product-recommendations,
+.galway-complete .block-resource-list {
+  width: 100%;
+}
+
+.galway-pdp-why-card {
+  --font-h4--size: clamp(1.0625rem, 1.6vw, 1.25rem);
+  background-color: #f8f8f8;
+}
+
+@media screen and (max-width: 749px) {
+  .galway-pdp-chips .group-block-content.layout-panel-flex--row {
+    flex-wrap: wrap;
+  }
+
+  .galway-pdp-chip {
+    border-inline-start: none;
+    width: 100%;
+  }
+
+  .galway-pdp-chip + .galway-pdp-chip {
+    border-block-start: 1px solid var(--galway-hairline);
+  }
+}
+
+/* ============================================================================
+   Galway - carousel arrow glyph centring + reviews arrow treatment
+   Appended rather than merged: base.css is being edited concurrently, so these
+   sit last and win on source order without rewriting anyone else's rules.
+   Display is only forced at >=750px so the mobile rules that hide the featured
+   arrows still apply.
+   ============================================================================ */
+
+.galway-feature .slideshow-control--previous,
+.galway-feature .slideshow-control--next,
+.galway-reviews .slideshow-control--previous,
+.galway-reviews .slideshow-control--next {
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0;
+
+  /* The glyph sat ~4px high because its line box added space below. */
+  line-height: 0;
+}
+
+.galway-feature .slideshow-control--previous > svg,
+.galway-feature .slideshow-control--next > svg,
+.galway-reviews .slideshow-control--previous > svg,
+.galway-reviews .slideshow-control--next > svg {
+  display: block;
+  margin: auto;
+}
+
+@media screen and (min-width: 750px) {
+  .galway-feature .slideshow-control--previous,
+  .galway-feature .slideshow-control--next,
+  .galway-reviews .slideshow-control--previous,
+  .galway-reviews .slideshow-control--next {
+    display: flex;
+  }
+}
+
+/* Reviews arrows match the featured pair: square, hairline, paint-only hover.
+   Horizon's default animates box-shadow, which reads as the two buttons
+   sliding towards each other. */
+.galway-reviews .slideshow-control--previous,
+.galway-reviews .slideshow-control--next {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  min-height: 46px;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: transparent;
+  color: #000;
+  opacity: 1;
+  outline: none;
+  box-shadow: none;
+  transform: none;
+  transition: background-color var(--galway-dur-short, 0.1s) ease, color var(--galway-dur-short, 0.1s) ease;
+}
+
+.galway-reviews .slideshow-control--previous:hover,
+.galway-reviews .slideshow-control--next:hover,
+.galway-reviews .slideshow-control--previous:focus-visible,
+.galway-reviews .slideshow-control--next:focus-visible {
+  background-color: #000;
+  color: #fff;
+  box-shadow: none;
+  transform: none;
+  outline: none;
+}
+
+.galway-reviews .slideshow-controls__arrows {
+  gap: 8px;
+}
+
+/* ============================================================================
+   Galway - working Quick Add on best-seller cards
+
+   Horizon's control is the right one (it opens the variant chooser and posts
+   through the theme's cart handler), but three of its own behaviours have to be
+   neutralised to sit it at the foot of the card:
+     - `.quick-add` is `inset: 0`, so once .card-gallery is no longer the
+       containing block it stretches over the whole card. Pin it to the bottom.
+     - the button is absolutely placed near the gallery's bottom-right.
+     - on hover it animates `width` to --quick-add-expanded-width, which is what
+       made it jump. Width is fixed at 100% in both states and the transition is
+       narrowed to paint only.
+   ============================================================================ */
+
+.galway-product-grid .product-card {
+  position: relative;
+}
+
+.galway-product-grid .card-gallery {
+  position: static;
+}
+
+/*
+  subtle-zoom applies transform to .card-gallery on :hover. Transform creates a
+  containing block, so the absolute quick-add (DOM child of the gallery) snaps
+  back to the image instead of the card foot. Zoom the slideshow media instead.
+*/
+.card-hover-effect-subtle-zoom .galway-product-grid .product-card:hover .card-gallery {
+  transform: none;
+}
+
+.card-hover-effect-subtle-zoom .galway-product-grid .card-gallery slideshow-component,
+.card-hover-effect-subtle-zoom .galway-product-grid .card-gallery > img {
+  transition: transform var(--hover-transition-duration, 0.3s) var(--hover-transition-timing, ease);
+  transform-origin: center center;
+}
+
+.card-hover-effect-subtle-zoom .galway-product-grid .product-card:hover .card-gallery slideshow-component,
+.card-hover-effect-subtle-zoom .galway-product-grid .product-card:hover .card-gallery > img {
+  transform: scale(var(--hover-subtle-zoom-amount, 1.015));
+}
+
+/* Reserved in flow, so the button never sits on top of the blurb. */
+.galway-product-grid .galway-card-meta {
+  margin-block-start: auto;
+  margin-block-end: 56px;
+}
+
+.galway-product-grid .quick-add,
+.galway-product-grid .product-card__quick-add {
+  display: block;
+  position: absolute;
+  inset: auto 0 0 0;
+  width: 100%;
+  height: auto;
+  opacity: 1;
+  pointer-events: auto;
+  /* Stay above zoomed media; gallery overflow must not clip the foot control. */
+  z-index: 2;
+}
+
+/* Doubled class: Horizon's own `.quick-add__button.add-to-cart-button` (0,2,1)
+   and its hover width rule live in a stylesheet that loads after base.css, so
+   these have to win on specificity rather than order. */
+.galway-product-grid .quick-add__button.quick-add__button,
+.galway-product-grid .quick-add__button.quick-add__button:is(:hover, :focus-visible),
+.galway-product-grid .quick-add__button.quick-add__button[data-added='true'] {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  opacity: 1;
+  width: 100%;
+  height: 44px;
+  padding-inline: 12px;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: #fff;
+  color: #000;
+  transform: none;
+  scale: none;
+  translate: none;
+  box-shadow: none;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition-property: background-color, color;
+  transition-duration: 0.1s;
+}
+
+.galway-product-grid .quick-add__button.quick-add__button:hover {
+  background: #000;
+  color: #fff;
+}
+
+.galway-product-grid .quick-add__button .add-to-cart-icon {
+  display: none;
+}
+
+/* ============================================================================
+   Galway - featured slide, tablet (750-989px)
+   Same stacked treatment as mobile. Desktop 3-col + control anchoring only
+   kicks in at 990px. Without flex-wrap the display:contents children sit on
+   one nowrap row, overflow the slide (overflow:hidden), and "disappear".
+   ============================================================================ */
+
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .galway-feature .slide__content > .group-block-content {
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    height: auto;
+  }
+
+  .galway-feature-copy,
+  .galway-feature-copy > .group-block-content {
+    display: contents;
+  }
+
+  .galway-feature-copy > .group-block-content > * {
+    width: 100%;
+    flex: 0 0 100%;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(1) {
+    order: 1;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(2) {
+    order: 2;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(3) {
+    display: none;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(4) {
+    order: 5;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(5) {
+    order: 6;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(5) > .group-block-content {
+    justify-content: space-between;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(5) > .group-block-content > *:first-child {
+    order: 2;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(5) > .group-block-content > *:last-child {
+    order: 1;
+  }
+
+  .layout-panel-flex--row > .galway-feature-media {
+    order: 3;
+    flex: 0 0 calc(100% - 136px);
+    width: calc(100% - 136px);
+    height: 360px;
+  }
+
+  .layout-panel-flex--row > .galway-feature-next {
+    order: 4;
+    flex: 0 0 116px;
+    width: 116px;
+    opacity: 0.5;
+  }
+
+  .galway-feature-media .resource-image,
+  .galway-feature-media .resource-image__image {
+    height: 360px;
+  }
+
+  .galway-feature-next .resource-image,
+  .galway-feature-next .resource-image__image {
+    height: 190px;
+  }
+
+  .galway-feature-next > .group-block-content {
+    gap: 8px;
+    justify-items: center;
+  }
+
+  .galway-feature-next > .group-block-content > *:nth-child(1) p {
+    writing-mode: vertical-rl;
+    font-size: 0.5625rem;
+  }
+
+  .galway-feature-next > .group-block-content > *:nth-child(3) {
+    display: none;
+  }
+
+  /* 3 chips, matching mobile */
+  .galway-feature-copy > .group-block-content > *:nth-child(4) > .group-block-content > div:nth-of-type(n + 4) {
+    display: none;
+  }
+
+  .galway-feature-copy {
+    --font-h3--size: 1.75rem;
+  }
+
+  .galway-feature-copy > .group-block-content > *:nth-child(5) .text-block,
+  .galway-feature-copy > .group-block-content > *:nth-child(5) .text-block > * {
+    font-size: 1.25rem;
+  }
+
+  .galway-feature slideshow-controls,
+  .galway-feature slideshow-controls[pagination-position],
+  .galway-feature slideshow-controls[controls-on-media],
+  .galway-feature slideshow-controls[controls-on-media][pagination-position='center'] {
+    position: static;
+    inset: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    top: auto;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    min-height: 0;
+    justify-content: center;
+    padding-inline: 24px;
+    padding-block-end: 32px;
+    gap: 14px;
+    pointer-events: auto;
+  }
+
+  .galway-feature .slideshow-control--previous,
+  .galway-feature .slideshow-control--next,
+  .galway-feature .slideshow-controls__arrows {
+    display: none !important;
+  }
+
+  .galway-feature slideshow-slide,
+  .galway-feature .slide__content {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* ============================================================================
+   Galway - category cards, exact two-up on mobile
+   47% per card left ~6% unclaimed on the right, so the grid read as having more
+   padding on that side than the left. Half the row minus half the 10px gap
+   makes the two columns and both outer margins equal.
+   ============================================================================ */
+
+@media screen and (max-width: 749px) {
+  .layout-panel-flex--row > .galway-collection-card {
+    flex: 0 0 calc(50% - 5px);
+    width: calc(50% - 5px);
+    max-width: calc(50% - 5px);
+  }
+
+  /* Card titles use the design system's 24px on both breakpoints. */
+  .galway-collection-card .collection-card__content :is(h1, h2, h3, h4, h5, h6, p) {
+    font-size: 1.5rem;
+  }
+}
+
+/* ============================================================================
+   Galway - hero stack, mobile
+   The headline and the intro/CTA column are two groups sized for the desktop
+   two-column hero; stacked they inherit the 64px column gap (44.8px scaled),
+   which left the headline floating well above the buttons. Comp is 14px.
+   ============================================================================ */
+
+@media screen and (max-width: 749px) {
+  .galway-hero .hero__content-wrapper {
+    gap: 14px;
+
+    /* The wrapper is taller than its content and was distributing the headline
+       and intro columns apart; the comp keeps the whole stack together at the
+       foot of the hero. */
+    justify-content: flex-end;
+  }
+
+  .galway-hero-title > .group-block-content {
+    gap: 14px;
+  }
+
+  /* Comp's mobile hero has no rule above the intro copy, and stacks at 14px. */
+  .galway-hero .divider {
+    display: none;
+  }
+
+  .galway-hero .hero__content-wrapper > .group-block > .group-block-content {
+    gap: 14px;
+
+    /* Both columns were stretching to equal height and centring their content,
+       which left ~68px of dead space above the eyebrow and below the headline. */
+    height: auto;
+    justify-content: flex-start;
+  }
+
+  .galway-hero .hero__content-wrapper > .group-block {
+    height: auto;
+  }
+}
+
+/* ============================================================================
+   Galway - hero stack collapse, mobile
+   `horizontal_alignment: space-between` is right for the desktop two-column
+   hero, but `mobile-column` turns that row into a column, so the same value
+   then distributes the headline and intro columns down the full hero height.
+   Both groups also keep their desktop heights. Collapse both here.
+   ============================================================================ */
+
+@media screen and (max-width: 749px) {
+  .galway-hero .hero__content-wrapper.layout-panel-flex {
+    justify-content: flex-end;
+    gap: 14px;
+  }
+
+  .galway-hero .hero__content-wrapper.layout-panel-flex > .group-block {
+    flex: 0 0 auto;
+    height: auto;
+    min-height: 0;
+  }
+
+  .galway-hero .hero__content-wrapper.layout-panel-flex > .group-block > .group-block-content {
+    height: auto;
+    min-height: 0;
+    justify-content: flex-start;
+    gap: 14px;
+  }
+}
+
+/* ============================================================================
+   Galway - button metrics
+   Comp tokens: --gb-control-px 28px, --gb-control-h 60px, --gb-control-h-sm
+   44px, --gb-type-button is semibold. Mobile hero CTAs are 52px tall at 12px.
+   ============================================================================ */
+
+#MainContent .button:not(.quick-add__button),
+#MainContent a.button:not(.quick-add__button),
+#MainContent button.button:not(.quick-add__button),
+#MainContent .button-custom:not(.quick-add__button),
+#MainContent .button-secondary:not(.quick-add__button) {
+  min-height: 60px;
+  padding-block: 16px;
+  padding-inline: 28px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+@media screen and (max-width: 749px) {
+  #MainContent .button:not(.quick-add__button),
+  #MainContent a.button:not(.quick-add__button),
+  #MainContent button.button:not(.quick-add__button),
+  #MainContent .button-custom:not(.quick-add__button),
+  #MainContent .button-secondary:not(.quick-add__button) {
+    min-height: 52px;
+    padding-block: 14px;
+    padding-inline: 20px;
+    font-size: 0.75rem;
+  }
+}
+
+/* The card control keeps its own 44px height (--gb-control-h-sm). */
+.galway-product-grid .quick-add__button.quick-add__button {
+  min-height: 44px;
+  font-weight: 600;
+}
+
+/* ============================================================================
+   Galway - mobile type sizes that differ from desktop
+   These blocks print --font-size inline for the desktop value, so the mobile
+   figure from the 402px comp is set on the property here.
+   ============================================================================ */
+
+@media screen and (max-width: 749px) {
+  /* hero intro copy: --gb-type-body-sm, 14px */
+  .galway-hero .hero__content-wrapper .text-block:not(.galway-hero-title .text-block) p {
+    font-size: 0.875rem;
+  }
+
+  /* trust strip label: .m-label, 10px */
+  .galway-trust-cell .text-block p {
+    font-size: 0.625rem;
+  }
+
+  /* spec chips: .m-tag, 9px — double-nested group only (not CTA price) */
+  .galway-feature-copy .group-block .group-block .text-block p {
+    font-size: 0.5625rem;
+  }
+
+  /* product card blurb: 12px/1.45 */
+  .galway-card-meta .text-block p {
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+}
+
+/* ============================================================================
+   Galway - progress bar, own markup
+   Horizon sizes `.slideshow-control` from --button-size inside
+   compiled_assets/styles.css, which is linked after base.css, so restyling the
+   theme's dot buttons into a 2px line never held. The button now only acts as
+   the hit area and the visible line lives on `.galway-progress__seg`, which no
+   theme rule targets.
+   ============================================================================ */
+
+.galway-progress {
+  order: 3;
+  display: flex;
+  flex: 0 1 220px;
+  gap: 0;
+  max-width: 220px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.galway-progress__item {
+  display: flex;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.galway-progress__item > .galway-progress__hit {
+  display: flex;
+  flex: 1 1 0%;
+  align-items: center;
+  justify-content: stretch;
+  min-width: 0;
+  width: auto;
+  min-height: 0;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.galway-progress__seg {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #d5d5d5;
+  transition: background 0.25s ease;
+}
+
+.galway-progress__hit[aria-selected='true'] .galway-progress__seg {
+  background: #00182d;
+}
+
+.galway-progress__counter {
+  order: 4;
+}
+
+/* ---- Carousel arrows: glyph was collapsing to 0 width ---------------------
+   The button carried `padding: 16px 28px` against a 58px box, leaving 2px of
+   content, so the icon had nowhere to draw. Fixed box, no padding, explicit
+   glyph size. */
+
+/* These carry `button button-unstyled` as well, so Horizon's generic button
+   sizing (min-height 60px, padding 16px 28px) applies from compiled_assets and
+   squeezed the 20px glyph into a 2px content box. Two rounds of specificity did
+   not hold, so the box is pinned here - scoped to these two carousels only. */
+.galway-feature .slideshow-controls__arrows .slideshow-control,
+.galway-reviews .slideshow-controls__arrows .slideshow-control,
+.galway-feature slideshow-controls .slideshow-control--previous,
+.galway-feature slideshow-controls .slideshow-control--next,
+.galway-reviews slideshow-controls .slideshow-control--previous,
+.galway-reviews slideshow-controls .slideshow-control--next {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box !important;
+  width: 46px !important;
+  height: 46px !important;
+  min-width: 46px !important;
+  min-height: 46px !important;
+  padding: 0 !important;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: transparent;
+  color: #000;
+  opacity: 1;
+  line-height: 0;
+}
+
+.galway-feature .slideshow-controls__arrows .slideshow-control:hover,
+.galway-reviews .slideshow-controls__arrows .slideshow-control:hover {
+  background: #000;
+  color: #fff;
+}
+
+.galway-feature .slideshow-control svg,
+.galway-reviews .slideshow-control svg,
+.galway-feature .slideshow-control .svg-wrapper,
+.galway-reviews .slideshow-control .svg-wrapper {
+  display: block;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+}
+
+/* ============================================================================
+   Galway - reviews carousel layout
+   Arrows sit top-right on the rating line; the real progress bar + counter
+   (rendered by slideshow-controls, opted in per section) sits under the rail.
+   Replaces the earlier pseudo-element bar, which could not carry a number.
+   ============================================================================ */
+
+/* Horizon pins slideshow-arrows over the rail (inset 276px ... 0). The comp
+   puts them top-right on the rating line, so the inset is overridden here -
+   scoped to this one carousel. */
+.galway-reviews.section-carousel slideshow-arrows {
+  position: absolute !important;
+  /* Align to the content column, not the viewport - the section spans full
+     width while its content is inset by the page margin. */
+  inset: 142px var(--page-margin, 40px) auto auto !important;
+  display: flex !important;
+  gap: 8px;
+  width: auto !important;
+  height: auto !important;
+  padding: 0;
+  z-index: 2;
+}
+
+/* arrowsSlideIn translates both buttons the same way; flip-x on previous
+   mirrors it, so the pair opens then closes. Kill it for this adjacent pair. */
+.galway-reviews slideshow-container[animate-arrows]:hover > slideshow-arrows .slideshow-control,
+.galway-reviews slideshow-component:focus-within > slideshow-container[animate-arrows] > slideshow-arrows .slideshow-control {
+  animation: none;
+}
+
+/* These arrows live in <slideshow-arrows>, not .slideshow-controls__arrows,
+   so they need the same box treatment as the featured pair. */
+.galway-reviews.section-carousel slideshow-arrows .slideshow-control {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box !important;
+  width: 46px !important;
+  height: 46px !important;
+  min-width: 46px !important;
+  min-height: 46px !important;
+  padding: 0 !important;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: transparent;
+  color: #000;
+  opacity: 1 !important;
+  line-height: 0;
+  box-shadow: none;
+  transform: none;
+  transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+.galway-reviews.section-carousel slideshow-arrows .slideshow-control:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.galway-reviews.section-carousel slideshow-arrows .slideshow-control svg {
+  display: block;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+}
+
+.galway-reviews slideshow-controls {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  margin-block-start: 32px;
+  /* Controls live inside force-full-width; pad to the page column so the
+     progress track + counter line up with the header/cards, not the viewport. */
+  padding-block: 0;
+  padding-inline: var(--util-page-margin-offset);
+  background: none;
+  mix-blend-mode: normal;
+}
+
+.galway-reviews .galway-progress {
+  flex: 1 1 auto;
+  max-width: none;
+}
+
+.galway-reviews .galway-progress__counter {
+  margin-inline-start: auto;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  backdrop-filter: none;
+  color: #5c5c5b;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.galway-reviews .galway-progress__counter .slash {
+  margin-inline: 0.35em;
+}
+
+@media screen and (max-width: 749px) {
+  .galway-reviews slideshow-controls {
+    margin-block-start: 20px;
+    gap: 14px;
+  }
+
+  /* Comp's 402px reviews rail is swipe-only - bar and "Swipe" label, no arrows
+     and no numbers. The label is a ::after on the counter, so the counter's own
+     text is collapsed rather than the element hidden. */
+  .galway-reviews.section-carousel slideshow-arrows {
+    display: none !important;
+  }
+
+  .galway-reviews .galway-progress__counter {
+    font-size: 0;
+  }
+}
+
+/* ============================================================================
+   Galway - PDP buy box
+   Comp: price + shipping note on the left, stars + review count on the right,
+   one row closed by a hairline; the featured review sits on grey with a 2px
+   navy rule down its left edge.
+   ============================================================================ */
+
+.galway-pdp-price-row {
+  border-block-end: 1px solid var(--galway-hairline, #ebebeb);
+}
+
+.galway-pdp-quote {
+  background: #f8f8f8;
+  border-inline-start: 2px solid #00182d;
+}
+
+.galway-pdp-quote > .group-block-content {
+  padding: 22px 26px;
+}
+
+/* buy-buttons renders accelerated checkout as a static block, so it cannot be
+   removed from the template. The comp's buy row is quantity + add to cart. */
+.galway-pdp accelerated-checkout,
+.galway-pdp .accelerated-checkout,
+.galway-pdp .shopify-payment-button {
+  display: none;
+}
+
+@media screen and (max-width: 749px) {
+  .galway-pdp-quote > .group-block-content {
+    padding: 18px 18px;
+  }
+}
+
+/* ============================================================================
+   Galway - PDP gallery
+   Comp: 4/5 frame on grey with the product contained, slide counter top-left in
+   label type, arrows top-right rather than centred on the media edges.
+   ============================================================================ */
+
+.galway-pdp .media-gallery,
+.galway-pdp [class*='media-gallery'] .product-media,
+.galway-pdp [class*='media-gallery'] .media-gallery__item {
+  position: relative;
+  background: #f8f8f8;
+}
+
+/* media_fit is set to `contain` on the block but the rendered image still
+   computes `cover`, which crops the garment; the comp shows it whole on grey. */
+.galway-pdp [class*='media-gallery'] img,
+.galway-pdp [class*='media-gallery'] .product-media img {
+  object-fit: contain;
+}
+
+/* The controls element is the overlay for the whole frame; the counter and the
+   progress track sit inside it at independent positions, as in the comp.
+   Positioning `slideshow-controls` itself at the counter's corner dragged the
+   progress track into that corner with it. */
+.galway-pdp [class*='media-gallery'] slideshow-controls {
+  position: absolute;
+  inset: 0;
+  display: block;
+  margin: 0;
+  padding: 0;
+  background: none;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.galway-pdp [class*='media-gallery'] .slideshow-controls__counter {
+  position: absolute;
+  top: 30px;
+  left: 24px;
+  right: auto;
+  bottom: auto;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  backdrop-filter: none;
+  color: #50586a;
+  font-size: 0.625rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Horizon tints the separator white for a dark overlay pill; on the comp's grey
+   frame it has to read in the label colour, spaced as "02 / 08". */
+.galway-pdp [class*='media-gallery'] .slideshow-controls__counter .slash {
+  margin-inline: 0.3em;
+  color: inherit;
+}
+
+/* Comp: full-width 4px segments across the top of the frame, 2px apart. */
+.galway-pdp [class*='media-gallery'] .galway-progress {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  flex: none;
+  max-width: none;
+  gap: 2px;
+  pointer-events: auto;
+}
+
+.galway-pdp [class*='media-gallery'] .galway-progress__item > .galway-progress__hit {
+  height: 4px;
+  cursor: pointer;
+}
+
+.galway-pdp [class*='media-gallery'] .galway-progress__seg {
+  height: 4px;
+  background: rgb(0 24 45 / 16%);
+  transition: background 0.3s ease;
+}
+
+.galway-pdp [class*='media-gallery'] .galway-progress__hit[aria-selected='true'] .galway-progress__seg {
+  background: #00182d;
+}
+
+/* Comp repeats the track and the arrows on the bottom edge of the frame. */
+.galway-pdp [class*='media-gallery'] .galway-progress--bottom {
+  top: auto;
+  bottom: 0;
+}
+
+.galway-pdp [class*='media-gallery'] slideshow-arrows.galway-arrows--bottom {
+  top: auto;
+  bottom: 18px;
+}
+
+.galway-pdp [class*='media-gallery'] slideshow-arrows {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  bottom: auto;
+  left: auto;
+  display: flex;
+  gap: 4px;
+  width: auto;
+  height: auto;
+  z-index: 2;
+}
+
+/* The shared `#MainContent .button` sizing (min-height 60px, 16px/28px padding)
+   is an ID selector, so it outranks a class-only override and stretched these
+   to 56x60. Carrying the same ID wins on specificity rather than on
+   `!important`. The comp's arrows are borderless glyphs on the media. */
+#MainContent .galway-pdp [class*='media-gallery'] slideshow-arrows .slideshow-control {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #00182d;
+  opacity: 1;
+}
+
+#MainContent .galway-pdp [class*='media-gallery'] slideshow-arrows .slideshow-control:hover {
+  background: transparent;
+  opacity: 0.5;
+}
+
+/* The comp draws these as the characters U+2190/U+2192, but Archivo carries
+   neither, so they fall back to a colour font that ignores `color` - both
+   rendered peach and pointing the same way. Horizon's own SVG is deterministic
+   and already the right shape, so it stays, with `flip-x` left intact to point
+   the previous arrow left. Only the colour is pinned here. */
+/* Horizon blends the arrows with `mix-blend-mode: difference` so they invert
+   over any slide. Against the comp's #eaeaea frame that turned the navy into
+   peach (|234-0|,|234-24|,|234-45|), so the blend is switched off here and the
+   colour set outright. */
+.galway-pdp [class*='media-gallery'] slideshow-arrows {
+  mix-blend-mode: normal;
+}
+
+.galway-pdp [class*='media-gallery'] slideshow-arrows .slideshow-control svg {
+  color: #00182d;
+}
+
+.galway-pdp [class*='media-gallery'] slideshow-arrows .slideshow-control svg path {
+  stroke: currentcolor;
+}
+
+/* Horizon splits the grid gap into half-gap padding on each column, so the frame
+   and the details each sit 20px inside their track. The comp runs both to the
+   full column edge and puts the whole 72px between them. Matching the shape of
+   Horizon's own nested selector clears its (0,4,0). */
+@media screen and (min-width: 750px) {
+  .galway-pdp
+    .product-information__grid.product-information--media-left:not(.product-information--media-none)
+    .product-information__media,
+  .galway-pdp
+    .product-information__grid.product-information--media-left:not(.product-information--media-none)
+    .product-details {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+/* Mobile comp: same frame chrome, tighter insets - counter 16/14, arrows 36px
+   at 12/10. The gallery snippet hard-codes `mobile:hidden` on the arrows and
+   `.mobile\:hidden` is `display: none !important`, so beating it needs
+   `!important` too; the override stays scoped to the PDP gallery. */
+@media screen and (max-width: 749px) {
+  .galway-pdp [class*='media-gallery'] .slideshow-controls__counter {
+    top: 14px;
+    left: 16px;
+  }
+
+  .galway-pdp [class*='media-gallery'] slideshow-arrows {
+    display: flex !important;
+    inset: 10px 12px auto auto;
+    gap: 2px;
+  }
+
+  #MainContent .galway-pdp [class*='media-gallery'] slideshow-arrows .slideshow-control {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    font-size: 1.125rem;
+  }
+}
+
+/* ============================================================================
+   Galway - PDP Eyre Pro
+   Comp: full-bleed two-up on grey - lifestyle image left (min 620px), centred
+   copy right, and three 76px navy discs holding white feature icons.
+   ============================================================================ */
+
+.galway-eyre-media {
+  min-height: 620px;
+}
+
+.galway-eyre-ring > .group-block-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: #00182d;
+}
+
+.galway-eyre-copy {
+  text-align: center;
+}
+
+@media screen and (max-width: 749px) {
+  .galway-eyre-media {
+    min-height: 320px;
+  }
+
+  .galway-eyre-copy {
+    padding: 48px 16px !important;
+  }
+
+  .galway-eyre-ring > .group-block-content {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+/* ============================================================================
+   Galway - PDP features
+   These five cards moved out of the white comparison block onto the navy band,
+   so they take no ground of their own - the comp sets icon, title and copy
+   straight on the navy.
+   ============================================================================ */
+
+.galway-pdp-feature {
+  background-color: transparent;
+}
+
+.galway-pdp-feature > .group-block-content {
+  align-content: start;
+}
+
+/* Product-list header: heading left, link right, closed by a rule. Shopify
+   strips css_class from static blocks, so this is scoped structurally - the
+   header is the first group in the section, and the comp draws the same rule on
+   the homepage Best Sellers block. */
+.galway-product-grid .group-block-content.layout-panel-flex--row:has(h2) {
+  padding-block-end: 18px;
+  border-block-end: 1px solid #000;
+}
+
+/* ============================================================================
+   Galway - PDP sticky add to cart
+   Comp: a 40x50 thumbnail on grey beside the variant and price, then a
+   full-width CTA. Horizon ships the same four parts in a flex row with an
+   icon-only button, so this re-grids them rather than rebuilding the bar - its
+   component still owns add-to-cart, variant sync and the fly-to-cart animation.
+   The comp nests [thumb + [variant, price]] in one cell 14px from the button;
+   flattened into one grid that is a 10px column gap plus 4px on the button.
+
+   Mobile only: the comp has no bottom bar on desktop (the buy box sticks at
+   top:150px instead), so Horizon's own wide bar is left untouched there.
+   ============================================================================ */
+
+/* Defensive only: the bar is position:fixed and spans the viewport, so the
+   402 vs 426 reading in a pane with an overlay scrollbar is an artifact, not a
+   page overflow. Keeping border-box so padding can never push it wider. */
+.galway-pdp .sticky-add-to-cart__bar,
+.sticky-add-to-cart__bar {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+@media screen and (max-width: 749px) {
+  .galway-pdp .sticky-add-to-cart__bar {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 4px;
+    padding: 12px 16px;
+    border-top: 1px solid #ebebeb;
+    box-shadow: 0 0 40px rgb(0 0 0 / 7.5%);
+  }
+
+  .galway-pdp .sticky-add-to-cart__image {
+    grid-row: 1 / 3;
+    width: 40px;
+    height: 50px;
+    background: #f8f8f8;
+  }
+
+  .galway-pdp .sticky-add-to-cart__image-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* The bar names the variant only - the product title is already on the page. */
+  .galway-pdp .sticky-add-to-cart__title {
+    display: none;
+  }
+
+  .galway-pdp .sticky-add-to-cart__info {
+    grid-area: 1 / 2 / 2 / 3;
+    align-self: end;
+    min-width: 0;
+  }
+
+  .galway-pdp .sticky-add-to-cart__variant {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .galway-pdp .sticky-add-to-cart__price {
+    grid-area: 2 / 2 / 3 / 3;
+    align-self: start;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  /* `#MainContent button.button:not(.quick-add__button)` is (1,2,1); carrying a
+     third class clears it without `!important`. */
+  #MainContent .galway-pdp .sticky-add-to-cart__button.add-to-cart-button {
+    grid-area: 1 / 3 / 3 / 4;
+    width: 100%;
+    min-width: 0;
+    height: 50px;
+    min-height: 50px;
+    margin-inline-start: 4px;
+    padding: 0;
+  }
+
+  /* Horizon drops the label under 750px, leaving an icon-only square; the comp
+     keeps a full-width labelled CTA, and labels it with text alone. */
+  .galway-pdp .sticky-add-to-cart__bar .add-to-cart-text__content {
+    display: inline;
+  }
+
+  .galway-pdp .sticky-add-to-cart__button .add-to-cart-text > .svg-wrapper {
+    display: none;
+  }
+}
+
+/* ============================================================================
+   Galway - PDP buy box type
+   Comp values, in source order down the column: breadcrumb 11px/1 medium at
+   0.18em, the NEW chip 10px/1 at 0.08em, an H1 at fs-4xl/1.05, the pull quote
+   in the display face italic at 16px/1.55, and the option label as a 11px
+   semibold caps word beside its value in 14px regular grey.
+   ============================================================================ */
+
+.galway-pdp .product-details [class*='crumbs'] p,
+.galway-pdp .product-details [class*='crumbs'] {
+  color: #5c5c5b;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.galway-pdp .product-details [class*='badge'] p {
+  font-size: 0.625rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.galway-pdp .product-details h1 {
+  font-family: var(--font-heading--family);
+  font-size: 2.375rem;
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+}
+
+/* The comp sets the quote in the display face, italic, at a looser 1.55. */
+.galway-pdp-quote blockquote,
+.galway-pdp-quote [class*='quote_text'] p {
+  color: #000;
+  font-family: var(--font-heading--family);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.galway-pdp-quote [class*='quote_author'] p {
+  color: #5c5c5b;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* "Color" reads as a caps label with the selected value beside it in body type,
+   rather than both running together at paragraph size. */
+.galway-pdp .product-details .variant-option__label,
+.galway-pdp .product-details fieldset > legend {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.galway-pdp .product-details .variant-option__swatch-value {
+  color: #5c5c5b;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* ============================================================================
+   Galway - PDP size and CTA row
+   Remaining comp details: a five-up size grid, the Size Guide rendered as a
+   small underlined label rather than a button, and a 64px quantity/CTA row.
+   ============================================================================ */
+
+/* Comp lays the sizes out five per row. Horizon puts the grid on the fieldset
+   itself and sizes it with `auto-fit`, which lands on four at this column
+   width. Applies to any button-style option here; a colour option only renders
+   as buttons when the product has no swatch data, and reads fine five-up too. */
+/* A swatch option also carries `variant-option--buttons`, so every rule here
+   has to exclude it - the button sizing stretched a 32px swatch label to 44px
+   tall against a 100px radius, drawing an oval around the selected colour. */
+.galway-pdp .product-details .variant-option--buttons:not(.variant-option--swatches) {
+  gap: 8px;
+}
+
+@media screen and (min-width: 750px) {
+  .galway-pdp .product-details .variant-option--buttons:not(.variant-option--swatches) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* Four-up on a phone; five would squeeze "28 x 28" past its box. */
+@media screen and (max-width: 749px) {
+  .galway-pdp .product-details .variant-option--buttons:not(.variant-option--swatches) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Comp sizes variant buttons at --gb-control-h-sm (44px) with 14px medium type. */
+.galway-pdp .product-details .variant-option--buttons:not(.variant-option--swatches) .variant-option__button-label {
+  min-height: 44px;
+  padding: 0 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* Comp: 26px round colour chips in a wrapping row, 10px apart. */
+.galway-pdp .product-details .variant-option--swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.galway-pdp .product-details .variant-option--swatches .variant-option__button-label {
+  width: auto;
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+}
+
+.galway-pdp .product-details .variant-option--swatches .swatch {
+  width: 26px;
+  height: 26px;
+}
+
+/* Size Guide is a label-sized link in the comp, not a full button. */
+#MainContent .galway-pdp .product-details .popup-link__button {
+  width: auto;
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+  padding: 0 0 3px;
+  border: 0;
+  border-bottom: 1px solid #000;
+  border-radius: 0;
+  background: none;
+  color: #000;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Comp sizes the stepper and the CTA at 64px. */
+#MainContent .galway-pdp .buy-buttons-block .button,
+.galway-pdp .product-details quantity-selector-component,
+.galway-pdp .product-details .quantity-selector {
+  min-height: 64px;
+  height: 64px;
+}
+
+/* ============================================================================
+   Galway - product card price
+   Comp: the sale figure in --gb-sale with the compare-at struck through beside
+   it in the secondary grey. Both sit on one baseline so the rule crosses the
+   digits centrally instead of riding high.
+   ============================================================================ */
+
+.galway-product-grid product-price [ref='priceContainer'],
+.galway-product-list product-price [ref='priceContainer'],
+.quick-add-modal product-price [ref='priceContainer'] {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.galway-product-grid product-price:has(.compare-at-price) .price,
+.galway-product-list product-price:has(.compare-at-price) .price,
+.quick-add-modal product-price:has(.compare-at-price) .price {
+  color: #ea4a4a;
+}
+
+.galway-product-grid .compare-at-price,
+.galway-product-list .compare-at-price,
+.quick-add-modal .compare-at-price {
+  color: #5c5c5b;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-skip-ink: none;
+}
+
+/* ============================================================================
+   Galway - collection filter sidebar header
+   Comp: a 52px header over the filter groups - "Filter" in the display face,
+   a Clear all link and a Hide control, closed by a 1px ink rule. Hide collapses
+   the panel; a Show Filters control takes its place in the toolbar.
+   ============================================================================ */
+
+/* Comp keeps the filter column pinned while the grid scrolls. */
+@media screen and (min-width: 990px) {
+  .galway-product-grid .facets-block-wrapper--vertical:not(#filters-drawer) {
+    position: sticky;
+    top: 140px;
+    align-self: start;
+  }
+}
+
+.galway-facets-head {
+  display: flex;
+  box-sizing: border-box;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 52px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #000;
+}
+
+.galway-facets-head__title {
+  margin: 0;
+  font-family: var(--font-heading--family);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.galway-facets-head__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+#MainContent .galway-facets-clear,
+#MainContent .galway-facets-hide {
+  width: auto;
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+#MainContent .galway-facets-clear {
+  color: #5c5c5b;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+#MainContent .galway-facets-hide {
+  color: #00182d;
+}
+
+/* Horizon's own "Filters" heading is replaced by the header above. */
+.galway-product-grid .facets--filters-title {
+  display: none;
+}
+
+#MainContent .galway-facets-show {
+  width: auto;
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+  padding: 8px 14px;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: none;
+  color: #00182d;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* Horizon narrows the grid whenever a vertical panel is present but does not
+   widen it again when that panel is hidden, so the full span is set here. */
+.collection-wrapper:has(.facets-block-wrapper--vertical.hidden) .main-collection-grid {
+  /* The narrow span survives at (0,4,0) - it is re-applied from a source this
+     selector cannot outrank, and the element also carries the column as an
+     inline custom property, so this one declaration is forced. */
+  grid-column: 2 / -2 !important;
+}
+
+/* Grid placement cannot be transitioned, so the panel animates itself and
+   `.hidden` lands only once it has gone. */
+.facets-block-wrapper--vertical {
+  transition: opacity 0.26s ease, transform 0.26s ease;
+}
+
+.facets-block-wrapper--vertical.galway-facets-collapsing {
+  opacity: 0;
+  transform: translateX(-12px);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .facets-block-wrapper--vertical {
+    transition: none;
+  }
+}
+
+/* Mobile: the sidebar header belongs to the desktop panel only, and the comp
+   replaces it with a sticky two-up Filter / Sort bar. Mobile treatment runs
+   through 989px so tablet isn't stuck in the Horizon 750–989 dead zone. */
+@media screen and (max-width: 989px) {
+  .galway-facets-head {
+    display: none;
+  }
+
+  /* Comp mobile bar: sticky 1fr|1fr "FILTER (2)" | "SORT — BEST SELLING"
+     (.m-label: semibold 10px / ls 0.08em / navy). */
+  .galway-product-grid .facets-toggle {
+    position: sticky;
+    z-index: 5;
+    top: 0;
+    display: grid !important;
+    box-sizing: border-box;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #ebebeb;
+    background: #fff;
+  }
+
+  .galway-product-grid .facets-toggle > * {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .galway-product-grid .facets-toggle > *:first-child {
+    border-right: 1px solid #ebebeb;
+  }
+
+  .galway-product-grid .facets-toggle .facets-toggle__wrapper,
+  .galway-product-grid .facets-toggle .facets-mobile-wrapper {
+    display: flex;
+    width: 100%;
+  }
+
+  .galway-product-grid .facets-toggle .facets-toggle__button,
+  .galway-product-grid .facets-toggle .sorting-filter__container--bar {
+    display: flex !important;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 16px;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    color: #00182d;
+    font-family: var(--font-body--family);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .galway-product-grid .facets-toggle .sorting-filter,
+  .galway-product-grid .facets-toggle .sorting-filter-component,
+  .galway-product-grid .facets-toggle facets-form-component,
+  .galway-product-grid .facets-toggle form {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+
+  /* Visible "SORT — …" label; native select is an invisible hit target on top. */
+  .galway-product-grid .facets-toggle .sorting-filter__container--bar {
+    position: relative;
+  }
+
+  .galway-product-grid .facets-toggle .sorting-filter__bar-label {
+    pointer-events: none;
+  }
+
+  .galway-product-grid .facets-toggle .sorting-filter__container--bar .sorting-filter__select-wrapper {
+    position: absolute;
+    inset: 0;
+    display: block;
+    overflow: visible;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .galway-product-grid .facets-toggle .sorting-filter__container--bar .sorting-filter__select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  /* Comp: the applied filters and the product count run in a scrolling rail
+     under the Filter/Sort bar. Horizon renders both but hides the controls
+     wrapper wholesale on mobile, so it is reopened with only those parts. */
+  /* Below 990 the inline sidebar and the drawer trigger were both rendering,
+     leaving the grid a squeezed 166px column at tablet width. The sidebar is
+     the desktop treatment only; everything narrower uses the drawer and gives
+     the grid the full width. */
+  /* The applied-filter pills only exist inside the vertical panel and the
+     drawer. Rather than hide the panel outright, it stays in flow as the comp's
+     rail with everything except those pills suppressed. */
+  /* Exclude #filters-drawer — it shares facets-block-wrapper--vertical, and
+     display:none here left showModal() locking scroll with an invisible sheet. */
+  /* The wrapper is a flex row at this width, so grid-row is inert - source
+     order is set with `order` instead: bar, rail, grid. */
+  .galway-product-grid .facets-block-wrapper--vertical:not(#filters-drawer) {
+    display: block;
+    order: 2;
+    grid-row: 2;
+    grid-column: 1 / -1 !important;
+    position: static;
+    margin: 0;
+  }
+
+  /* Horizon also hides the vertical facets container itself below the desktop
+     breakpoint, so it has to be reopened for the pills inside it to lay out. */
+  .galway-product-grid .facets-block-wrapper--vertical:not(#filters-drawer) .facets--vertical {
+    display: block;
+  }
+
+  .galway-product-grid .facets-block-wrapper--vertical:not(#filters-drawer) .galway-facets-head,
+  .galway-product-grid .facets-block-wrapper--vertical:not(#filters-drawer) .facets__form > *:not(.facets-remove) {
+    display: none;
+  }
+
+  .galway-product-grid .facets-block-wrapper--vertical:not(#filters-drawer) .facets-remove {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #ebebeb;
+    overflow-x: auto;
+  }
+
+  /* Comp pill: .m-tag — 5px/9px, 9px caps. */
+  .galway-product-grid .facets-block-wrapper--vertical:not(#filters-drawer) .pills__pill {
+    padding: 5px 9px;
+    border: 1px solid #d5d5d5;
+    background: #f8f8f8;
+    color: #00182d;
+    font-size: 9px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* No applied filters means no rail at all. */
+  .galway-product-grid .facets-block-wrapper--vertical:not(#filters-drawer):not(:has(.pills__pill)) {
+    display: none;
+  }
+
+  /* Horizon narrows the grid from `...--vertical:not(.hidden) ~ .main-collection-grid`.
+     Hiding the sidebar with `display: none` leaves that selector matching, so the
+     span has to be forced back. */
+  .galway-product-grid .main-collection-grid,
+  .galway-product-grid .facets-toggle {
+    grid-column: 1 / -1 !important;
+  }
+
+  .galway-product-grid .facets-toggle {
+    order: 1;
+    grid-row: 1;
+  }
+
+  .galway-product-grid .main-collection-grid {
+    order: 3;
+  }
+
+  .galway-product-grid .facets-controls-wrapper:not(.facets-mobile-wrapper) {
+    display: flex;
+    grid-row: 2;
+    grid-column: 1 / -1;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #ebebeb;
+    overflow-x: auto;
+  }
+
+  .galway-product-grid .facets-controls-wrapper:not(.facets-mobile-wrapper):not(:has(.pills__pill)) {
+    display: none;
+  }
+
+  .galway-product-grid .facets-controls-wrapper:not(.facets-mobile-wrapper) .facets--filters-title,
+  .galway-product-grid .facets-controls-wrapper:not(.facets-mobile-wrapper) .sorting-filter,
+  .galway-product-grid .facets-controls-wrapper:not(.facets-mobile-wrapper) .galway-facets-show {
+    display: none;
+  }
+
+  .galway-product-grid .facets-controls-wrapper:not(.facets-mobile-wrapper) .pills__pill {
+    white-space: nowrap;
+  }
+
+  .galway-product-grid .facets-controls-wrapper:not(.facets-mobile-wrapper) .products-count-wrapper {
+    display: flex;
+    align-self: center;
+    color: #5c5c5b;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .galway-product-grid .main-collection-grid {
+    grid-row: 3;
+  }
+}
+
+/* ============================================================================
+   Galway - collection grid
+   Comp: three-up, 56px row gap over a 20px column gap, with the editorial tile
+   spanning two columns. The section's vertical gap setting caps at 50, so the
+   row gap is finished here.
+   ============================================================================ */
+
+@media screen and (min-width: 990px) {
+  .galway-product-grid .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 56px;
+  }
+
+  .galway-product-grid .galway-promo-tile-item {
+    grid-column: span 2;
+    min-height: 420px;
+  }
+}
+
+/* Comp mobile: two-up at 24px/10px inside a 16px gutter, and a 210px banner. */
+@media screen and (max-width: 989px) {
+  .galway-product-grid .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 10px;
+    /* Comp .m-grid padding 20px 16px — top gap under Filter/Sort + side gutter. */
+    padding: 20px 16px;
+  }
+
+  .galway-product-grid .galway-promo-tile-item {
+    grid-column: span 2;
+    min-height: 260px;
+  }
+}
+
+
+
+/* ============================================================================
+   Galway - footer newsletter
+   Comp: a 900px centred column on navy - 104/96 padding, 32px gap, the copy in
+   grey-300 at 48ch, and a 44px field/button pair. Scoped to the section class
+   so `sections/footer-group.json` stays untouched.
+   ============================================================================ */
+
+.galway-footer-nl .group-block-content {
+  gap: 32px;
+}
+
+/* Each paragraph sits in its own text block, so `:last-of-type` matches them
+   all - the copy and the note are addressed by their block instead. */
+.galway-footer-nl [class*='copy_newsletter'] p {
+  max-width: 48ch;
+  color: #c7c7c7;
+}
+
+.galway-footer-nl [class*='note_newsletter'] p {
+  color: #ababaa;
+}
+
+.galway-footer-nl .email-signup-block input[type='email'],
+.galway-footer-nl .email-signup-block button {
+  height: 44px;
+  min-height: 44px;
+}
+
+.galway-footer-nl .email-signup-block input[type='email'] {
+  padding-block: 0;
+  line-height: 44px;
+}
+
+/* ============================================================================
+   Galway - PDP reviews (Yotpo)
+   The review list is the Yotpo Product Reviews widget, which brings its own
+   score, distribution bars, sort and pagination. Only the frame is styled here:
+   the comp centres the heading and gives the widget the section's content
+   width. Yotpo's own markup is left alone so its updates keep working.
+   ============================================================================ */
+
+.galway-pdp-reviews .galway-pdp-reviews__heading,
+.galway-pdp-reviews h2 {
+  text-align: center;
+}
+
+.galway-pdp-reviews .yotpo-main-widget,
+.galway-pdp-reviews .yotpo-widget-instance {
+  width: 100%;
+}
+
+/* Yotpo repeats a "Customer Reviews" title inside the widget; the comp's
+   display heading above it is the one that should show. */
+.galway-pdp-reviews .yotpo-widget-instance [class*='main-widget-title'],
+.galway-pdp-reviews .yotpo-widget-instance .yotpo-headline {
+  display: none;
+}
+
+/* Yotpo ships a wide default font stack; align it with the theme body face.
+   Don't blanket `*` — that clobbers Yotpo icon fonts if they reappear. */
+.galway-pdp-reviews .yotpo,
+.galway-pdp-reviews .yotpo-widget-instance {
+  font-family: var(--font-body--family);
+}
+
+/* Horizon's `svg { max-width: 100% }` collapses Yotpo's per-review stars: the
+   flex parent has no definite width, so 100% resolves to 0 and the icons vanish.
+   Summary stars escape it; review-row stars don't. Restore intrinsic size. */
+.galway-pdp-reviews .yotpo-review-star-rating {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+}
+
+.galway-pdp-reviews .yotpo-review-star-rating .star-container {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+}
+
+.galway-pdp-reviews .yotpo-review-star-rating .yotpo-star-rating-icon,
+.galway-pdp-reviews .yotpo-review-star-rating svg {
+  max-width: none;
+  width: 18px;
+  height: 18px;
+  overflow: visible;
+}
+
+/* Yotpo fixes the author column at 200px with no gutter, which leaves a wide
+   blank strip before each review title. The comp runs a 180px column with a
+   32px gutter. */
+/* Yotpo pins the author column at 200px with no gutter from a (0,4,0) rule in
+   a stylesheet it injects after base.css. The comp runs 180px + a 32px gutter
+   (a 212px offset vs Yotpo's 200px). Left as Yotpo ships it: overriding needs a
+   selector tied to their internal class nesting, which breaks silently on any
+   widget update, and 12px does not justify that coupling. */
+
+/* ============================================================================
+   Galway - PDP Complete the System
+   Comp: one bordered card - eyebrow, then a 96px 4/5 thumbnail beside the
+   title, price and a 120x44 Add button. Horizon's product card stacks those
+   vertically, so the card content is re-gridded rather than re-built.
+   ============================================================================ */
+
+.galway-complete {
+  padding: 24px;
+  border: 1px solid #ebebeb;
+}
+
+.galway-complete > .group-block-content {
+  gap: 16px;
+}
+
+/* Comp renders the label as an eyebrow, not a heading. */
+.galway-complete .text-block :is(h1, h2, h3, h4, h5, h6) {
+  color: #5c5c5b;
+  font-family: var(--font-body--family);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* `.product-grid__card.product-grid__card` in compiled_assets is (0,2,0) and
+   lands after base.css, so a third class is needed to take the layout back. */
+.galway-complete .product-card__content.product-grid__card {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 18px;
+  row-gap: 10px;
+  height: auto;
+}
+
+/* More than one recommendation is shown as a slider, one card at a time. */
+/* One card at a time. The slide width comes from `--slide-width`
+   (clamp(150px, 60cqw, 300px)) set by a (0,2,0) rule in compiled_assets, so the
+   variable is reset with a third class rather than fighting the width itself. */
+.galway-complete .resource-list__carousel .resource-list__slide {
+  --slide-width: 100%;
+}
+
+.galway-complete .card-gallery {
+  grid-row: 1 / 4;
+  grid-column: 1;
+  width: 96px;
+  aspect-ratio: 4 / 5;
+  background: #f8f8f8;
+}
+
+.galway-complete .card-gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Duplicate title carried for the zoomed-out grid view. */
+.galway-complete .product-card__content > h3 {
+  display: none;
+}
+
+/* The overlay quick-add would double up with the card's own Add button. */
+.galway-complete .quick-add {
+  display: none;
+}
+
+/* `product-price` also carries `.text-block`, so the title cell is scoped to
+   the div or the two land in the same grid row. */
+/* The title link is `display: contents`, so its div is the grid item while its
+   DOM parent is still the anchor - a child combinator would miss it. */
+.galway-complete .product-card__content div.text-block {
+  grid-area: 1 / 2 / 2 / 3;
+}
+
+.galway-complete .product-card__content div.text-block p {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.galway-complete product-price {
+  grid-area: 2 / 2 / 3 / 3;
+}
+
+.galway-complete product-price .price {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.galway-complete product-price .price--on-sale {
+  color: #ea4a4a;
+}
+
+.galway-complete product-price .compare-at-price,
+.galway-complete product-price s {
+  color: #5c5c5b;
+  font-size: 0.875rem;
+  font-weight: 400;
+  text-decoration: line-through;
+}
+
+.galway-complete .product-card__content > span:has(add-to-cart-component),
+.galway-complete .product-card__content > span:last-child {
+  grid-area: 3 / 2 / 4 / 3;
+  justify-self: start;
+}
+
+#MainContent .galway-complete .add-to-cart-button.button-secondary {
+  width: 120px;
+  min-width: 0;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+}
+
+/* ============================================================================
+   Galway - PDP trust row
+   Comp: centred, 28px between the two items, each a 22px icon 10px from its
+   label, with a 1px hairline between them. The divider is a pseudo-element on
+   the second item pushed out to read 28px on both sides.
+   ============================================================================ */
+
+/* The pseudo has to sit on the inner flex row; the outer `.group-block` is a
+   block box, so a pseudo there stacks above the icon instead of beside it.
+   18px margin + the row's own 10px gap reads as the comp's 28px either side. */
+.galway-pdp-trust > .group-block-content > .group-block:nth-of-type(2) > .group-block-content::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 1px;
+  height: 18px;
+  margin-inline-end: 18px;
+  background: #d5d5d5;
+}
+
+.galway-pdp-trust .icon-block img,
+.galway-pdp-trust .icon-block svg {
+  display: block;
+}
+
+/* At 370px the desktop spacing pushes the pair onto three lines; tightening the
+   gaps and the icon keeps it on one, as the comp's mobile layout does. */
+@media screen and (max-width: 749px) {
+  .galway-pdp-trust > .group-block-content {
+    flex-wrap: nowrap;
+    gap: 14px;
+  }
+
+  .galway-pdp-trust .text-block p {
+    font-size: 0.625rem;
+    white-space: nowrap;
+  }
+
+  .galway-pdp-trust .icon-block img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .galway-pdp-trust > .group-block-content > .group-block > .group-block-content {
+    gap: 6px;
+  }
+
+  .galway-pdp-trust > .group-block-content > .group-block:nth-of-type(2) > .group-block-content::before {
+    margin-inline-end: 8px;
+  }
+}
+
+/* ============================================================================
+   Galway - PDP comparison table
+   Mirrors the design system's SpecTable: 12/16 cells, 14px type, a solid rule
+   under the header, hairlines between rows, and the highlighted column carried
+   on a grey wash. Built from group + text blocks rather than a <table>, so the
+   grid template is what keeps the columns aligned across rows.
+   ============================================================================ */
+
+.galway-spec-table {
+  width: 100%;
+  max-width: 1100px;
+}
+
+.galway-spec-table > .group-block-content {
+  display: block;
+}
+
+.galway-spec-row > .group-block-content {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 0;
+}
+
+/* Cells carry their own padding so the column wash reaches the row edges. */
+.galway-spec-row > .group-block-content > * {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ebebeb;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* Cells render as `rte-formatter.text-block`, and Horizon can emit a <style>
+   tag before a block, so the highlighted column is matched by type. */
+.galway-spec-row > .group-block-content > .text-block:nth-of-type(2) {
+  background: #f8f8f8;
+}
+
+.galway-spec-row--head > .group-block-content > * {
+  border-bottom: 1px solid #000;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Row label: medium, secondary, and never wrapped. */
+.galway-spec-row:not(.galway-spec-row--head) > .group-block-content > .text-block:nth-of-type(1) {
+  color: #5c5c5b;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.galway-spec-row:not(.galway-spec-row--head) > .group-block-content > .text-block:nth-of-type(n + 2) {
+  color: #000;
+}
+
+/* The design system mutes a cell when its value is an em dash. CSS cannot match
+   on text, so the dash is emitted inside <em> - one of the few tags rich text
+   keeps - and the italics are reset here. */
+.galway-spec-row .text-block em {
+  color: #ababaa;
+  font-style: normal;
+}
+
+@media screen and (max-width: 749px) {
+  /* The comp scrolls the table rather than letting it collapse. */
+  .galway-pdp-compare .galway-spec-table {
+    overflow-x: auto;
+  }
+
+  .galway-spec-row > .group-block-content {
+    min-width: 640px;
+  }
+}
+
+/* ============================================================================
+   Galway - PDP sticky add to cart (desktop)
+   Comp: a full-width bar flush to the bottom - 56x70 thumbnail, title over
+   price, the option controls, a shipping note, then a 440px CTA, all on a
+   1840px content column. Horizon ships a floating 600px pill instead, so the
+   pill treatment (centred offset, radius, blurred ::before) is unwound here.
+   ============================================================================ */
+
+@media screen and (min-width: 750px) {
+  .galway-pdp .sticky-add-to-cart__bar {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    /* Background runs full width while the content stays on the comp's
+       1840px column (1776px inside its 32px padding). */
+    padding: 14px max(32px, calc((100% - 1776px) / 2));
+    border-top: 1px solid #ebebeb;
+    border-radius: 0;
+    box-shadow: 0 0 40px rgb(0 0 0 / 7.5%);
+    transform: translateY(100%);
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: auto auto 1fr auto minmax(220px, 440px);
+    align-items: center;
+    column-gap: 32px;
+    row-gap: 6px;
+  }
+
+  /* The pill's blurred backdrop has no place on a flush bar. */
+  .galway-pdp .sticky-add-to-cart__bar::before {
+    content: none;
+  }
+
+  .galway-pdp .sticky-add-to-cart__bar[data-stuck='true'] {
+    transform: translateY(0);
+  }
+
+  .galway-pdp:not([data-variant-available='true']) .sticky-add-to-cart__bar {
+    transform: translateY(100%);
+  }
+
+  .galway-pdp .sticky-add-to-cart__image {
+    grid-row: 1 / 3;
+    width: 56px;
+    height: 70px;
+    background: #f8f8f8;
+  }
+
+  .galway-pdp .sticky-add-to-cart__image-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* The comp keeps the title/price 16px from the thumbnail but 32px from the
+     next group. One column-gap cannot do both, so this column is pulled back
+     by the difference. */
+  .galway-pdp .sticky-add-to-cart__info {
+    grid-area: 1 / 2 / 2 / 3;
+    align-self: end;
+    min-width: 0;
+    margin-inline-start: -16px;
+    padding-left: 0;
+  }
+
+  .galway-pdp .sticky-add-to-cart__title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  /* The selects name the variant on desktop, so the string is redundant. */
+  .galway-pdp .sticky-add-to-cart__variant {
+    display: none;
+  }
+
+  .galway-pdp .sticky-add-to-cart__price {
+    grid-area: 2 / 2 / 3 / 3;
+    align-self: start;
+    margin-inline-start: -16px;
+    font-family: var(--font-heading--family);
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .galway-sticky-options {
+    display: flex;
+    grid-row: 1 / 3;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .galway-sticky-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .galway-sticky-option__label {
+    color: #5c5c5b;
+    font-size: 0.625rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Comp: 20px circular chips, 8px apart. The chip itself is Horizon's own
+     `swatch` snippet, so it keeps the theme's swatch size, radius and border
+     settings; only the selected ring and the hit area are added here. */
+  .galway-sticky-swatches {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #MainContent .galway-sticky-swatch {
+    display: flex;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    padding: 2px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+    line-height: 0;
+  }
+
+  #MainContent .galway-sticky-swatch[aria-pressed='true'] {
+    border-color: #00182d;
+  }
+
+  #MainContent .galway-sticky-swatch[data-unavailable='true'] {
+    opacity: 0.4;
+  }
+
+  .galway-sticky-option__select {
+    height: 44px;
+    min-width: 140px;
+    padding: 0 12px;
+    border: 1px solid #d5d5d5;
+    border-radius: 0;
+    background: transparent;
+    color: #00182d;
+    font-size: 0.8125rem;
+  }
+
+  .galway-sticky-note {
+    grid-row: 1 / 3;
+    margin: 0;
+    color: #50586a;
+    font-size: 0.625rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  #MainContent .galway-pdp .sticky-add-to-cart__button.add-to-cart-button {
+    grid-row: 1 / 3;
+    width: 100%;
+    min-width: 0;
+    height: 56px;
+    min-height: 56px;
+    padding: 0;
+  }
+}
+
+/* Below 750px neither belongs in the bar - the comp's mobile bar is just
+   thumbnail, variant, price and CTA. */
+@media screen and (max-width: 749px) {
+  .galway-sticky-options,
+  .galway-sticky-note {
+    display: none;
+  }
+}
+
+/* ============================================================================
+   Galway - PDP mobile buy sheet
+   Comp: a panel pinned to the bottom of the gallery frame - 232px collapsed
+   (handle, title, price), 96% of the frame expanded (adds the size grid).
+   Desktop keeps Horizon's normal buy box, so the sheet is mobile-only.
+   ============================================================================ */
+
+.galway-buy-sheet {
+  display: none;
+}
+
+@media screen and (max-width: 749px) {
+  /* The frame is the positioning context for the sheet. */
+  .galway-pdp .product-information__media {
+    position: relative;
+  }
+
+  .galway-buy-sheet {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    height: 232px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 -14px 40px rgb(0 0 0 / 12%);
+    transition: height 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .galway-buy-sheet[data-open='true'] {
+    height: 96%;
+  }
+
+  .galway-buy-sheet__handle {
+    display: flex;
+    flex: 0 0 auto;
+    justify-content: center;
+    padding: 10px 0 4px;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .galway-buy-sheet__grip {
+    width: 44px;
+    height: 4px;
+    border-radius: 2px;
+    background: #d5d5d5;
+  }
+
+  .galway-buy-sheet__body {
+    display: grid;
+    flex: 1;
+    align-content: start;
+    gap: 16px;
+    padding: 8px 16px 0;
+    overflow-y: auto;
+  }
+
+  .galway-buy-sheet__intro {
+    display: grid;
+    gap: 10px;
+  }
+
+  /* Comp: price with the rating beside it, colour swatches on the row below. */
+  .galway-buy-sheet__meta {
+    display: grid;
+    gap: 12px;
+    justify-items: start;
+  }
+
+  .galway-buy-sheet__pricerow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .galway-buy-sheet__rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* The fill runs to the rating percentage and the rest stays grey, so a 4.5
+     shows as four and a half stars rather than rounding. */
+  .galway-buy-sheet__stars {
+    background: linear-gradient(
+      90deg,
+      #00182d 0,
+      #00182d var(--galway-rating, 100%),
+      #d5d5d5 var(--galway-rating, 100%)
+    );
+    background-clip: text;
+    color: transparent;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .galway-buy-sheet__count {
+    color: #5c5c5b;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .galway-buy-sheet__swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  #MainContent .galway-buy-sheet__swatch {
+    display: flex;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    padding: 2px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+    line-height: 0;
+  }
+
+  #MainContent .galway-buy-sheet__swatch[aria-pressed='true'] {
+    border-color: #00182d;
+  }
+
+  .galway-buy-sheet__swatch .swatch {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* The sheet is the buy box on mobile, exactly as the comp has it: the page
+     below the gallery goes straight to the quote. Guarded on the sheet actually
+     being present so a product without a size option keeps its inline form. */
+  .product-information__grid:has([data-galway-buy-sheet]) .galway-pdp-header,
+  .product-information__grid:has([data-galway-buy-sheet]) .galway-pdp-price-row,
+  .product-information__grid:has([data-galway-buy-sheet]) .galway-pdp-size-row,
+  .product-information__grid:has([data-galway-buy-sheet]) .product-details [class*='crumbs'],
+  .product-information__grid:has([data-galway-buy-sheet]) .product-details variant-picker,
+  .product-information__grid:has([data-galway-buy-sheet]) .product-details .buy-buttons-block,
+  .product-information__grid:has([data-galway-buy-sheet]) .galway-pdp-trust {
+    display: none;
+  }
+
+  .galway-buy-sheet__title {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: 1.375rem;
+    font-weight: 300;
+    line-height: 1.15;
+  }
+
+  .galway-buy-sheet__price {
+    font-family: var(--font-heading--family);
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  /* The size grid only exists in the expanded state. */
+  .galway-buy-sheet__sizes {
+    display: none;
+    gap: 16px;
+    padding-top: 4px;
+    border-top: 1px solid #ebebeb;
+  }
+
+  .galway-buy-sheet[data-open='true'] .galway-buy-sheet__sizes {
+    display: grid;
+  }
+
+  .galway-buy-sheet__label {
+    padding-top: 14px;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .galway-buy-sheet__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  #MainContent .galway-buy-sheet__size {
+    height: 46px;
+    min-height: 46px;
+    padding: 0;
+    border: 1px solid #d5d5d5;
+    background: transparent;
+    color: #000;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+
+  #MainContent .galway-buy-sheet__size[aria-pressed='true'] {
+    border-color: #000;
+    background: #000;
+    color: #fff;
+  }
+
+  #MainContent .galway-buy-sheet__size:disabled {
+    opacity: 0.4;
+  }
+
+  /* Sits with the size grid, so it follows the same expanded-only rule. */
+  .galway-buy-sheet__fit {
+    display: none;
+    margin: 0;
+    color: #5c5c5b;
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.45;
+  }
+
+  .galway-buy-sheet[data-open='true'] .galway-buy-sheet__fit {
+    display: block;
+  }
+
+  .galway-buy-sheet__trust {
+    display: none;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: #50586a;
+    font-size: 0.5625rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .galway-buy-sheet[data-open='true'] .galway-buy-sheet__trust {
+    display: flex;
+  }
+
+  .galway-buy-sheet__trust-rule {
+    width: 1px;
+    height: 12px;
+    background: #d5d5d5;
+  }
+
+  .galway-buy-sheet__footer {
+    flex: 0 0 auto;
+    padding: 14px 16px 18px;
+    background: #fff;
+  }
+
+  #MainContent .galway-buy-sheet__cta {
+    width: 100%;
+    height: 56px;
+    min-height: 56px;
+    padding: 0;
+    border: 0;
+    background: #000;
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  /* Comp gives the mobile frame 680px so the collapsed sheet clears the
+     product; the 4/5 desktop ratio would crop it behind the panel. */
+  .galway-pdp [class*='media-gallery'] {
+    height: 680px;
+  }
+}
+
+/* ============================================================================
+   Galway - PDP columns
+   Comp splits the product section 7fr / 5fr with a 72px gutter. Horizon's grid
+   defaults to 2fr / 1fr, which left the media 887px against a 453px buy box
+   where the comp is 751 / 537.
+   ============================================================================ */
+
+/* Horizon sets 2fr/1fr via
+   `.product-information__grid:not(...).product-information--media-left`, which
+   is (0,3,0) and lands in compiled_assets after base.css. Matching that with a
+   fourth class wins outright rather than tying. */
+/* Desktop only. Overriding the columns below 990px and letting Horizon's own
+   placement stand collapsed the media track to 0; scoping the split to the
+   desktop breakpoint leaves the native stacked layout completely alone. */
+@media screen and (min-width: 990px) {
+  .galway-pdp .product-information__grid.product-information--media-left:not(.product-information--media-none) {
+    grid-template-columns: 7fr 5fr;
+    column-gap: 72px;
+  }
+}
