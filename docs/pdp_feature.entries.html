@@ -1,0 +1,2786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PDP Feature — copy into Shopify</title>
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --muted: #5c5c5b;
+      --line: #e5e5e3;
+      --bg: #f7f6f3;
+      --card: #fff;
+      --accent: #383b28;
+      --chip: #eaeed7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px 20px 80px;
+      font: 15px/1.45 system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+    h1 { font-size: 1.35rem; margin: 0 0 8px; color: var(--accent); }
+    .hint { color: var(--muted); margin: 0 0 20px; max-width: 56rem; }
+    .toc {
+      max-width: 56rem;
+      margin: 0 auto 28px;
+      padding: 16px 18px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      columns: 2;
+      column-gap: 24px;
+    }
+    .toc a {
+      display: block;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+      padding: 3px 0;
+      break-inside: avoid;
+    }
+    .toc a:hover { text-decoration: underline; }
+    .product {
+      max-width: 56rem;
+      margin: 0 auto 36px;
+    }
+    .product > h2 {
+      font-size: 1.15rem;
+      color: var(--accent);
+      margin: 0 0 4px;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      padding: 10px 0 8px;
+      z-index: 1;
+      border-bottom: 1px solid var(--line);
+    }
+    .phandle {
+      font: 12px/1.4 ui-monospace, Menlo, monospace;
+      color: var(--muted);
+      margin: 0 0 14px;
+    }
+    .feat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 16px 6px;
+      margin-bottom: 12px;
+    }
+    .feat h3 {
+      margin: 0 0 2px;
+      font-size: 0.95rem;
+    }
+    .slot {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: var(--chip);
+      color: var(--accent);
+      padding: 2px 7px;
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+    .note {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0 0 8px;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 7px 8px;
+      border-top: 1px solid var(--line);
+      font-size: 13.5px;
+    }
+    th {
+      width: 7.5rem;
+      color: var(--muted);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    td { user-select: all; cursor: text; }
+    td.empty { color: #bbb; font-style: italic; user-select: none; }
+    @media (max-width: 700px) {
+      .toc { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h1>PDP Feature entries</h1>
+  <p class="hint">
+    Open in a browser. Click any value → ⌘C / Ctrl+C → paste into
+    <strong>Content → Metaobjects → PDP Feature</strong>.
+    Create one entry per card. Empty icon = text-only chip until designs land.
+    <br />Total: 205 features across 40 products.
+  </p>
+  <nav class="toc">
+    <a href="#p-claddagh-chino-rain-pant">Claddagh Chino Rain Pant <span style="color:#999">(5)</span></a>
+    <a href="#p-clifden-golf-rain-jacket">Clifden Golf Rain Jacket <span style="color:#999">(5)</span></a>
+    <a href="#p-nimmo-rain-vest">Nimmo Rain Vest <span style="color:#999">(5)</span></a>
+    <a href="#p-silverstrand-pull-up-pant">Silverstrand Pull-Up Pant <span style="color:#999">(5)</span></a>
+    <a href="#p-ayle-pull-up-rain-pant">Ayle Pull-Up Rain Pant <span style="color:#999">(5)</span></a>
+    <a href="#p-erris-short-sleeve-rain-jacket">Erris Short Sleeve Rain Jacket <span style="color:#999">(5)</span></a>
+    <a href="#p-cleggan-rain-pullover">Cleggan Rain Pullover <span style="color:#999">(5)</span></a>
+    <a href="#p-tawin-rain-vest">Tawin Rain Vest <span style="color:#999">(5)</span></a>
+    <a href="#p-barna-softshell-rain-quarter-zip">Barna Softshell Rain Quarter Zip <span style="color:#999">(5)</span></a>
+    <a href="#p-roundstone-softshell-jacket">Roundstone Softshell Jacket <span style="color:#999">(5)</span></a>
+    <a href="#p-inagh-softshell-vest">Inagh Softshell Vest <span style="color:#999">(5)</span></a>
+    <a href="#p-lombard-softshell-hoodie">Lombard Softshell Hoodie <span style="color:#999">(5)</span></a>
+    <a href="#p-spiddal-five-pocket-pant">Spiddal Five Pocket Pant <span style="color:#999">(5)</span></a>
+    <a href="#p-leenane-softshell-jacket">Leenane Softshell Jacket <span style="color:#999">(5)</span></a>
+    <a href="#p-monivea-women-s-softshell-pant">Monivea Women&#x27;s Softshell Pant <span style="color:#999">(5)</span></a>
+    <a href="#p-glynsk-softshell-skirt">Glynsk Softshell Skirt <span style="color:#999">(5)</span></a>
+    <a href="#p-clarinbridge-softshell-dress">Clarinbridge Softshell Dress <span style="color:#999">(5)</span></a>
+    <a href="#p-tullycross-hybrid-hoodie">Tullycross Hybrid Hoodie <span style="color:#999">(5)</span></a>
+    <a href="#p-moycullen-hybrid-vest">Moycullen Hybrid Vest <span style="color:#999">(5)</span></a>
+    <a href="#p-kylemore-hybrid-pullover">Kylemore Hybrid Pullover <span style="color:#999">(5)</span></a>
+    <a href="#p-fergus-hybrid-hoodie">Fergus Hybrid Hoodie <span style="color:#999">(5)</span></a>
+    <a href="#p-loughrea-hybrid-jacket">Loughrea Hybrid Jacket <span style="color:#999">(5)</span></a>
+    <a href="#p-athenry-hybrid-skirt">Athenry Hybrid Skirt <span style="color:#999">(5)</span></a>
+    <a href="#p-laune-women-s-hybrid-midlayer">Laune Women&#x27;s Hybrid Midlayer <span style="color:#999">(5)</span></a>
+    <a href="#p-fane-women-s-golf-hybrid-vest">Fane Women&#x27;s Golf Hybrid Vest <span style="color:#999">(5)</span></a>
+    <a href="#p-taylor-upf-hoodie">Taylor UPF Hoodie <span style="color:#999">(5)</span></a>
+    <a href="#p-mannin-upf-crewneck">Mannin UPF Crewneck <span style="color:#999">(5)</span></a>
+    <a href="#p-gurteen-upf-quarter-zip">Gurteen UPF Quarter Zip <span style="color:#999">(5)</span></a>
+    <a href="#p-coral-upf-boatneck">Coral UPF Boatneck <span style="color:#999">(5)</span></a>
+    <a href="#p-ardra-women-s-upf-short-sleeve">Ardra Women&#x27;s UPF Short Sleeve <span style="color:#999">(5)</span></a>
+    <a href="#p-renvy-women-s-upf-sleeves">Renvy Women&#x27;s UPF Sleeves <span style="color:#999">(5)</span></a>
+    <a href="#p-nore-womens-golf-rain-jacket">Nore Women&#x27;s Golf Rain Jacket <span style="color:#999">(5)</span></a>
+    <a href="#p-clare-womens-golf-rain-pant">Clare Women&#x27;s Golf Rain Pant <span style="color:#999">(5)</span></a>
+    <a href="#p-cashel-performance-quarter-zip">Cashel Performance Quarter Zip <span style="color:#999">(5)</span></a>
+    <a href="#p-glassilaun-performance-leggings">Glassilaun Performance Leggings <span style="color:#999">(5)</span></a>
+    <a href="#p-golf-rain-gloves">Golf Rain Gloves <span style="color:#999">(5)</span></a>
+    <a href="#p-thermal-water-resistant-sleeves">Thermal Water Resistant Sleeves <span style="color:#999">(5)</span></a>
+    <a href="#p-vented-canopy-golf-umbrella">Vented Canopy Golf Umbrella <span style="color:#999">(5)</span></a>
+    <a href="#p-nexbelt-braided-golf-belt">Nexbelt Braided Golf Belt <span style="color:#999">(5)</span></a>
+    <a href="#p-backpack">Backpack <span style="color:#999">(10)</span></a>
+  </nav>
+  <section class="product" id="p-claddagh-chino-rain-pant">
+    <h2>Claddagh Chino Rain Pant</h2>
+    <p class="phandle">product handle: claddagh-chino-rain-pant</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>30K Waterproof &amp; Breathable</h3>
+      <p class="note">Icon design (not a field): Droplet + airflow arrows</p>
+      <table>
+        <tr><th>Handle</th><td>claddagh-chino-rain-pant-f1</td></tr>
+        <tr><th>Name</th><td>Claddagh Chino Rain Pant — 30K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Headline</th><td>30K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>4-Way Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch / tape measure</p>
+      <table>
+        <tr><th>Handle</th><td>claddagh-chino-rain-pant-f2</td></tr>
+        <tr><th>Name</th><td>Claddagh Chino Rain Pant — 4-Way Stretch</td></tr>
+        <tr><th>Headline</th><td>4-Way Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Rain Pant. Chino Look.</h3>
+      <p class="note">Icon design (not a field): Chino pant silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>claddagh-chino-rain-pant-f3</td></tr>
+        <tr><th>Name</th><td>Claddagh Chino Rain Pant — Rain Pant. Chino Look.</td></tr>
+        <tr><th>Headline</th><td>Rain Pant. Chino Look.</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Deep Golf Pockets</h3>
+      <p class="note">Icon design (not a field): Pocket / zipper</p>
+      <table>
+        <tr><th>Handle</th><td>claddagh-chino-rain-pant-f4</td></tr>
+        <tr><th>Name</th><td>Claddagh Chino Rain Pant — Deep Golf Pockets</td></tr>
+        <tr><th>Headline</th><td>Deep Golf Pockets</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>zipper</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Tailored Fit, Layering Room</h3>
+      <p class="note">Icon design (not a field): Tape measure / fit</p>
+      <table>
+        <tr><th>Handle</th><td>claddagh-chino-rain-pant-f5</td></tr>
+        <tr><th>Name</th><td>Claddagh Chino Rain Pant — Tailored Fit, Layering Room</td></tr>
+        <tr><th>Headline</th><td>Tailored Fit, Layering Room</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-clifden-golf-rain-jacket">
+    <h2>Clifden Golf Rain Jacket</h2>
+    <p class="phandle">product handle: clifden-golf-rain-jacket</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>30K Waterproof &amp; Breathable</h3>
+      <p class="note">Icon design (not a field): Droplet + airflow arrows</p>
+      <table>
+        <tr><th>Handle</th><td>clifden-golf-rain-jacket-f1</td></tr>
+        <tr><th>Name</th><td>Clifden Golf Rain Jacket — 30K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Headline</th><td>30K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>4-Way Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>clifden-golf-rain-jacket-f2</td></tr>
+        <tr><th>Name</th><td>Clifden Golf Rain Jacket — 4-Way Stretch</td></tr>
+        <tr><th>Headline</th><td>4-Way Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Fully Seam-Sealed</h3>
+      <p class="note">Icon design (not a field): Needle / seam</p>
+      <table>
+        <tr><th>Handle</th><td>clifden-golf-rain-jacket-f3</td></tr>
+        <tr><th>Name</th><td>Clifden Golf Rain Jacket — Fully Seam-Sealed</td></tr>
+        <tr><th>Headline</th><td>Fully Seam-Sealed</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>sew</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Built for the Swing</h3>
+      <p class="note">Icon design (not a field): Golfer in swing</p>
+      <table>
+        <tr><th>Handle</th><td>clifden-golf-rain-jacket-f4</td></tr>
+        <tr><th>Name</th><td>Clifden Golf Rain Jacket — Built for the Swing</td></tr>
+        <tr><th>Headline</th><td>Built for the Swing</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Storm-Seal Neck Protection</h3>
+      <p class="note">Icon design (not a field): Collar + shield</p>
+      <table>
+        <tr><th>Handle</th><td>clifden-golf-rain-jacket-f5</td></tr>
+        <tr><th>Name</th><td>Clifden Golf Rain Jacket — Storm-Seal Neck Protection</td></tr>
+        <tr><th>Headline</th><td>Storm-Seal Neck Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-nimmo-rain-vest">
+    <h2>Nimmo Rain Vest</h2>
+    <p class="phandle">product handle: nimmo-rain-vest</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>30K Waterproof &amp; Breathable</h3>
+      <p class="note">Icon design (not a field): Droplet + airflow arrows</p>
+      <table>
+        <tr><th>Handle</th><td>nimmo-rain-vest-f1</td></tr>
+        <tr><th>Name</th><td>Nimmo Rain Vest — 30K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Headline</th><td>30K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>4-Way Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>nimmo-rain-vest-f2</td></tr>
+        <tr><th>Name</th><td>Nimmo Rain Vest — 4-Way Stretch</td></tr>
+        <tr><th>Headline</th><td>4-Way Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Fully Seam-Sealed</h3>
+      <p class="note">Icon design (not a field): Needle / seam</p>
+      <table>
+        <tr><th>Handle</th><td>nimmo-rain-vest-f3</td></tr>
+        <tr><th>Name</th><td>Nimmo Rain Vest — Fully Seam-Sealed</td></tr>
+        <tr><th>Headline</th><td>Fully Seam-Sealed</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>sew</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Waterproof Core Protection</h3>
+      <p class="note">Icon design (not a field): Torso + shield</p>
+      <table>
+        <tr><th>Handle</th><td>nimmo-rain-vest-f4</td></tr>
+        <tr><th>Name</th><td>Nimmo Rain Vest — Waterproof Core Protection</td></tr>
+        <tr><th>Headline</th><td>Waterproof Core Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Full Arm Freedom</h3>
+      <p class="note">Icon design (not a field): Golfer / free arms</p>
+      <table>
+        <tr><th>Handle</th><td>nimmo-rain-vest-f5</td></tr>
+        <tr><th>Name</th><td>Nimmo Rain Vest — Full Arm Freedom</td></tr>
+        <tr><th>Headline</th><td>Full Arm Freedom</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-silverstrand-pull-up-pant">
+    <h2>Silverstrand Pull-Up Pant</h2>
+    <p class="phandle">product handle: silverstrand-pull-up-pant</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>30K Waterproof &amp; Breathable</h3>
+      <p class="note">Icon design (not a field): Droplet + airflow arrows</p>
+      <table>
+        <tr><th>Handle</th><td>silverstrand-pull-up-pant-f1</td></tr>
+        <tr><th>Name</th><td>Silverstrand Pull-Up Pant — 30K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Headline</th><td>30K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>4-Way Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>silverstrand-pull-up-pant-f2</td></tr>
+        <tr><th>Name</th><td>Silverstrand Pull-Up Pant — 4-Way Stretch</td></tr>
+        <tr><th>Headline</th><td>4-Way Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Fully Seam-Sealed</h3>
+      <p class="note">Icon design (not a field): Needle / seam</p>
+      <table>
+        <tr><th>Handle</th><td>silverstrand-pull-up-pant-f3</td></tr>
+        <tr><th>Name</th><td>Silverstrand Pull-Up Pant — Fully Seam-Sealed</td></tr>
+        <tr><th>Headline</th><td>Fully Seam-Sealed</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>sew</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Pulls On Fast</h3>
+      <p class="note">Icon design (not a field): Pant + motion arrow</p>
+      <table>
+        <tr><th>Handle</th><td>silverstrand-pull-up-pant-f4</td></tr>
+        <tr><th>Name</th><td>Silverstrand Pull-Up Pant — Pulls On Fast</td></tr>
+        <tr><th>Headline</th><td>Pulls On Fast</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Built to Layer</h3>
+      <p class="note">Icon design (not a field): Stacked layers</p>
+      <table>
+        <tr><th>Handle</th><td>silverstrand-pull-up-pant-f5</td></tr>
+        <tr><th>Name</th><td>Silverstrand Pull-Up Pant — Built to Layer</td></tr>
+        <tr><th>Headline</th><td>Built to Layer</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-ayle-pull-up-rain-pant">
+    <h2>Ayle Pull-Up Rain Pant</h2>
+    <p class="phandle">product handle: ayle-pull-up-rain-pant</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>20K Waterproof &amp; Breathable</h3>
+      <p class="note">Icon design (not a field): Droplet + airflow arrows</p>
+      <table>
+        <tr><th>Handle</th><td>ayle-pull-up-rain-pant-f1</td></tr>
+        <tr><th>Name</th><td>Ayle Pull-Up Rain Pant — 20K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Headline</th><td>20K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Lightweight</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>ayle-pull-up-rain-pant-f2</td></tr>
+        <tr><th>Name</th><td>Ayle Pull-Up Rain Pant — Lightweight</td></tr>
+        <tr><th>Headline</th><td>Lightweight</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Packable</h3>
+      <p class="note">Icon design (not a field): Folded garment / pack</p>
+      <table>
+        <tr><th>Handle</th><td>ayle-pull-up-rain-pant-f3</td></tr>
+        <tr><th>Name</th><td>Ayle Pull-Up Rain Pant — Packable</td></tr>
+        <tr><th>Headline</th><td>Packable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Quick Pull-On Design</h3>
+      <p class="note">Icon design (not a field): Pant + motion arrow</p>
+      <table>
+        <tr><th>Handle</th><td>ayle-pull-up-rain-pant-f4</td></tr>
+        <tr><th>Name</th><td>Ayle Pull-Up Rain Pant — Quick Pull-On Design</td></tr>
+        <tr><th>Headline</th><td>Quick Pull-On Design</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Moves With Your Swing</h3>
+      <p class="note">Icon design (not a field): Golfer / stretch</p>
+      <table>
+        <tr><th>Handle</th><td>ayle-pull-up-rain-pant-f5</td></tr>
+        <tr><th>Name</th><td>Ayle Pull-Up Rain Pant — Moves With Your Swing</td></tr>
+        <tr><th>Headline</th><td>Moves With Your Swing</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-erris-short-sleeve-rain-jacket">
+    <h2>Erris Short Sleeve Rain Jacket</h2>
+    <p class="phandle">product handle: erris-short-sleeve-rain-jacket</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>20K Waterproof &amp; Breathable</h3>
+      <p class="note">Icon design (not a field): Droplet + airflow arrows</p>
+      <table>
+        <tr><th>Handle</th><td>erris-short-sleeve-rain-jacket-f1</td></tr>
+        <tr><th>Name</th><td>Erris Short Sleeve Rain Jacket — 20K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Headline</th><td>20K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Lightweight</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>erris-short-sleeve-rain-jacket-f2</td></tr>
+        <tr><th>Name</th><td>Erris Short Sleeve Rain Jacket — Lightweight</td></tr>
+        <tr><th>Headline</th><td>Lightweight</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Packable</h3>
+      <p class="note">Icon design (not a field): Folded garment / pack</p>
+      <table>
+        <tr><th>Handle</th><td>erris-short-sleeve-rain-jacket-f3</td></tr>
+        <tr><th>Name</th><td>Erris Short Sleeve Rain Jacket — Packable</td></tr>
+        <tr><th>Headline</th><td>Packable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Short-Sleeve Freedom</h3>
+      <p class="note">Icon design (not a field): Short sleeve silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>erris-short-sleeve-rain-jacket-f4</td></tr>
+        <tr><th>Name</th><td>Erris Short Sleeve Rain Jacket — Short-Sleeve Freedom</td></tr>
+        <tr><th>Headline</th><td>Short-Sleeve Freedom</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Built for Warm Rain</h3>
+      <p class="note">Icon design (not a field): Golfer swing</p>
+      <table>
+        <tr><th>Handle</th><td>erris-short-sleeve-rain-jacket-f5</td></tr>
+        <tr><th>Name</th><td>Erris Short Sleeve Rain Jacket — Built for Warm Rain</td></tr>
+        <tr><th>Headline</th><td>Built for Warm Rain</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-cleggan-rain-pullover">
+    <h2>Cleggan Rain Pullover</h2>
+    <p class="phandle">product handle: cleggan-rain-pullover</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>20K Waterproof &amp; Breathable</h3>
+      <p class="note">Icon design (not a field): Droplet + airflow arrows</p>
+      <table>
+        <tr><th>Handle</th><td>cleggan-rain-pullover-f1</td></tr>
+        <tr><th>Name</th><td>Cleggan Rain Pullover — 20K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Headline</th><td>20K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Lightweight</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>cleggan-rain-pullover-f2</td></tr>
+        <tr><th>Name</th><td>Cleggan Rain Pullover — Lightweight</td></tr>
+        <tr><th>Headline</th><td>Lightweight</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Packable</h3>
+      <p class="note">Icon design (not a field): Folded garment / pack</p>
+      <table>
+        <tr><th>Handle</th><td>cleggan-rain-pullover-f3</td></tr>
+        <tr><th>Name</th><td>Cleggan Rain Pullover — Packable</td></tr>
+        <tr><th>Headline</th><td>Packable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Easy-On Protection</h3>
+      <p class="note">Icon design (not a field): Pullover silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>cleggan-rain-pullover-f4</td></tr>
+        <tr><th>Name</th><td>Cleggan Rain Pullover — Easy-On Protection</td></tr>
+        <tr><th>Headline</th><td>Easy-On Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Built to Move</h3>
+      <p class="note">Icon design (not a field): Golfer swing</p>
+      <table>
+        <tr><th>Handle</th><td>cleggan-rain-pullover-f5</td></tr>
+        <tr><th>Name</th><td>Cleggan Rain Pullover — Built to Move</td></tr>
+        <tr><th>Headline</th><td>Built to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-tawin-rain-vest">
+    <h2>Tawin Rain Vest</h2>
+    <p class="phandle">product handle: tawin-rain-vest</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>20K Waterproof &amp; Breathable</h3>
+      <p class="note">Icon design (not a field): Droplet + airflow arrows</p>
+      <table>
+        <tr><th>Handle</th><td>tawin-rain-vest-f1</td></tr>
+        <tr><th>Name</th><td>Tawin Rain Vest — 20K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Headline</th><td>20K Waterproof &amp; Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Lightweight</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>tawin-rain-vest-f2</td></tr>
+        <tr><th>Name</th><td>Tawin Rain Vest — Lightweight</td></tr>
+        <tr><th>Headline</th><td>Lightweight</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Packable</h3>
+      <p class="note">Icon design (not a field): Folded garment / pack</p>
+      <table>
+        <tr><th>Handle</th><td>tawin-rain-vest-f3</td></tr>
+        <tr><th>Name</th><td>Tawin Rain Vest — Packable</td></tr>
+        <tr><th>Headline</th><td>Packable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Core Weather Protection</h3>
+      <p class="note">Icon design (not a field): Torso + shield</p>
+      <table>
+        <tr><th>Handle</th><td>tawin-rain-vest-f4</td></tr>
+        <tr><th>Name</th><td>Tawin Rain Vest — Core Weather Protection</td></tr>
+        <tr><th>Headline</th><td>Core Weather Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Unrestricted Swing</h3>
+      <p class="note">Icon design (not a field): Golfer / free arms</p>
+      <table>
+        <tr><th>Handle</th><td>tawin-rain-vest-f5</td></tr>
+        <tr><th>Name</th><td>Tawin Rain Vest — Unrestricted Swing</td></tr>
+        <tr><th>Headline</th><td>Unrestricted Swing</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-barna-softshell-rain-quarter-zip">
+    <h2>Barna Softshell Rain Quarter Zip</h2>
+    <p class="phandle">product handle: barna-softshell-rain-quarter-zip</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>4-Way Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>barna-softshell-rain-quarter-zip-f1</td></tr>
+        <tr><th>Name</th><td>Barna Softshell Rain Quarter Zip — 4-Way Stretch</td></tr>
+        <tr><th>Headline</th><td>4-Way Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Wind Protection</h3>
+      <p class="note">Icon design (not a field): Wind + shield</p>
+      <table>
+        <tr><th>Handle</th><td>barna-softshell-rain-quarter-zip-f2</td></tr>
+        <tr><th>Name</th><td>Barna Softshell Rain Quarter Zip — Wind Protection</td></tr>
+        <tr><th>Headline</th><td>Wind Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Weather Ready</h3>
+      <p class="note">Icon design (not a field): Droplet + shield</p>
+      <table>
+        <tr><th>Handle</th><td>barna-softshell-rain-quarter-zip-f3</td></tr>
+        <tr><th>Name</th><td>Barna Softshell Rain Quarter Zip — Weather Ready</td></tr>
+        <tr><th>Headline</th><td>Weather Ready</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Easy Temperature Control</h3>
+      <p class="note">Icon design (not a field): Quarter-zip silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>barna-softshell-rain-quarter-zip-f4</td></tr>
+        <tr><th>Name</th><td>Barna Softshell Rain Quarter Zip — Easy Temperature Control</td></tr>
+        <tr><th>Headline</th><td>Easy Temperature Control</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>zipper</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Made for the Swing</h3>
+      <p class="note">Icon design (not a field): Golfer swing</p>
+      <table>
+        <tr><th>Handle</th><td>barna-softshell-rain-quarter-zip-f5</td></tr>
+        <tr><th>Name</th><td>Barna Softshell Rain Quarter Zip — Made for the Swing</td></tr>
+        <tr><th>Headline</th><td>Made for the Swing</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-roundstone-softshell-jacket">
+    <h2>Roundstone Softshell Jacket</h2>
+    <p class="phandle">product handle: roundstone-softshell-jacket</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>4-Way Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>roundstone-softshell-jacket-f1</td></tr>
+        <tr><th>Name</th><td>Roundstone Softshell Jacket — 4-Way Stretch</td></tr>
+        <tr><th>Headline</th><td>4-Way Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Wind Protection</h3>
+      <p class="note">Icon design (not a field): Wind + shield</p>
+      <table>
+        <tr><th>Handle</th><td>roundstone-softshell-jacket-f2</td></tr>
+        <tr><th>Name</th><td>Roundstone Softshell Jacket — Wind Protection</td></tr>
+        <tr><th>Headline</th><td>Wind Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Weather Ready</h3>
+      <p class="note">Icon design (not a field): Droplet + shield</p>
+      <table>
+        <tr><th>Handle</th><td>roundstone-softshell-jacket-f3</td></tr>
+        <tr><th>Name</th><td>Roundstone Softshell Jacket — Weather Ready</td></tr>
+        <tr><th>Headline</th><td>Weather Ready</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Full-Coverage Protection</h3>
+      <p class="note">Icon design (not a field): Full jacket silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>roundstone-softshell-jacket-f4</td></tr>
+        <tr><th>Name</th><td>Roundstone Softshell Jacket — Full-Coverage Protection</td></tr>
+        <tr><th>Headline</th><td>Full-Coverage Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Built to Layer</h3>
+      <p class="note">Icon design (not a field): Stacked layers</p>
+      <table>
+        <tr><th>Handle</th><td>roundstone-softshell-jacket-f5</td></tr>
+        <tr><th>Name</th><td>Roundstone Softshell Jacket — Built to Layer</td></tr>
+        <tr><th>Headline</th><td>Built to Layer</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-inagh-softshell-vest">
+    <h2>Inagh Softshell Vest</h2>
+    <p class="phandle">product handle: inagh-softshell-vest</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>4-Way Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>inagh-softshell-vest-f1</td></tr>
+        <tr><th>Name</th><td>Inagh Softshell Vest — 4-Way Stretch</td></tr>
+        <tr><th>Headline</th><td>4-Way Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Wind Protection</h3>
+      <p class="note">Icon design (not a field): Wind + shield</p>
+      <table>
+        <tr><th>Handle</th><td>inagh-softshell-vest-f2</td></tr>
+        <tr><th>Name</th><td>Inagh Softshell Vest — Wind Protection</td></tr>
+        <tr><th>Headline</th><td>Wind Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Weather Ready</h3>
+      <p class="note">Icon design (not a field): Droplet + shield</p>
+      <table>
+        <tr><th>Handle</th><td>inagh-softshell-vest-f3</td></tr>
+        <tr><th>Name</th><td>Inagh Softshell Vest — Weather Ready</td></tr>
+        <tr><th>Headline</th><td>Weather Ready</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Core Protection</h3>
+      <p class="note">Icon design (not a field): Torso + shield</p>
+      <table>
+        <tr><th>Handle</th><td>inagh-softshell-vest-f4</td></tr>
+        <tr><th>Name</th><td>Inagh Softshell Vest — Core Protection</td></tr>
+        <tr><th>Headline</th><td>Core Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Full Arm Freedom</h3>
+      <p class="note">Icon design (not a field): Golfer / free arms</p>
+      <table>
+        <tr><th>Handle</th><td>inagh-softshell-vest-f5</td></tr>
+        <tr><th>Name</th><td>Inagh Softshell Vest — Full Arm Freedom</td></tr>
+        <tr><th>Headline</th><td>Full Arm Freedom</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-lombard-softshell-hoodie">
+    <h2>Lombard Softshell Hoodie</h2>
+    <p class="phandle">product handle: lombard-softshell-hoodie</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>4-Way Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>lombard-softshell-hoodie-f1</td></tr>
+        <tr><th>Name</th><td>Lombard Softshell Hoodie — 4-Way Stretch</td></tr>
+        <tr><th>Headline</th><td>4-Way Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Wind Protection</h3>
+      <p class="note">Icon design (not a field): Wind + shield</p>
+      <table>
+        <tr><th>Handle</th><td>lombard-softshell-hoodie-f2</td></tr>
+        <tr><th>Name</th><td>Lombard Softshell Hoodie — Wind Protection</td></tr>
+        <tr><th>Headline</th><td>Wind Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Weather Ready</h3>
+      <p class="note">Icon design (not a field): Droplet + shield</p>
+      <table>
+        <tr><th>Handle</th><td>lombard-softshell-hoodie-f3</td></tr>
+        <tr><th>Name</th><td>Lombard Softshell Hoodie — Weather Ready</td></tr>
+        <tr><th>Headline</th><td>Weather Ready</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Added Hood Coverage</h3>
+      <p class="note">Icon design (not a field): Hood icon</p>
+      <table>
+        <tr><th>Handle</th><td>lombard-softshell-hoodie-f4</td></tr>
+        <tr><th>Name</th><td>Lombard Softshell Hoodie — Added Hood Coverage</td></tr>
+        <tr><th>Headline</th><td>Added Hood Coverage</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Golf-Ready Mobility</h3>
+      <p class="note">Icon design (not a field): Golfer swing</p>
+      <table>
+        <tr><th>Handle</th><td>lombard-softshell-hoodie-f5</td></tr>
+        <tr><th>Name</th><td>Lombard Softshell Hoodie — Golf-Ready Mobility</td></tr>
+        <tr><th>Headline</th><td>Golf-Ready Mobility</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-spiddal-five-pocket-pant">
+    <h2>Spiddal Five Pocket Pant</h2>
+    <p class="phandle">product handle: spiddal-five-pocket-pant</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>4-Way Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>spiddal-five-pocket-pant-f1</td></tr>
+        <tr><th>Name</th><td>Spiddal Five Pocket Pant — 4-Way Stretch</td></tr>
+        <tr><th>Headline</th><td>4-Way Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Wind Protection</h3>
+      <p class="note">Icon design (not a field): Wind + shield</p>
+      <table>
+        <tr><th>Handle</th><td>spiddal-five-pocket-pant-f2</td></tr>
+        <tr><th>Name</th><td>Spiddal Five Pocket Pant — Wind Protection</td></tr>
+        <tr><th>Headline</th><td>Wind Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Weather Ready</h3>
+      <p class="note">Icon design (not a field): Droplet + shield</p>
+      <table>
+        <tr><th>Handle</th><td>spiddal-five-pocket-pant-f3</td></tr>
+        <tr><th>Name</th><td>Spiddal Five Pocket Pant — Weather Ready</td></tr>
+        <tr><th>Headline</th><td>Weather Ready</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Classic 5-Pocket Design</h3>
+      <p class="note">Icon design (not a field): Five-pocket pant</p>
+      <table>
+        <tr><th>Handle</th><td>spiddal-five-pocket-pant-f4</td></tr>
+        <tr><th>Name</th><td>Spiddal Five Pocket Pant — Classic 5-Pocket Design</td></tr>
+        <tr><th>Headline</th><td>Classic 5-Pocket Design</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>zipper</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Performance Fit</h3>
+      <p class="note">Icon design (not a field): Tape measure</p>
+      <table>
+        <tr><th>Handle</th><td>spiddal-five-pocket-pant-f5</td></tr>
+        <tr><th>Name</th><td>Spiddal Five Pocket Pant — Performance Fit</td></tr>
+        <tr><th>Headline</th><td>Performance Fit</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-leenane-softshell-jacket">
+    <h2>Leenane Softshell Jacket</h2>
+    <p class="phandle">product handle: leenane-softshell-jacket</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>4-Way Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>leenane-softshell-jacket-f1</td></tr>
+        <tr><th>Name</th><td>Leenane Softshell Jacket — 4-Way Stretch</td></tr>
+        <tr><th>Headline</th><td>4-Way Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Wind Protection</h3>
+      <p class="note">Icon design (not a field): Wind + shield</p>
+      <table>
+        <tr><th>Handle</th><td>leenane-softshell-jacket-f2</td></tr>
+        <tr><th>Name</th><td>Leenane Softshell Jacket — Wind Protection</td></tr>
+        <tr><th>Headline</th><td>Wind Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Weather Ready</h3>
+      <p class="note">Icon design (not a field): Droplet + shield</p>
+      <table>
+        <tr><th>Handle</th><td>leenane-softshell-jacket-f3</td></tr>
+        <tr><th>Name</th><td>Leenane Softshell Jacket — Weather Ready</td></tr>
+        <tr><th>Headline</th><td>Weather Ready</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Full-Coverage Comfort</h3>
+      <p class="note">Icon design (not a field): Jacket silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>leenane-softshell-jacket-f4</td></tr>
+        <tr><th>Name</th><td>Leenane Softshell Jacket — Full-Coverage Comfort</td></tr>
+        <tr><th>Headline</th><td>Full-Coverage Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Designed to Move</h3>
+      <p class="note">Icon design (not a field): Golfer swing</p>
+      <table>
+        <tr><th>Handle</th><td>leenane-softshell-jacket-f5</td></tr>
+        <tr><th>Name</th><td>Leenane Softshell Jacket — Designed to Move</td></tr>
+        <tr><th>Headline</th><td>Designed to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-monivea-women-s-softshell-pant">
+    <h2>Monivea Women&#x27;s Softshell Pant</h2>
+    <p class="phandle">product handle: monivea-women-s-softshell-pant</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>4-Way Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>monivea-women-s-softshell-pant-f1</td></tr>
+        <tr><th>Name</th><td>Monivea Women&#x27;s Softshell Pant — 4-Way Stretch</td></tr>
+        <tr><th>Headline</th><td>4-Way Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Wind Protection</h3>
+      <p class="note">Icon design (not a field): Wind + shield</p>
+      <table>
+        <tr><th>Handle</th><td>monivea-women-s-softshell-pant-f2</td></tr>
+        <tr><th>Name</th><td>Monivea Women&#x27;s Softshell Pant — Wind Protection</td></tr>
+        <tr><th>Headline</th><td>Wind Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Weather Ready</h3>
+      <p class="note">Icon design (not a field): Droplet + shield</p>
+      <table>
+        <tr><th>Handle</th><td>monivea-women-s-softshell-pant-f3</td></tr>
+        <tr><th>Name</th><td>Monivea Women&#x27;s Softshell Pant — Weather Ready</td></tr>
+        <tr><th>Headline</th><td>Weather Ready</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Course-to-Club Style</h3>
+      <p class="note">Icon design (not a field): Pant silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>monivea-women-s-softshell-pant-f4</td></tr>
+        <tr><th>Name</th><td>Monivea Women&#x27;s Softshell Pant — Course-to-Club Style</td></tr>
+        <tr><th>Headline</th><td>Course-to-Club Style</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Performance Fit</h3>
+      <p class="note">Icon design (not a field): Tape measure</p>
+      <table>
+        <tr><th>Handle</th><td>monivea-women-s-softshell-pant-f5</td></tr>
+        <tr><th>Name</th><td>Monivea Women&#x27;s Softshell Pant — Performance Fit</td></tr>
+        <tr><th>Headline</th><td>Performance Fit</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-glynsk-softshell-skirt">
+    <h2>Glynsk Softshell Skirt</h2>
+    <p class="phandle">product handle: glynsk-softshell-skirt</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>4-Way Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>glynsk-softshell-skirt-f1</td></tr>
+        <tr><th>Name</th><td>Glynsk Softshell Skirt — 4-Way Stretch</td></tr>
+        <tr><th>Headline</th><td>4-Way Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Wind Protection</h3>
+      <p class="note">Icon design (not a field): Wind + shield</p>
+      <table>
+        <tr><th>Handle</th><td>glynsk-softshell-skirt-f2</td></tr>
+        <tr><th>Name</th><td>Glynsk Softshell Skirt — Wind Protection</td></tr>
+        <tr><th>Headline</th><td>Wind Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Weather Ready</h3>
+      <p class="note">Icon design (not a field): Droplet + shield</p>
+      <table>
+        <tr><th>Handle</th><td>glynsk-softshell-skirt-f3</td></tr>
+        <tr><th>Name</th><td>Glynsk Softshell Skirt — Weather Ready</td></tr>
+        <tr><th>Headline</th><td>Weather Ready</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Golf-Ready Silhouette</h3>
+      <p class="note">Icon design (not a field): Skirt silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>glynsk-softshell-skirt-f4</td></tr>
+        <tr><th>Name</th><td>Glynsk Softshell Skirt — Golf-Ready Silhouette</td></tr>
+        <tr><th>Headline</th><td>Golf-Ready Silhouette</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Freedom to Move</h3>
+      <p class="note">Icon design (not a field): Golfer / mobility</p>
+      <table>
+        <tr><th>Handle</th><td>glynsk-softshell-skirt-f5</td></tr>
+        <tr><th>Name</th><td>Glynsk Softshell Skirt — Freedom to Move</td></tr>
+        <tr><th>Headline</th><td>Freedom to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-clarinbridge-softshell-dress">
+    <h2>Clarinbridge Softshell Dress</h2>
+    <p class="phandle">product handle: clarinbridge-softshell-dress</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>4-Way Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>clarinbridge-softshell-dress-f1</td></tr>
+        <tr><th>Name</th><td>Clarinbridge Softshell Dress — 4-Way Stretch</td></tr>
+        <tr><th>Headline</th><td>4-Way Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Wind Protection</h3>
+      <p class="note">Icon design (not a field): Wind + shield</p>
+      <table>
+        <tr><th>Handle</th><td>clarinbridge-softshell-dress-f2</td></tr>
+        <tr><th>Name</th><td>Clarinbridge Softshell Dress — Wind Protection</td></tr>
+        <tr><th>Headline</th><td>Wind Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Weather Ready</h3>
+      <p class="note">Icon design (not a field): Droplet + shield</p>
+      <table>
+        <tr><th>Handle</th><td>clarinbridge-softshell-dress-f3</td></tr>
+        <tr><th>Name</th><td>Clarinbridge Softshell Dress — Weather Ready</td></tr>
+        <tr><th>Headline</th><td>Weather Ready</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>One-Piece Performance</h3>
+      <p class="note">Icon design (not a field): Dress silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>clarinbridge-softshell-dress-f4</td></tr>
+        <tr><th>Name</th><td>Clarinbridge Softshell Dress — One-Piece Performance</td></tr>
+        <tr><th>Headline</th><td>One-Piece Performance</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Built for Golf Mobility</h3>
+      <p class="note">Icon design (not a field): Golfer swing</p>
+      <table>
+        <tr><th>Handle</th><td>clarinbridge-softshell-dress-f5</td></tr>
+        <tr><th>Name</th><td>Clarinbridge Softshell Dress — Built for Golf Mobility</td></tr>
+        <tr><th>Headline</th><td>Built for Golf Mobility</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-tullycross-hybrid-hoodie">
+    <h2>Tullycross Hybrid Hoodie</h2>
+    <p class="phandle">product handle: tullycross-hybrid-hoodie</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Lightweight Warmth</h3>
+      <p class="note">Icon design (not a field): Heat waves</p>
+      <table>
+        <tr><th>Handle</th><td>tullycross-hybrid-hoodie-f1</td></tr>
+        <tr><th>Name</th><td>Tullycross Hybrid Hoodie — Lightweight Warmth</td></tr>
+        <tr><th>Headline</th><td>Lightweight Warmth</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Low-Bulk Comfort</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>tullycross-hybrid-hoodie-f2</td></tr>
+        <tr><th>Name</th><td>Tullycross Hybrid Hoodie — Low-Bulk Comfort</td></tr>
+        <tr><th>Headline</th><td>Low-Bulk Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Built to Move</h3>
+      <p class="note">Icon design (not a field): Golfer / stretch</p>
+      <table>
+        <tr><th>Handle</th><td>tullycross-hybrid-hoodie-f3</td></tr>
+        <tr><th>Name</th><td>Tullycross Hybrid Hoodie — Built to Move</td></tr>
+        <tr><th>Headline</th><td>Built to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Added Hood Coverage</h3>
+      <p class="note">Icon design (not a field): Hood</p>
+      <table>
+        <tr><th>Handle</th><td>tullycross-hybrid-hoodie-f4</td></tr>
+        <tr><th>Name</th><td>Tullycross Hybrid Hoodie — Added Hood Coverage</td></tr>
+        <tr><th>Headline</th><td>Added Hood Coverage</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Easy to Layer</h3>
+      <p class="note">Icon design (not a field): Stacked layers</p>
+      <table>
+        <tr><th>Handle</th><td>tullycross-hybrid-hoodie-f5</td></tr>
+        <tr><th>Name</th><td>Tullycross Hybrid Hoodie — Easy to Layer</td></tr>
+        <tr><th>Headline</th><td>Easy to Layer</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-moycullen-hybrid-vest">
+    <h2>Moycullen Hybrid Vest</h2>
+    <p class="phandle">product handle: moycullen-hybrid-vest</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>40g Lightweight Warmth</h3>
+      <p class="note">Icon design (not a field): Heat waves</p>
+      <table>
+        <tr><th>Handle</th><td>moycullen-hybrid-vest-f1</td></tr>
+        <tr><th>Name</th><td>Moycullen Hybrid Vest — 40g Lightweight Warmth</td></tr>
+        <tr><th>Headline</th><td>40g Lightweight Warmth</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Low-Bulk Comfort</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>moycullen-hybrid-vest-f2</td></tr>
+        <tr><th>Name</th><td>Moycullen Hybrid Vest — Low-Bulk Comfort</td></tr>
+        <tr><th>Headline</th><td>Low-Bulk Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Built to Move</h3>
+      <p class="note">Icon design (not a field): Golfer / stretch</p>
+      <table>
+        <tr><th>Handle</th><td>moycullen-hybrid-vest-f3</td></tr>
+        <tr><th>Name</th><td>Moycullen Hybrid Vest — Built to Move</td></tr>
+        <tr><th>Headline</th><td>Built to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Targeted Core Warmth</h3>
+      <p class="note">Icon design (not a field): Torso heat</p>
+      <table>
+        <tr><th>Handle</th><td>moycullen-hybrid-vest-f4</td></tr>
+        <tr><th>Name</th><td>Moycullen Hybrid Vest — Targeted Core Warmth</td></tr>
+        <tr><th>Headline</th><td>Targeted Core Warmth</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Unrestricted Arms</h3>
+      <p class="note">Icon design (not a field): Free arms / golfer</p>
+      <table>
+        <tr><th>Handle</th><td>moycullen-hybrid-vest-f5</td></tr>
+        <tr><th>Name</th><td>Moycullen Hybrid Vest — Unrestricted Arms</td></tr>
+        <tr><th>Headline</th><td>Unrestricted Arms</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-kylemore-hybrid-pullover">
+    <h2>Kylemore Hybrid Pullover</h2>
+    <p class="phandle">product handle: kylemore-hybrid-pullover</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Lightweight Warmth</h3>
+      <p class="note">Icon design (not a field): Heat waves</p>
+      <table>
+        <tr><th>Handle</th><td>kylemore-hybrid-pullover-f1</td></tr>
+        <tr><th>Name</th><td>Kylemore Hybrid Pullover — Lightweight Warmth</td></tr>
+        <tr><th>Headline</th><td>Lightweight Warmth</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Low-Bulk Comfort</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>kylemore-hybrid-pullover-f2</td></tr>
+        <tr><th>Name</th><td>Kylemore Hybrid Pullover — Low-Bulk Comfort</td></tr>
+        <tr><th>Headline</th><td>Low-Bulk Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Built to Move</h3>
+      <p class="note">Icon design (not a field): Golfer / stretch</p>
+      <table>
+        <tr><th>Handle</th><td>kylemore-hybrid-pullover-f3</td></tr>
+        <tr><th>Name</th><td>Kylemore Hybrid Pullover — Built to Move</td></tr>
+        <tr><th>Headline</th><td>Built to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Easy-On Layer</h3>
+      <p class="note">Icon design (not a field): Pullover silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>kylemore-hybrid-pullover-f4</td></tr>
+        <tr><th>Name</th><td>Kylemore Hybrid Pullover — Easy-On Layer</td></tr>
+        <tr><th>Headline</th><td>Easy-On Layer</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Cool-Weather Protection</h3>
+      <p class="note">Icon design (not a field): Wind shield</p>
+      <table>
+        <tr><th>Handle</th><td>kylemore-hybrid-pullover-f5</td></tr>
+        <tr><th>Name</th><td>Kylemore Hybrid Pullover — Cool-Weather Protection</td></tr>
+        <tr><th>Headline</th><td>Cool-Weather Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-fergus-hybrid-hoodie">
+    <h2>Fergus Hybrid Hoodie</h2>
+    <p class="phandle">product handle: fergus-hybrid-hoodie</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Lightweight Warmth</h3>
+      <p class="note">Icon design (not a field): Heat waves</p>
+      <table>
+        <tr><th>Handle</th><td>fergus-hybrid-hoodie-f1</td></tr>
+        <tr><th>Name</th><td>Fergus Hybrid Hoodie — Lightweight Warmth</td></tr>
+        <tr><th>Headline</th><td>Lightweight Warmth</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Low-Bulk Comfort</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>fergus-hybrid-hoodie-f2</td></tr>
+        <tr><th>Name</th><td>Fergus Hybrid Hoodie — Low-Bulk Comfort</td></tr>
+        <tr><th>Headline</th><td>Low-Bulk Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Built to Move</h3>
+      <p class="note">Icon design (not a field): Golfer / stretch</p>
+      <table>
+        <tr><th>Handle</th><td>fergus-hybrid-hoodie-f3</td></tr>
+        <tr><th>Name</th><td>Fergus Hybrid Hoodie — Built to Move</td></tr>
+        <tr><th>Headline</th><td>Built to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Added Hood Coverage</h3>
+      <p class="note">Icon design (not a field): Hood</p>
+      <table>
+        <tr><th>Handle</th><td>fergus-hybrid-hoodie-f4</td></tr>
+        <tr><th>Name</th><td>Fergus Hybrid Hoodie — Added Hood Coverage</td></tr>
+        <tr><th>Headline</th><td>Added Hood Coverage</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Cool-Weather Protection</h3>
+      <p class="note">Icon design (not a field): Wind shield</p>
+      <table>
+        <tr><th>Handle</th><td>fergus-hybrid-hoodie-f5</td></tr>
+        <tr><th>Name</th><td>Fergus Hybrid Hoodie — Cool-Weather Protection</td></tr>
+        <tr><th>Headline</th><td>Cool-Weather Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-loughrea-hybrid-jacket">
+    <h2>Loughrea Hybrid Jacket</h2>
+    <p class="phandle">product handle: loughrea-hybrid-jacket</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Lightweight Warmth</h3>
+      <p class="note">Icon design (not a field): Heat waves</p>
+      <table>
+        <tr><th>Handle</th><td>loughrea-hybrid-jacket-f1</td></tr>
+        <tr><th>Name</th><td>Loughrea Hybrid Jacket — Lightweight Warmth</td></tr>
+        <tr><th>Headline</th><td>Lightweight Warmth</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Low-Bulk Comfort</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>loughrea-hybrid-jacket-f2</td></tr>
+        <tr><th>Name</th><td>Loughrea Hybrid Jacket — Low-Bulk Comfort</td></tr>
+        <tr><th>Headline</th><td>Low-Bulk Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Built to Move</h3>
+      <p class="note">Icon design (not a field): Golfer / stretch</p>
+      <table>
+        <tr><th>Handle</th><td>loughrea-hybrid-jacket-f3</td></tr>
+        <tr><th>Name</th><td>Loughrea Hybrid Jacket — Built to Move</td></tr>
+        <tr><th>Headline</th><td>Built to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Full-Coverage Layer</h3>
+      <p class="note">Icon design (not a field): Jacket silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>loughrea-hybrid-jacket-f4</td></tr>
+        <tr><th>Name</th><td>Loughrea Hybrid Jacket — Full-Coverage Layer</td></tr>
+        <tr><th>Headline</th><td>Full-Coverage Layer</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Performance Fit</h3>
+      <p class="note">Icon design (not a field): Tape measure</p>
+      <table>
+        <tr><th>Handle</th><td>loughrea-hybrid-jacket-f5</td></tr>
+        <tr><th>Name</th><td>Loughrea Hybrid Jacket — Performance Fit</td></tr>
+        <tr><th>Headline</th><td>Performance Fit</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-athenry-hybrid-skirt">
+    <h2>Athenry Hybrid Skirt</h2>
+    <p class="phandle">product handle: athenry-hybrid-skirt</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Lightweight Warmth</h3>
+      <p class="note">Icon design (not a field): Heat waves</p>
+      <table>
+        <tr><th>Handle</th><td>athenry-hybrid-skirt-f1</td></tr>
+        <tr><th>Name</th><td>Athenry Hybrid Skirt — Lightweight Warmth</td></tr>
+        <tr><th>Headline</th><td>Lightweight Warmth</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Low-Bulk Comfort</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>athenry-hybrid-skirt-f2</td></tr>
+        <tr><th>Name</th><td>Athenry Hybrid Skirt — Low-Bulk Comfort</td></tr>
+        <tr><th>Headline</th><td>Low-Bulk Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Built to Move</h3>
+      <p class="note">Icon design (not a field): Golfer / stretch</p>
+      <table>
+        <tr><th>Handle</th><td>athenry-hybrid-skirt-f3</td></tr>
+        <tr><th>Name</th><td>Athenry Hybrid Skirt — Built to Move</td></tr>
+        <tr><th>Headline</th><td>Built to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Warmth Without Bulk</h3>
+      <p class="note">Icon design (not a field): Skirt silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>athenry-hybrid-skirt-f4</td></tr>
+        <tr><th>Name</th><td>Athenry Hybrid Skirt — Warmth Without Bulk</td></tr>
+        <tr><th>Headline</th><td>Warmth Without Bulk</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Golf-Ready Fit</h3>
+      <p class="note">Icon design (not a field): Tape measure</p>
+      <table>
+        <tr><th>Handle</th><td>athenry-hybrid-skirt-f5</td></tr>
+        <tr><th>Name</th><td>Athenry Hybrid Skirt — Golf-Ready Fit</td></tr>
+        <tr><th>Headline</th><td>Golf-Ready Fit</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-laune-women-s-hybrid-midlayer">
+    <h2>Laune Women&#x27;s Hybrid Midlayer</h2>
+    <p class="phandle">product handle: laune-women-s-hybrid-midlayer</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Lightweight Warmth</h3>
+      <p class="note">Icon design (not a field): Heat waves</p>
+      <table>
+        <tr><th>Handle</th><td>laune-women-s-hybrid-midlayer-f1</td></tr>
+        <tr><th>Name</th><td>Laune Women&#x27;s Hybrid Midlayer — Lightweight Warmth</td></tr>
+        <tr><th>Headline</th><td>Lightweight Warmth</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Low-Bulk Comfort</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>laune-women-s-hybrid-midlayer-f2</td></tr>
+        <tr><th>Name</th><td>Laune Women&#x27;s Hybrid Midlayer — Low-Bulk Comfort</td></tr>
+        <tr><th>Headline</th><td>Low-Bulk Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Built to Move</h3>
+      <p class="note">Icon design (not a field): Golfer / stretch</p>
+      <table>
+        <tr><th>Handle</th><td>laune-women-s-hybrid-midlayer-f3</td></tr>
+        <tr><th>Name</th><td>Laune Women&#x27;s Hybrid Midlayer — Built to Move</td></tr>
+        <tr><th>Headline</th><td>Built to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Made for Layering</h3>
+      <p class="note">Icon design (not a field): Stacked layers</p>
+      <table>
+        <tr><th>Handle</th><td>laune-women-s-hybrid-midlayer-f4</td></tr>
+        <tr><th>Name</th><td>Laune Women&#x27;s Hybrid Midlayer — Made for Layering</td></tr>
+        <tr><th>Headline</th><td>Made for Layering</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>All-Day Comfort</h3>
+      <p class="note">Icon design (not a field): Airflow</p>
+      <table>
+        <tr><th>Handle</th><td>laune-women-s-hybrid-midlayer-f5</td></tr>
+        <tr><th>Name</th><td>Laune Women&#x27;s Hybrid Midlayer — All-Day Comfort</td></tr>
+        <tr><th>Headline</th><td>All-Day Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-fane-women-s-golf-hybrid-vest">
+    <h2>Fane Women&#x27;s Golf Hybrid Vest</h2>
+    <p class="phandle">product handle: fane-women-s-golf-hybrid-vest</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Lightweight Warmth</h3>
+      <p class="note">Icon design (not a field): Heat waves</p>
+      <table>
+        <tr><th>Handle</th><td>fane-women-s-golf-hybrid-vest-f1</td></tr>
+        <tr><th>Name</th><td>Fane Women&#x27;s Golf Hybrid Vest — Lightweight Warmth</td></tr>
+        <tr><th>Headline</th><td>Lightweight Warmth</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Low-Bulk Comfort</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>fane-women-s-golf-hybrid-vest-f2</td></tr>
+        <tr><th>Name</th><td>Fane Women&#x27;s Golf Hybrid Vest — Low-Bulk Comfort</td></tr>
+        <tr><th>Headline</th><td>Low-Bulk Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Built to Move</h3>
+      <p class="note">Icon design (not a field): Golfer / stretch</p>
+      <table>
+        <tr><th>Handle</th><td>fane-women-s-golf-hybrid-vest-f3</td></tr>
+        <tr><th>Name</th><td>Fane Women&#x27;s Golf Hybrid Vest — Built to Move</td></tr>
+        <tr><th>Headline</th><td>Built to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Targeted Core Warmth</h3>
+      <p class="note">Icon design (not a field): Torso heat</p>
+      <table>
+        <tr><th>Handle</th><td>fane-women-s-golf-hybrid-vest-f4</td></tr>
+        <tr><th>Name</th><td>Fane Women&#x27;s Golf Hybrid Vest — Targeted Core Warmth</td></tr>
+        <tr><th>Headline</th><td>Targeted Core Warmth</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Unrestricted Swing</h3>
+      <p class="note">Icon design (not a field): Golfer / free arms</p>
+      <table>
+        <tr><th>Handle</th><td>fane-women-s-golf-hybrid-vest-f5</td></tr>
+        <tr><th>Name</th><td>Fane Women&#x27;s Golf Hybrid Vest — Unrestricted Swing</td></tr>
+        <tr><th>Headline</th><td>Unrestricted Swing</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-taylor-upf-hoodie">
+    <h2>Taylor UPF Hoodie</h2>
+    <p class="phandle">product handle: taylor-upf-hoodie</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>UPF Sun Protection</h3>
+      <p class="note">Icon design (not a field): Sun + shield</p>
+      <table>
+        <tr><th>Handle</th><td>taylor-upf-hoodie-f1</td></tr>
+        <tr><th>Name</th><td>Taylor UPF Hoodie — UPF Sun Protection</td></tr>
+        <tr><th>Headline</th><td>UPF Sun Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Lightweight</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>taylor-upf-hoodie-f2</td></tr>
+        <tr><th>Name</th><td>Taylor UPF Hoodie — Lightweight</td></tr>
+        <tr><th>Headline</th><td>Lightweight</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Breathable</h3>
+      <p class="note">Icon design (not a field): Airflow</p>
+      <table>
+        <tr><th>Handle</th><td>taylor-upf-hoodie-f3</td></tr>
+        <tr><th>Name</th><td>Taylor UPF Hoodie — Breathable</td></tr>
+        <tr><th>Headline</th><td>Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Added Sun Coverage</h3>
+      <p class="note">Icon design (not a field): Hood + sun</p>
+      <table>
+        <tr><th>Handle</th><td>taylor-upf-hoodie-f4</td></tr>
+        <tr><th>Name</th><td>Taylor UPF Hoodie — Added Sun Coverage</td></tr>
+        <tr><th>Headline</th><td>Added Sun Coverage</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Moves With You</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>taylor-upf-hoodie-f5</td></tr>
+        <tr><th>Name</th><td>Taylor UPF Hoodie — Moves With You</td></tr>
+        <tr><th>Headline</th><td>Moves With You</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-mannin-upf-crewneck">
+    <h2>Mannin UPF Crewneck</h2>
+    <p class="phandle">product handle: mannin-upf-crewneck</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>UPF Sun Protection</h3>
+      <p class="note">Icon design (not a field): Sun + shield</p>
+      <table>
+        <tr><th>Handle</th><td>mannin-upf-crewneck-f1</td></tr>
+        <tr><th>Name</th><td>Mannin UPF Crewneck — UPF Sun Protection</td></tr>
+        <tr><th>Headline</th><td>UPF Sun Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Lightweight</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>mannin-upf-crewneck-f2</td></tr>
+        <tr><th>Name</th><td>Mannin UPF Crewneck — Lightweight</td></tr>
+        <tr><th>Headline</th><td>Lightweight</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Breathable</h3>
+      <p class="note">Icon design (not a field): Airflow</p>
+      <table>
+        <tr><th>Handle</th><td>mannin-upf-crewneck-f3</td></tr>
+        <tr><th>Name</th><td>Mannin UPF Crewneck — Breathable</td></tr>
+        <tr><th>Headline</th><td>Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Built Under a Polo</h3>
+      <p class="note">Icon design (not a field): Layered shirts</p>
+      <table>
+        <tr><th>Handle</th><td>mannin-upf-crewneck-f4</td></tr>
+        <tr><th>Name</th><td>Mannin UPF Crewneck — Built Under a Polo</td></tr>
+        <tr><th>Headline</th><td>Built Under a Polo</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Full Arm Coverage</h3>
+      <p class="note">Icon design (not a field): Arm + sun</p>
+      <table>
+        <tr><th>Handle</th><td>mannin-upf-crewneck-f5</td></tr>
+        <tr><th>Name</th><td>Mannin UPF Crewneck — Full Arm Coverage</td></tr>
+        <tr><th>Headline</th><td>Full Arm Coverage</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-gurteen-upf-quarter-zip">
+    <h2>Gurteen UPF Quarter Zip</h2>
+    <p class="phandle">product handle: gurteen-upf-quarter-zip</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>UPF Sun Protection</h3>
+      <p class="note">Icon design (not a field): Sun + shield</p>
+      <table>
+        <tr><th>Handle</th><td>gurteen-upf-quarter-zip-f1</td></tr>
+        <tr><th>Name</th><td>Gurteen UPF Quarter Zip — UPF Sun Protection</td></tr>
+        <tr><th>Headline</th><td>UPF Sun Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Lightweight</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>gurteen-upf-quarter-zip-f2</td></tr>
+        <tr><th>Name</th><td>Gurteen UPF Quarter Zip — Lightweight</td></tr>
+        <tr><th>Headline</th><td>Lightweight</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Breathable</h3>
+      <p class="note">Icon design (not a field): Airflow</p>
+      <table>
+        <tr><th>Handle</th><td>gurteen-upf-quarter-zip-f3</td></tr>
+        <tr><th>Name</th><td>Gurteen UPF Quarter Zip — Breathable</td></tr>
+        <tr><th>Headline</th><td>Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Adjustable Coverage</h3>
+      <p class="note">Icon design (not a field): Quarter zip</p>
+      <table>
+        <tr><th>Handle</th><td>gurteen-upf-quarter-zip-f4</td></tr>
+        <tr><th>Name</th><td>Gurteen UPF Quarter Zip — Adjustable Coverage</td></tr>
+        <tr><th>Headline</th><td>Adjustable Coverage</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>zipper</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Golf-Ready Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>gurteen-upf-quarter-zip-f5</td></tr>
+        <tr><th>Name</th><td>Gurteen UPF Quarter Zip — Golf-Ready Stretch</td></tr>
+        <tr><th>Headline</th><td>Golf-Ready Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-coral-upf-boatneck">
+    <h2>Coral UPF Boatneck</h2>
+    <p class="phandle">product handle: coral-upf-boatneck</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>UPF Sun Protection</h3>
+      <p class="note">Icon design (not a field): Sun + shield</p>
+      <table>
+        <tr><th>Handle</th><td>coral-upf-boatneck-f1</td></tr>
+        <tr><th>Name</th><td>Coral UPF Boatneck — UPF Sun Protection</td></tr>
+        <tr><th>Headline</th><td>UPF Sun Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Lightweight</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>coral-upf-boatneck-f2</td></tr>
+        <tr><th>Name</th><td>Coral UPF Boatneck — Lightweight</td></tr>
+        <tr><th>Headline</th><td>Lightweight</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Breathable</h3>
+      <p class="note">Icon design (not a field): Airflow</p>
+      <table>
+        <tr><th>Handle</th><td>coral-upf-boatneck-f3</td></tr>
+        <tr><th>Name</th><td>Coral UPF Boatneck — Breathable</td></tr>
+        <tr><th>Headline</th><td>Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Easy Boatneck Fit</h3>
+      <p class="note">Icon design (not a field): Boatneck silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>coral-upf-boatneck-f4</td></tr>
+        <tr><th>Name</th><td>Coral UPF Boatneck — Easy Boatneck Fit</td></tr>
+        <tr><th>Headline</th><td>Easy Boatneck Fit</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Freedom to Move</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>coral-upf-boatneck-f5</td></tr>
+        <tr><th>Name</th><td>Coral UPF Boatneck — Freedom to Move</td></tr>
+        <tr><th>Headline</th><td>Freedom to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-ardra-women-s-upf-short-sleeve">
+    <h2>Ardra Women&#x27;s UPF Short Sleeve</h2>
+    <p class="phandle">product handle: ardra-women-s-upf-short-sleeve</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>UPF Sun Protection</h3>
+      <p class="note">Icon design (not a field): Sun + shield</p>
+      <table>
+        <tr><th>Handle</th><td>ardra-women-s-upf-short-sleeve-f1</td></tr>
+        <tr><th>Name</th><td>Ardra Women&#x27;s UPF Short Sleeve — UPF Sun Protection</td></tr>
+        <tr><th>Headline</th><td>UPF Sun Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Lightweight</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>ardra-women-s-upf-short-sleeve-f2</td></tr>
+        <tr><th>Name</th><td>Ardra Women&#x27;s UPF Short Sleeve — Lightweight</td></tr>
+        <tr><th>Headline</th><td>Lightweight</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Breathable</h3>
+      <p class="note">Icon design (not a field): Airflow</p>
+      <table>
+        <tr><th>Handle</th><td>ardra-women-s-upf-short-sleeve-f3</td></tr>
+        <tr><th>Name</th><td>Ardra Women&#x27;s UPF Short Sleeve — Breathable</td></tr>
+        <tr><th>Headline</th><td>Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Warm-Weather Coverage</h3>
+      <p class="note">Icon design (not a field): Short sleeve</p>
+      <table>
+        <tr><th>Handle</th><td>ardra-women-s-upf-short-sleeve-f4</td></tr>
+        <tr><th>Name</th><td>Ardra Women&#x27;s UPF Short Sleeve — Warm-Weather Coverage</td></tr>
+        <tr><th>Headline</th><td>Warm-Weather Coverage</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Performance Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>ardra-women-s-upf-short-sleeve-f5</td></tr>
+        <tr><th>Name</th><td>Ardra Women&#x27;s UPF Short Sleeve — Performance Stretch</td></tr>
+        <tr><th>Headline</th><td>Performance Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-renvy-women-s-upf-sleeves">
+    <h2>Renvy Women&#x27;s UPF Sleeves</h2>
+    <p class="phandle">product handle: renvy-women-s-upf-sleeves</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>UPF Sun Protection</h3>
+      <p class="note">Icon design (not a field): Sun + shield</p>
+      <table>
+        <tr><th>Handle</th><td>renvy-women-s-upf-sleeves-f1</td></tr>
+        <tr><th>Name</th><td>Renvy Women&#x27;s UPF Sleeves — UPF Sun Protection</td></tr>
+        <tr><th>Headline</th><td>UPF Sun Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Lightweight</h3>
+      <p class="note">Icon design (not a field): Feather</p>
+      <table>
+        <tr><th>Handle</th><td>renvy-women-s-upf-sleeves-f2</td></tr>
+        <tr><th>Name</th><td>Renvy Women&#x27;s UPF Sleeves — Lightweight</td></tr>
+        <tr><th>Headline</th><td>Lightweight</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Breathable</h3>
+      <p class="note">Icon design (not a field): Airflow</p>
+      <table>
+        <tr><th>Handle</th><td>renvy-women-s-upf-sleeves-f3</td></tr>
+        <tr><th>Name</th><td>Renvy Women&#x27;s UPF Sleeves — Breathable</td></tr>
+        <tr><th>Headline</th><td>Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>On-Demand Coverage</h3>
+      <p class="note">Icon design (not a field): Arm + sun</p>
+      <table>
+        <tr><th>Handle</th><td>renvy-women-s-upf-sleeves-f4</td></tr>
+        <tr><th>Name</th><td>Renvy Women&#x27;s UPF Sleeves — On-Demand Coverage</td></tr>
+        <tr><th>Headline</th><td>On-Demand Coverage</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Easy On. Easy Off.</h3>
+      <p class="note">Icon design (not a field): Sleeve + motion arrow</p>
+      <table>
+        <tr><th>Handle</th><td>renvy-women-s-upf-sleeves-f5</td></tr>
+        <tr><th>Name</th><td>Renvy Women&#x27;s UPF Sleeves — Easy On. Easy Off.</td></tr>
+        <tr><th>Headline</th><td>Easy On. Easy Off.</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-nore-womens-golf-rain-jacket">
+    <h2>Nore Women&#x27;s Golf Rain Jacket</h2>
+    <p class="phandle">product handle: nore-womens-golf-rain-jacket</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Waterproof &amp; Breathable</h3>
+      <p class="note">Icon design (not a field): Droplet + arrows</p>
+      <table>
+        <tr><th>Handle</th><td>nore-womens-golf-rain-jacket-f1</td></tr>
+        <tr><th>Name</th><td>Nore Women&#x27;s Golf Rain Jacket — Waterproof &amp; Breathable</td></tr>
+        <tr><th>Headline</th><td>Waterproof &amp; Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Built to Move</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>nore-womens-golf-rain-jacket-f2</td></tr>
+        <tr><th>Name</th><td>Nore Women&#x27;s Golf Rain Jacket — Built to Move</td></tr>
+        <tr><th>Headline</th><td>Built to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Weather Protection</h3>
+      <p class="note">Icon design (not a field): Shield</p>
+      <table>
+        <tr><th>Handle</th><td>nore-womens-golf-rain-jacket-f3</td></tr>
+        <tr><th>Name</th><td>Nore Women&#x27;s Golf Rain Jacket — Weather Protection</td></tr>
+        <tr><th>Headline</th><td>Weather Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Full-Round Coverage</h3>
+      <p class="note">Icon design (not a field): Jacket silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>nore-womens-golf-rain-jacket-f4</td></tr>
+        <tr><th>Name</th><td>Nore Women&#x27;s Golf Rain Jacket — Full-Round Coverage</td></tr>
+        <tr><th>Headline</th><td>Full-Round Coverage</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Golf-Ready Mobility</h3>
+      <p class="note">Icon design (not a field): Golfer swing</p>
+      <table>
+        <tr><th>Handle</th><td>nore-womens-golf-rain-jacket-f5</td></tr>
+        <tr><th>Name</th><td>Nore Women&#x27;s Golf Rain Jacket — Golf-Ready Mobility</td></tr>
+        <tr><th>Headline</th><td>Golf-Ready Mobility</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-clare-womens-golf-rain-pant">
+    <h2>Clare Women&#x27;s Golf Rain Pant</h2>
+    <p class="phandle">product handle: clare-womens-golf-rain-pant</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Waterproof &amp; Breathable</h3>
+      <p class="note">Icon design (not a field): Droplet + arrows</p>
+      <table>
+        <tr><th>Handle</th><td>clare-womens-golf-rain-pant-f1</td></tr>
+        <tr><th>Name</th><td>Clare Women&#x27;s Golf Rain Pant — Waterproof &amp; Breathable</td></tr>
+        <tr><th>Headline</th><td>Waterproof &amp; Breathable</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Built to Move</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>clare-womens-golf-rain-pant-f2</td></tr>
+        <tr><th>Name</th><td>Clare Women&#x27;s Golf Rain Pant — Built to Move</td></tr>
+        <tr><th>Headline</th><td>Built to Move</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Weather Protection</h3>
+      <p class="note">Icon design (not a field): Shield</p>
+      <table>
+        <tr><th>Handle</th><td>clare-womens-golf-rain-pant-f3</td></tr>
+        <tr><th>Name</th><td>Clare Women&#x27;s Golf Rain Pant — Weather Protection</td></tr>
+        <tr><th>Headline</th><td>Weather Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Full-Leg Coverage</h3>
+      <p class="note">Icon design (not a field): Pant silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>clare-womens-golf-rain-pant-f4</td></tr>
+        <tr><th>Name</th><td>Clare Women&#x27;s Golf Rain Pant — Full-Leg Coverage</td></tr>
+        <tr><th>Headline</th><td>Full-Leg Coverage</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Golf-Ready Fit</h3>
+      <p class="note">Icon design (not a field): Tape measure</p>
+      <table>
+        <tr><th>Handle</th><td>clare-womens-golf-rain-pant-f5</td></tr>
+        <tr><th>Name</th><td>Clare Women&#x27;s Golf Rain Pant — Golf-Ready Fit</td></tr>
+        <tr><th>Headline</th><td>Golf-Ready Fit</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-cashel-performance-quarter-zip">
+    <h2>Cashel Performance Quarter Zip</h2>
+    <p class="phandle">product handle: cashel-performance-quarter-zip</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Performance Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>cashel-performance-quarter-zip-f1</td></tr>
+        <tr><th>Name</th><td>Cashel Performance Quarter Zip — Performance Stretch</td></tr>
+        <tr><th>Headline</th><td>Performance Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Breathable Comfort</h3>
+      <p class="note">Icon design (not a field): Airflow</p>
+      <table>
+        <tr><th>Handle</th><td>cashel-performance-quarter-zip-f2</td></tr>
+        <tr><th>Name</th><td>Cashel Performance Quarter Zip — Breathable Comfort</td></tr>
+        <tr><th>Headline</th><td>Breathable Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Built to Layer</h3>
+      <p class="note">Icon design (not a field): Stacked layers</p>
+      <table>
+        <tr><th>Handle</th><td>cashel-performance-quarter-zip-f3</td></tr>
+        <tr><th>Name</th><td>Cashel Performance Quarter Zip — Built to Layer</td></tr>
+        <tr><th>Headline</th><td>Built to Layer</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Adjustable Ventilation</h3>
+      <p class="note">Icon design (not a field): Quarter zip</p>
+      <table>
+        <tr><th>Handle</th><td>cashel-performance-quarter-zip-f4</td></tr>
+        <tr><th>Name</th><td>Cashel Performance Quarter Zip — Adjustable Ventilation</td></tr>
+        <tr><th>Headline</th><td>Adjustable Ventilation</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>zipper</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Made for Golf</h3>
+      <p class="note">Icon design (not a field): Golfer</p>
+      <table>
+        <tr><th>Handle</th><td>cashel-performance-quarter-zip-f5</td></tr>
+        <tr><th>Name</th><td>Cashel Performance Quarter Zip — Made for Golf</td></tr>
+        <tr><th>Headline</th><td>Made for Golf</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-glassilaun-performance-leggings">
+    <h2>Glassilaun Performance Leggings</h2>
+    <p class="phandle">product handle: glassilaun-performance-leggings</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Performance Stretch</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>glassilaun-performance-leggings-f1</td></tr>
+        <tr><th>Name</th><td>Glassilaun Performance Leggings — Performance Stretch</td></tr>
+        <tr><th>Headline</th><td>Performance Stretch</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Breathable Comfort</h3>
+      <p class="note">Icon design (not a field): Airflow</p>
+      <table>
+        <tr><th>Handle</th><td>glassilaun-performance-leggings-f2</td></tr>
+        <tr><th>Name</th><td>Glassilaun Performance Leggings — Breathable Comfort</td></tr>
+        <tr><th>Headline</th><td>Breathable Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>All-Day Comfort</h3>
+      <p class="note">Icon design (not a field): Fabric / hand</p>
+      <table>
+        <tr><th>Handle</th><td>glassilaun-performance-leggings-f3</td></tr>
+        <tr><th>Name</th><td>Glassilaun Performance Leggings — All-Day Comfort</td></tr>
+        <tr><th>Headline</th><td>All-Day Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Streamlined Fit</h3>
+      <p class="note">Icon design (not a field): Legging silhouette</p>
+      <table>
+        <tr><th>Handle</th><td>glassilaun-performance-leggings-f4</td></tr>
+        <tr><th>Name</th><td>Glassilaun Performance Leggings — Streamlined Fit</td></tr>
+        <tr><th>Headline</th><td>Streamlined Fit</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Moves With You</h3>
+      <p class="note">Icon design (not a field): Golfer / mobility</p>
+      <table>
+        <tr><th>Handle</th><td>glassilaun-performance-leggings-f5</td></tr>
+        <tr><th>Name</th><td>Glassilaun Performance Leggings — Moves With You</td></tr>
+        <tr><th>Headline</th><td>Moves With You</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-golf-rain-gloves">
+    <h2>Golf Rain Gloves</h2>
+    <p class="phandle">product handle: golf-rain-gloves</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Wet-Weather Ready</h3>
+      <p class="note">Icon design (not a field): Droplet</p>
+      <table>
+        <tr><th>Handle</th><td>golf-rain-gloves-f1</td></tr>
+        <tr><th>Name</th><td>Golf Rain Gloves — Wet-Weather Ready</td></tr>
+        <tr><th>Headline</th><td>Wet-Weather Ready</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Reliable Wet Grip</h3>
+      <p class="note">Icon design (not a field): Hand / grip</p>
+      <table>
+        <tr><th>Handle</th><td>golf-rain-gloves-f2</td></tr>
+        <tr><th>Name</th><td>Golf Rain Gloves — Reliable Wet Grip</td></tr>
+        <tr><th>Headline</th><td>Reliable Wet Grip</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Sold as a Pair</h3>
+      <p class="note">Icon design (not a field): Pair of gloves</p>
+      <table>
+        <tr><th>Handle</th><td>golf-rain-gloves-f3</td></tr>
+        <tr><th>Name</th><td>Golf Rain Gloves — Sold as a Pair</td></tr>
+        <tr><th>Headline</th><td>Sold as a Pair</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Made for Golf</h3>
+      <p class="note">Icon design (not a field): Golfer grip</p>
+      <table>
+        <tr><th>Handle</th><td>golf-rain-gloves-f4</td></tr>
+        <tr><th>Name</th><td>Golf Rain Gloves — Made for Golf</td></tr>
+        <tr><th>Headline</th><td>Made for Golf</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Flexible Fit</h3>
+      <p class="note">Icon design (not a field): Stretch hand</p>
+      <table>
+        <tr><th>Handle</th><td>golf-rain-gloves-f5</td></tr>
+        <tr><th>Name</th><td>Golf Rain Gloves — Flexible Fit</td></tr>
+        <tr><th>Headline</th><td>Flexible Fit</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-thermal-water-resistant-sleeves">
+    <h2>Thermal Water Resistant Sleeves</h2>
+    <p class="phandle">product handle: thermal-water-resistant-sleeves</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Thermal Warmth</h3>
+      <p class="note">Icon design (not a field): Heat waves</p>
+      <table>
+        <tr><th>Handle</th><td>thermal-water-resistant-sleeves-f1</td></tr>
+        <tr><th>Name</th><td>Thermal Water Resistant Sleeves — Thermal Warmth</td></tr>
+        <tr><th>Headline</th><td>Thermal Warmth</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Water Resistant</h3>
+      <p class="note">Icon design (not a field): Droplet + shield</p>
+      <table>
+        <tr><th>Handle</th><td>thermal-water-resistant-sleeves-f2</td></tr>
+        <tr><th>Name</th><td>Thermal Water Resistant Sleeves — Water Resistant</td></tr>
+        <tr><th>Headline</th><td>Water Resistant</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Added Arm Coverage</h3>
+      <p class="note">Icon design (not a field): Arm</p>
+      <table>
+        <tr><th>Handle</th><td>thermal-water-resistant-sleeves-f3</td></tr>
+        <tr><th>Name</th><td>Thermal Water Resistant Sleeves — Added Arm Coverage</td></tr>
+        <tr><th>Headline</th><td>Added Arm Coverage</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Easy to Pack</h3>
+      <p class="note">Icon design (not a field): Pack / folded item</p>
+      <table>
+        <tr><th>Handle</th><td>thermal-water-resistant-sleeves-f4</td></tr>
+        <tr><th>Name</th><td>Thermal Water Resistant Sleeves — Easy to Pack</td></tr>
+        <tr><th>Headline</th><td>Easy to Pack</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Easy On. Easy Off.</h3>
+      <p class="note">Icon design (not a field): Sleeve + motion arrow</p>
+      <table>
+        <tr><th>Handle</th><td>thermal-water-resistant-sleeves-f5</td></tr>
+        <tr><th>Name</th><td>Thermal Water Resistant Sleeves — Easy On. Easy Off.</td></tr>
+        <tr><th>Headline</th><td>Easy On. Easy Off.</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-vented-canopy-golf-umbrella">
+    <h2>Vented Canopy Golf Umbrella</h2>
+    <p class="phandle">product handle: vented-canopy-golf-umbrella</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Rain Protection</h3>
+      <p class="note">Icon design (not a field): Umbrella + rain</p>
+      <table>
+        <tr><th>Handle</th><td>vented-canopy-golf-umbrella-f1</td></tr>
+        <tr><th>Name</th><td>Vented Canopy Golf Umbrella — Rain Protection</td></tr>
+        <tr><th>Headline</th><td>Rain Protection</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Vented Canopy</h3>
+      <p class="note">Icon design (not a field): Wind + canopy</p>
+      <table>
+        <tr><th>Handle</th><td>vented-canopy-golf-umbrella-f2</td></tr>
+        <tr><th>Name</th><td>Vented Canopy Golf Umbrella — Vented Canopy</td></tr>
+        <tr><th>Headline</th><td>Vented Canopy</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Built for Weather</h3>
+      <p class="note">Icon design (not a field): Shield</p>
+      <table>
+        <tr><th>Handle</th><td>vented-canopy-golf-umbrella-f3</td></tr>
+        <tr><th>Name</th><td>Vented Canopy Golf Umbrella — Built for Weather</td></tr>
+        <tr><th>Headline</th><td>Built for Weather</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Golf-Course Coverage</h3>
+      <p class="note">Icon design (not a field): Large umbrella</p>
+      <table>
+        <tr><th>Handle</th><td>vented-canopy-golf-umbrella-f4</td></tr>
+        <tr><th>Name</th><td>Vented Canopy Golf Umbrella — Golf-Course Coverage</td></tr>
+        <tr><th>Headline</th><td>Golf-Course Coverage</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>waterproof</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Easy Carry</h3>
+      <p class="note">Icon design (not a field): Handle / hand</p>
+      <table>
+        <tr><th>Handle</th><td>vented-canopy-golf-umbrella-f5</td></tr>
+        <tr><th>Name</th><td>Vented Canopy Golf Umbrella — Easy Carry</td></tr>
+        <tr><th>Headline</th><td>Easy Carry</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-nexbelt-braided-golf-belt">
+    <h2>Nexbelt Braided Golf Belt</h2>
+    <p class="phandle">product handle: nexbelt-braided-golf-belt</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Flexible Comfort</h3>
+      <p class="note">Icon design (not a field): Stretch arrows</p>
+      <table>
+        <tr><th>Handle</th><td>nexbelt-braided-golf-belt-f1</td></tr>
+        <tr><th>Name</th><td>Nexbelt Braided Golf Belt — Flexible Comfort</td></tr>
+        <tr><th>Headline</th><td>Flexible Comfort</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Adjustable Fit</h3>
+      <p class="note">Icon design (not a field): Belt buckle</p>
+      <table>
+        <tr><th>Handle</th><td>nexbelt-braided-golf-belt-f2</td></tr>
+        <tr><th>Name</th><td>Nexbelt Braided Golf Belt — Adjustable Fit</td></tr>
+        <tr><th>Headline</th><td>Adjustable Fit</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Braided Construction</h3>
+      <p class="note">Icon design (not a field): Braided texture</p>
+      <table>
+        <tr><th>Handle</th><td>nexbelt-braided-golf-belt-f3</td></tr>
+        <tr><th>Name</th><td>Nexbelt Braided Golf Belt — Braided Construction</td></tr>
+        <tr><th>Headline</th><td>Braided Construction</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Made for Golf</h3>
+      <p class="note">Icon design (not a field): Golfer</p>
+      <table>
+        <tr><th>Handle</th><td>nexbelt-braided-golf-belt-f4</td></tr>
+        <tr><th>Name</th><td>Nexbelt Braided Golf Belt — Made for Golf</td></tr>
+        <tr><th>Headline</th><td>Made for Golf</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Course-to-Club Style</h3>
+      <p class="note">Icon design (not a field): Pants / belt</p>
+      <table>
+        <tr><th>Handle</th><td>nexbelt-braided-golf-belt-f5</td></tr>
+        <tr><th>Name</th><td>Nexbelt Braided Golf Belt — Course-to-Club Style</td></tr>
+        <tr><th>Headline</th><td>Course-to-Club Style</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+  <section class="product" id="p-backpack">
+    <h2>Backpack</h2>
+    <p class="phandle">product handle: backpack</p>
+    <article class="feat">
+      <div class="slot">Feature 1</div>
+      <h3>Everyday Carry</h3>
+      <p class="note">Icon design (not a field): Backpack</p>
+      <table>
+        <tr><th>Handle</th><td>backpack-f1</td></tr>
+        <tr><th>Name</th><td>Backpack — Everyday Carry</td></tr>
+        <tr><th>Headline</th><td>Everyday Carry</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 2</div>
+      <h3>Organized Storage</h3>
+      <p class="note">Icon design (not a field): Compartments</p>
+      <table>
+        <tr><th>Handle</th><td>backpack-f2</td></tr>
+        <tr><th>Name</th><td>Backpack — Organized Storage</td></tr>
+        <tr><th>Headline</th><td>Organized Storage</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 3</div>
+      <h3>Golf-Travel Ready</h3>
+      <p class="note">Icon design (not a field): Golf bag / travel</p>
+      <table>
+        <tr><th>Handle</th><td>backpack-f3</td></tr>
+        <tr><th>Name</th><td>Backpack — Golf-Travel Ready</td></tr>
+        <tr><th>Headline</th><td>Golf-Travel Ready</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 4</div>
+      <h3>Durable Construction</h3>
+      <p class="note">Icon design (not a field): Shield</p>
+      <table>
+        <tr><th>Handle</th><td>backpack-f4</td></tr>
+        <tr><th>Name</th><td>Backpack — Durable Construction</td></tr>
+        <tr><th>Headline</th><td>Durable Construction</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>diamond</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 5</div>
+      <h3>Easy to Carry</h3>
+      <p class="note">Icon design (not a field): Shoulder straps</p>
+      <table>
+        <tr><th>Handle</th><td>backpack-f5</td></tr>
+        <tr><th>Name</th><td>Backpack — Easy to Carry</td></tr>
+        <tr><th>Headline</th><td>Easy to Carry</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 6</div>
+      <h3>The Gift of Galway</h3>
+      <p class="note">Icon design (not a field): Gift box</p>
+      <table>
+        <tr><th>Handle</th><td>backpack-f1</td></tr>
+        <tr><th>Name</th><td>Backpack — The Gift of Galway</td></tr>
+        <tr><th>Headline</th><td>The Gift of Galway</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 7</div>
+      <h3>Digital Delivery</h3>
+      <p class="note">Icon design (not a field): Cursor / email</p>
+      <table>
+        <tr><th>Handle</th><td>backpack-f2</td></tr>
+        <tr><th>Name</th><td>Backpack — Digital Delivery</td></tr>
+        <tr><th>Headline</th><td>Digital Delivery</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 8</div>
+      <h3>They Choose the Gear</h3>
+      <p class="note">Icon design (not a field): Apparel selection</p>
+      <table>
+        <tr><th>Handle</th><td>backpack-f3</td></tr>
+        <tr><th>Name</th><td>Backpack — They Choose the Gear</td></tr>
+        <tr><th>Headline</th><td>They Choose the Gear</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 9</div>
+      <h3>They Choose the Fit</h3>
+      <p class="note">Icon design (not a field): Size / ruler</p>
+      <table>
+        <tr><th>Handle</th><td>backpack-f4</td></tr>
+        <tr><th>Name</th><td>Backpack — They Choose the Fit</td></tr>
+        <tr><th>Headline</th><td>They Choose the Fit</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td>measure</td></tr>
+      </table>
+    </article>
+    <article class="feat">
+      <div class="slot">Feature 10</div>
+      <h3>Easy Gifting</h3>
+      <p class="note">Icon design (not a field): Calendar / gift</p>
+      <table>
+        <tr><th>Handle</th><td>backpack-f5</td></tr>
+        <tr><th>Name</th><td>Backpack — Easy Gifting</td></tr>
+        <tr><th>Headline</th><td>Easy Gifting</td></tr>
+        <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+        <tr><th>Icon key</th><td class="empty">(leave empty)</td></tr>
+      </table>
+    </article>
+  </section>
+</body>
+</html>

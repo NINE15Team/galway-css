@@ -583,6 +583,14 @@ p:empty {
   fill: currentColor;
 }
 
+/* Lucide social glyphs (IG/YT/etc.) are stroke paths — .icon-default fill
+   turns them into solid blobs. Keep stroke-only rendering. */
+.social-icons__icon--stroke.icon-default,
+.social-icons__icon--stroke {
+  fill: none;
+  stroke: currentColor;
+}
+
 [data-placeholder='true'] * {
   cursor: default;
 }
@@ -618,6 +626,12 @@ body,
 
 /* Typography presets */
 
+/* Cap browser/default bold at 600 — never 700+ */
+b,
+strong {
+  font-weight: var(--font-weight-bold, 600);
+}
+
 h1,
 .h1.h1,
 .text-block.h1 > *,
@@ -629,7 +643,8 @@ h1,
   line-height: var(--font-h1--line-height);
   letter-spacing: var(--font-h1--letter-spacing);
   text-transform: var(--font-h1--case);
-  color: var(--color);
+  /* Brand Book light: H1 = Green. Explicit --color (e.g. white on dark) still wins. */
+  color: var(--color, var(--gb-green));
 }
 
 @media screen and (max-width: 1200px) {
@@ -1334,7 +1349,7 @@ summary:hover {
   tr:not(:has(td)),
   thead {
     background-color: rgb(var(--color-foreground-rgb) / var(--opacity-5));
-    font-weight: bold;
+    font-weight: 600;
     text-transform: uppercase;
   }
 
@@ -1866,13 +1881,13 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
    block opts into via its `css_class` setting. Nothing here can reach a section
    or block that does not set that class, so Horizon's own components are
    untouched. Values are the Galway design tokens:
-     hairline #ebebeb · rule #000 · chip border #d5d5d5 · surface #f8f8f8
+     hairline #e8e1d8 · rule #000 · chip border #d5d5d5 · surface #f8f8f8
      media zoom 1.04 · long duration .5s · ease
    ============================================================================ */
 
 .galway-hairline-tokens,
 :root {
-  --galway-hairline: #ebebeb;
+  --galway-hairline: #e8e1d8;
   --galway-media-zoom: 1.04;
   --galway-dur-long: 0.5s;
   --galway-dur-short: 0.1s;
@@ -1955,8 +1970,16 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 }
 
 /* --- Brand feature icons rendered on a dark ground ------------------------ */
-.galway-icon-inverse .galway-icon-img {
+.galway-icon-inverse .galway-icon-img,
+.galway-icon-inverse .icon-block__media,
+.galway-eyre-ring .galway-icon-img,
+.galway-eyre-ring .icon-block__media {
   filter: brightness(0) invert(1);
+}
+
+.galway-pdp-chip .galway-icon-img,
+.galway-pdp-chip .icon-block__media {
+  filter: brightness(0);
 }
 
 /* --- Inline section links: comp sets these plain, underline on hover ------ */
@@ -1972,6 +1995,43 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 /* --- Product card: hairline above the spec/blurb block -------------------- */
 .galway-card-meta {
   border-block-start: 1px solid var(--galway-hairline);
+}
+
+/* Comp product-card tags: bordered .m-tag chips (desktop 6/11 @ 10px). */
+.galway-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-content: start;
+  width: 100%;
+}
+
+.galway-card-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 11px;
+  border: 1px solid #d5d5d5;
+  background: #f8f8f8;
+  color: #50586a;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: inherit;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 749px) {
+  /* Mobile .m-tag: 5px/9px @ 9px */
+  .galway-card-badges {
+    gap: 5px;
+  }
+
+  .galway-card-badge {
+    padding: 5px 9px;
+    font-size: 0.5625rem;
+  }
 }
 
 /* --- Best-seller cards: equal height, sale price, full-width Quick Add ----- */
@@ -2007,7 +2067,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 
 .galway-product-grid .price-item--sale,
 .galway-product-grid .price__sale .price-item:not(.compare-at-price) {
-  color: #c0392b;
+  color: var(--gb-sale);
 }
 
 .galway-product-grid .compare-at-price {
@@ -2041,6 +2101,15 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 .galway-promo-tile .group-block-content {
   width: 100%;
   margin-top: auto;
+}
+
+.galway-promo-tile .galway-collection-promo__cta,
+.galway-promo-tile .button-custom {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  width: fit-content;
+  height: auto;
+  max-height: none;
 }
 
 @media screen and (min-width: 750px) {
@@ -2106,7 +2175,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 .galway-hero .hero-cta .button:last-child:hover,
 .galway-hero .group-block-content > .button:last-child:hover {
   background: #fff;
-  color: #00182d;
+  color: #383b28;
 }
 
 /* --- Featured product: 520px shot, 400px teaser, right-edge bleed --------- */
@@ -2595,7 +2664,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
    left of the copy column. Horizon emits prev and next as two separate
    `__arrows` divs either side of the pagination, so they are re-ordered here. */
 .galway-feature slideshow-controls[pagination-position] {
-  --color-active: #00182d;
+  --color-active: #383b28;
   --color: #d5d5d5;
 
   display: flex;
@@ -2695,7 +2764,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 }
 
 .galway-feature .slideshow-controls__bar button[aria-selected='true'] {
-  background: #00182d;
+  background: #383b28;
   box-shadow: none;
 }
 
@@ -2791,7 +2860,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     anchor-name: --galway-reviews-meta;
     min-height: 46px;
     padding-block-end: 14px;
-    border-block-end: 1px solid #00182d;
+    border-block-end: 1px solid #383b28;
   }
 
   .galway-reviews-meta > .group-block-content {
@@ -2894,7 +2963,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 .galway-footer-nl,
 .galway-footer-cols,
 .galway-footer-utils {
-  --galway-footer-muted: #ababaa;
+  --galway-footer-muted: #7d705f;
   --galway-footer-hairline: rgba(255, 255, 255, 0.18);
   color: #c7c7c7;
 }
@@ -2948,8 +3017,8 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 .galway-footer-cols .menu__item,
 .galway-footer-cols .menu__item a {
   font-family: var(--font-heading--family);
-  font-size: 1.125rem;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: 200;
   line-height: 1.5;
   letter-spacing: 0;
   text-transform: none;
@@ -3112,17 +3181,17 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   .galway-footer-nl .email-signup__input {
     background: #fff;
     border-color: #fff;
-    color: #00182d;
+    color: #383b28;
   }
 
   .galway-footer-nl .email-signup__input::placeholder {
-    color: #ababaa;
+    color: #7d705f;
   }
 
   .galway-footer-nl .email-signup__button {
     font-size: 0;
     background: #fff;
-    color: #00182d;
+    color: #383b28;
   }
 
   .galway-footer-nl .email-signup__button::after {
@@ -3251,14 +3320,30 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
    set on that child - a rule on `product-price` itself is overridden by it. */
 .galway-pdp-price-row .text-block.h4 > * {
   font-family: var(--font-heading--family);
-  font-size: 1.875rem;
+  font-size: 20px;
   font-weight: 400;
   line-height: 1;
 }
 
+/* Comp: sale figure in --gb-sale, compare-at struck grey beside it */
+.galway-pdp-price-row product-price:has(.compare-at-price) .price,
+.galway-pdp .sticky-add-to-cart__price product-price:has(.compare-at-price) .price,
+.galway-buy-sheet__price product-price:has(.compare-at-price) .price {
+  color: var(--gb-sale);
+}
+
+.galway-pdp-price-row .compare-at-price,
+.galway-pdp .sticky-add-to-cart__price .compare-at-price,
+.galway-buy-sheet__price .compare-at-price {
+  color: #5c5c5b;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  text-decoration-skip-ink: none;
+}
+
 @media screen and (max-width: 749px) {
   .galway-pdp-price-row .text-block.h4 > * {
-    font-size: 1.25rem;
+    font-size: 16px;
   }
 }
 
@@ -3283,41 +3368,66 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   border-block: 1px solid var(--galway-hairline);
 }
 
+.galway-pdp-chips > .group-block-content:has(> .galway-pdp-chip) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  gap: 0;
+  width: 100%;
+}
+
+.galway-pdp-chip {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 12px;
+  text-align: left;
+}
+
 .galway-pdp-chip + .galway-pdp-chip {
   border-inline-start: 1px solid var(--galway-hairline);
 }
 
-/* Comp keeps the three features side by side on a phone; the group's fill
-   width makes them wrap to one per row otherwise. */
+.galway-pdp-chip p {
+  margin: 0;
+  font-family: var(--font-subheading--family);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.galway-pdp-chip .icon-block img {
+  width: 28px !important;
+  height: 28px !important;
+  object-fit: contain;
+  display: block;
+}
+
 @media screen and (max-width: 749px) {
-  .galway-pdp-chips > .group-block-content {
-    display: grid;
+  .galway-pdp-chips > .group-block-content:has(> .galway-pdp-chip) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: start;
     gap: 14px;
   }
 
-  .galway-pdp-chips > .group-block-content > .group-block {
-    width: auto;
-  }
-
-  /* The chips lay out as a row on mobile, which centres each icon against a
-     label of a different depth and staggers them. The comp stacks icon over
-     label, centred - that also puts every icon on the same line. */
-  .galway-pdp-chips > .group-block-content > .group-block > .group-block-content {
+  .galway-pdp-chip {
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 12px;
     text-align: center;
+    padding: 12px 6px;
+    border-inline-start: none;
   }
 
-  .galway-pdp-chip .text-block p {
+  .galway-pdp-chip + .galway-pdp-chip {
+    border-inline-start: none;
+  }
+
+  .galway-pdp-chip p {
     font-size: 0.5625rem;
   }
 
-  /* The icon PNGs are not all the same aspect, so a fixed box keeps the three
-     on one line rather than letting each wrapper size to its own artwork. */
   .galway-pdp-chip .icon-block {
     display: flex;
     align-items: flex-start;
@@ -3325,9 +3435,6 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     height: 26px;
   }
 
-  /* The icon block's width setting is emitted inline, so only `!important`
-     reaches it. A uniform box is what keeps the three icons on one line - the
-     PNGs have different aspect ratios. */
   .galway-pdp-chip .icon-block img {
     width: 26px !important;
     height: 26px !important;
@@ -3343,21 +3450,6 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 .galway-pdp-why-card {
   --font-h4--size: clamp(1.0625rem, 1.6vw, 1.25rem);
   background-color: #f8f8f8;
-}
-
-@media screen and (max-width: 749px) {
-  .galway-pdp-chips .group-block-content.layout-panel-flex--row {
-    flex-wrap: wrap;
-  }
-
-  .galway-pdp-chip {
-    border-inline-start: none;
-    width: 100%;
-  }
-
-  .galway-pdp-chip + .galway-pdp-chip {
-    border-block-start: 1px solid var(--galway-hairline);
-  }
 }
 
 /* ============================================================================
@@ -3885,7 +3977,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 }
 
 .galway-progress__hit[aria-selected='true'] .galway-progress__seg {
-  background: #00182d;
+  background: #383b28;
 }
 
 .galway-progress__counter {
@@ -4071,12 +4163,17 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
    ============================================================================ */
 
 .galway-pdp-price-row {
-  border-block-end: 1px solid var(--galway-hairline, #ebebeb);
+  border-block-end: 1px solid var(--galway-hairline, #e8e1d8);
 }
 
 .galway-pdp-quote {
   background: #f8f8f8;
-  border-inline-start: 2px solid #00182d;
+  border-inline-start: 2px solid #383b28;
+}
+
+/* Hide featured-review chrome when quote metafields are empty */
+.galway-pdp-quote:not(:has(.text-block)) {
+  display: none;
 }
 
 .galway-pdp-quote > .group-block-content {
@@ -4182,7 +4279,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 }
 
 .galway-pdp [class*='media-gallery'] .galway-progress__hit[aria-selected='true'] .galway-progress__seg {
-  background: #00182d;
+  background: #383b28;
 }
 
 /* Comp repeats the track and the arrows on the bottom edge of the frame. */
@@ -4221,7 +4318,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   padding: 0;
   border: 0;
   background: transparent;
-  color: #00182d;
+  color: #383b28;
   opacity: 1;
 }
 
@@ -4244,7 +4341,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 }
 
 .galway-pdp [class*='media-gallery'] slideshow-arrows .slideshow-control svg {
-  color: #00182d;
+  color: #383b28;
 }
 
 .galway-pdp [class*='media-gallery'] slideshow-arrows .slideshow-control svg path {
@@ -4253,9 +4350,10 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 
 /* Horizon splits the grid gap into half-gap padding on each column, so the frame
    and the details each sit 20px inside their track. The comp runs both to the
-   full column edge and puts the whole 72px between them. Matching the shape of
-   Horizon's own nested selector clears its (0,4,0). */
-@media screen and (min-width: 750px) {
+   full column edge and puts the whole 72px between them — but only on desktop
+   (≥990px), where we also set column-gap: 72px. Leave Horizon's half-gap padding
+   alone on tablet so media/details aren't flush. */
+@media screen and (min-width: 990px) {
   .galway-pdp
     .product-information__grid.product-information--media-left:not(.product-information--media-none)
     .product-information__media,
@@ -4302,18 +4400,80 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   min-height: 620px;
 }
 
+.galway-eyre-ring,
 .galway-eyre-ring > .group-block-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 76px;
-  height: 76px;
+  width: 76px !important;
+  height: 76px !important;
+  min-width: 76px;
+  min-height: 76px;
   border-radius: 50%;
-  background: #00182d;
+  background-color: #383b28 !important;
+  background: #383b28 !important;
 }
 
 .galway-eyre-copy {
   text-align: center;
+}
+
+.galway-eyre-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: 100%;
+  align-self: center;
+  margin-inline: auto;
+  margin-block-end: 8px;
+  padding: 8px 16px;
+  background-color: #383b28;
+  color: #fff;
+}
+
+.galway-eyre-badge p {
+  margin: 0;
+  font-family: var(--font-subheading--family);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.galway-eyre-specs {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 32px;
+  width: 100% !important;
+  max-width: 100%;
+  margin-block-start: 24px;
+}
+
+.galway-eyre-spec {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+  width: auto !important;
+  min-width: 88px;
+  max-width: 120px;
+}
+
+.galway-eyre-spec p {
+  margin: 0;
+  font-family: var(--font-subheading--family);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
 }
 
 @media screen and (max-width: 749px) {
@@ -4325,9 +4485,12 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     padding: 48px 16px !important;
   }
 
+  .galway-eyre-ring,
   .galway-eyre-ring > .group-block-content {
-    width: 64px;
-    height: 64px;
+    width: 64px !important;
+    height: 64px !important;
+    min-width: 64px;
+    min-height: 64px;
   }
 }
 
@@ -4344,6 +4507,69 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 
 .galway-pdp-feature > .group-block-content {
   align-content: start;
+}
+
+.galway-pdp-features-row {
+  /* Comp: 5 × custom_width 20 + gap 24 across page-width. Slot size stays
+     fixed so 3 items keep the same spacing and sit centered. */
+  --galway-feature-gap: 24px;
+  --galway-feature-slot: calc((100% - (4 * var(--galway-feature-gap))) / 5);
+
+  display: flex !important;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--galway-feature-gap);
+  width: 100% !important;
+  align-self: stretch;
+}
+
+.galway-pdp-features .galway-pdp-feature {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  color: #fff;
+  flex: 0 0 var(--galway-feature-slot);
+  width: var(--galway-feature-slot);
+  max-width: var(--galway-feature-slot);
+  box-sizing: border-box;
+}
+
+.galway-pdp-features .galway-pdp-feature h3 {
+  margin: 0;
+  font-family: var(--font-subheading--family) !important;
+  font-size: 0.6875rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  text-transform: uppercase !important;
+  color: #fff !important;
+}
+
+.galway-pdp-features .galway-pdp-feature p {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.galway-pdp-features .galway-pdp-feature .icon-block img,
+.galway-pdp-features .galway-pdp-feature .galway-icon-img {
+  width: 44px !important;
+  height: 44px !important;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+@media screen and (max-width: 749px) {
+  .galway-pdp-features-row {
+    --galway-feature-gap: 16px;
+    --galway-feature-slot: calc((100% - (2 * var(--galway-feature-gap))) / 3);
+    flex-wrap: wrap;
+  }
 }
 
 /* Product-list header: heading left, link right, closed by a rule. Shopify
@@ -4386,7 +4612,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     column-gap: 10px;
     row-gap: 4px;
     padding: 12px 16px;
-    border-top: 1px solid #ebebeb;
+    border-top: 1px solid #e8e1d8;
     box-shadow: 0 0 40px rgb(0 0 0 / 7.5%);
   }
 
@@ -4477,6 +4703,50 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   text-transform: uppercase;
 }
 
+/* PDP badge row: olive fill + white type, cell dividers (not card .m-tag chips). */
+.galway-pdp .product-details [class*='badge'].text-block--background {
+  --text-padding: 0;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.galway-pdp-badges {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: fit-content;
+  max-width: 100%;
+  background: transparent;
+}
+
+.galway-pdp-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-inline-end: 1px solid rgb(255 255 255 / 0.35);
+  color: #fff;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: inherit;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.galway-pdp-badge:last-child {
+  border-inline-end: 0;
+}
+
+@media screen and (max-width: 749px) {
+  .galway-pdp-badge {
+    padding: 8px 12px;
+    font-size: 0.5625rem;
+  }
+}
+
 .galway-pdp .product-details h1 {
   font-family: var(--font-heading--family);
   font-size: 2.375rem;
@@ -4490,10 +4760,18 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 .galway-pdp-quote [class*='quote_text'] p {
   color: #000;
   font-family: var(--font-heading--family);
-  font-size: 1rem;
+  font-size: 12px;
   font-style: italic;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1.55;
+}
+
+.galway-pdp-quote [class*='quote_text'] p:not(:empty)::before {
+  content: '“';
+}
+
+.galway-pdp-quote [class*='quote_text'] p:not(:empty)::after {
+  content: '”';
 }
 
 .galway-pdp-quote [class*='quote_author'] p {
@@ -4631,7 +4909,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 .galway-product-grid product-price:has(.compare-at-price) .price,
 .galway-product-list product-price:has(.compare-at-price) .price,
 .quick-add-modal product-price:has(.compare-at-price) .price {
-  color: #ea4a4a;
+  color: var(--gb-sale);
 }
 
 .galway-product-grid .compare-at-price,
@@ -4708,7 +4986,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 }
 
 #MainContent .galway-facets-hide {
-  color: #00182d;
+  color: #383b28;
 }
 
 /* Horizon's own "Filters" heading is replaced by the header above. */
@@ -4725,7 +5003,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   border: 1px solid #000;
   border-radius: 0;
   background: none;
-  color: #00182d;
+  color: #383b28;
   font-size: 0.6875rem;
   font-weight: 500;
   line-height: 1;
@@ -4782,7 +5060,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     height: auto;
     margin: 0;
     padding: 0;
-    border-bottom: 1px solid #ebebeb;
+    border-bottom: 1px solid #e8e1d8;
     background: #fff;
   }
 
@@ -4799,7 +5077,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   }
 
   .galway-product-grid .facets-toggle > *:first-child {
-    border-right: 1px solid #ebebeb;
+    border-right: 1px solid #e8e1d8;
   }
 
   .galway-product-grid .facets-toggle .facets-toggle__wrapper,
@@ -4822,7 +5100,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     border-radius: 0;
     background: none;
     box-shadow: none;
-    color: #00182d;
+    color: #383b28;
     font-family: var(--font-body--family);
     font-size: 10px;
     font-weight: 600;
@@ -4911,7 +5189,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     align-items: center;
     gap: 8px;
     padding: 14px 16px;
-    border-bottom: 1px solid #ebebeb;
+    border-bottom: 1px solid #e8e1d8;
     overflow-x: auto;
   }
 
@@ -4920,7 +5198,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     padding: 5px 9px;
     border: 1px solid #d5d5d5;
     background: #f8f8f8;
-    color: #00182d;
+    color: #383b28;
     font-size: 9px;
     font-weight: 500;
     line-height: 1;
@@ -4958,7 +5236,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     align-items: center;
     gap: 8px;
     padding: 14px 16px;
-    border-bottom: 1px solid #ebebeb;
+    border-bottom: 1px solid #e8e1d8;
     overflow-x: auto;
   }
 
@@ -5047,7 +5325,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 }
 
 .galway-footer-nl [class*='note_newsletter'] p {
-  color: #ababaa;
+  color: #7d705f;
 }
 
 .galway-footer-nl .email-signup-block input[type='email'],
@@ -5059,6 +5337,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 .galway-footer-nl .email-signup-block input[type='email'] {
   padding-block: 0;
   line-height: 44px;
+  margin: auto;
 }
 
 /* ============================================================================
@@ -5069,14 +5348,75 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
    width. Yotpo's own markup is left alone so its updates keep working.
    ============================================================================ */
 
+/* Beat Judge.me's injected :root greens so the PDP summary matches the
+   navy + orange reference. */
+html {
+  --jdgm-star-color: #e6731a !important;
+  --jdgm-snippet-star-color: #e6731a !important;
+  --jdgm-primary-color: #2c517e !important;
+  --jdgm-paginate-color: #2c517e !important;
+  --jdgm-write-review-bg-color: #2c517e !important;
+  --jdgm-write-review-text-color: #ffffff !important;
+  --jdgm-secondary-color: rgba(44, 81, 126, 0.12) !important;
+  --jdgm-reviewer-name-color: #2c517e !important;
+}
+
 .galway-pdp-reviews .galway-pdp-reviews__heading,
 .galway-pdp-reviews h2 {
   text-align: center;
+  color: #383b28;
+}
+
+/* Judge.me summary: comp / live reference uses navy accents + orange stars
+   (not brand green for stars/bars/CTA). */
+.galway-pdp-reviews,
+.galway-pdp-reviews .jdgm-widget,
+.galway-pdp-reviews .jdgm-rev-widg {
+  --jdgm-star-color: #e6731a;
+  --jdgm-primary-color: #2c517e;
+  --jdgm-paginate-color: #2c517e;
+  --jdgm-write-review-bg-color: #2c517e;
+  --jdgm-write-review-text-color: #ffffff;
+  --jdgm-secondary-color: rgba(44, 81, 126, 0.12);
+  --jdgm-reviewer-name-color: #2c517e;
+}
+
+.galway-pdp-reviews .jdgm-star,
+.galway-pdp-reviews .jdgm-star:before {
+  color: #e6731a !important;
+}
+
+.galway-pdp-reviews .jdgm-rev-widg__summary-average,
+.galway-pdp-reviews .jdgm-rev-widg__summary-stars,
+.galway-pdp-reviews .jdgm-histogram__bar-frequency,
+.galway-pdp-reviews .jdgm-histogram__star,
+.galway-pdp-reviews .jdgm-histogram__frequency {
+  color: #2c517e !important;
+}
+
+.galway-pdp-reviews .jdgm-histogram__bar-content {
+  background-color: #2c517e !important;
+}
+
+.galway-pdp-reviews .jdgm-histogram__bar {
+  background-color: #eaeaea !important;
+}
+
+.galway-pdp-reviews .jdgm-write-rev-link,
+.galway-pdp-reviews .jdgm-btn,
+.galway-pdp-reviews .jdgm-submit-rev,
+.galway-pdp-reviews a.jdgm-write-rev-link {
+  background-color: #2c517e !important;
+  border-color: #2c517e !important;
+  color: #fff !important;
+  border-radius: 999px !important;
 }
 
 .galway-pdp-reviews .yotpo-main-widget,
 .galway-pdp-reviews .yotpo-widget-instance {
   width: 100%;
+  --yotpo-primary-color: #2c517e;
+  --yotpo-star-color: #e6731a;
 }
 
 /* Yotpo repeats a "Customer Reviews" title inside the widget; the comp's
@@ -5127,21 +5467,21 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 
 /* ============================================================================
    Galway - PDP Complete the System
-   Comp: one bordered card - eyebrow, then a 96px 4/5 thumbnail beside the
-   title, price and a 120x44 Add button. Horizon's product card stacks those
-   vertically, so the card content is re-gridded rather than re-built.
+   Comp: eyebrow + 96px 4/5 thumb | title / price / Add (120×44).
+   ADD is gallery quick-add (modal for multi-variant). Standalone ATC
+   had no form and always rendered disabled.
+   Collapsed until a real product-card lands (no skeleton jerk).
    ============================================================================ */
 
 .galway-complete {
   padding: 24px;
-  border: 1px solid #ebebeb;
+  border: 1px solid #e8e1d8;
 }
 
 .galway-complete > .group-block-content {
   gap: 16px;
 }
 
-/* Comp renders the label as an eyebrow, not a heading. */
 .galway-complete .text-block :is(h1, h2, h3, h4, h5, h6) {
   color: #5c5c5b;
   font-family: var(--font-body--family);
@@ -5152,32 +5492,97 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   text-transform: uppercase;
 }
 
-/* `.product-grid__card.product-grid__card` in compiled_assets is (0,2,0) and
-   lands after base.css, so a third class is needed to take the layout back. */
+.galway-complete:not(:has(product-card)) {
+  border: none;
+  padding: 0;
+}
+
+.galway-complete:not(:has(product-card)) > .group-block-content {
+  gap: 0;
+}
+
+.galway-complete:not(:has(product-card)) > .group-block-content > .text-block {
+  display: none;
+}
+
+.galway-complete:has(product-recommendations.hidden),
+.galway-complete:has([data-has-recommendations='false']) {
+  display: none;
+}
+
+.galway-complete .product-recommendations__skeleton-item {
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.galway-complete product-recommendations:not(:has(product-card)) {
+  display: block;
+  min-height: 1px;
+}
+
+.galway-complete .product-card {
+  position: relative;
+}
+
+.galway-complete .resource-list__item:nth-child(n + 2) {
+  display: none;
+}
+
+.galway-complete .resource-list--grid,
+.galway-complete .resource-list {
+  display: block;
+  width: 100%;
+}
+
+.galway-complete .resource-list__item {
+  width: 100%;
+}
+
+.galway-complete .resource-list__carousel .resource-list__slide {
+  --slide-width: 100%;
+}
+
 .galway-complete .product-card__content.product-grid__card {
   display: grid;
-  grid-template-rows: auto auto auto;
   grid-template-columns: 96px minmax(0, 1fr);
+  grid-template-rows: auto auto 44px;
   align-items: center;
   column-gap: 18px;
   row-gap: 10px;
   height: auto;
-}
-
-/* More than one recommendation is shown as a slider, one card at a time. */
-/* One card at a time. The slide width comes from `--slide-width`
-   (clamp(150px, 60cqw, 300px)) set by a (0,2,0) rule in compiled_assets, so the
-   variable is reset with a third class rather than fighting the width itself. */
-.galway-complete .resource-list__carousel .resource-list__slide {
-  --slide-width: 100%;
+  padding: 0;
+  --product-card-gap: 0px;
+  gap: 10px 18px;
 }
 
 .galway-complete .card-gallery {
   grid-row: 1 / 4;
   grid-column: 1;
+  align-self: center;
+  justify-self: start;
+  /* Snippet sets relative + overflow:hidden + container — clips relocated QA. */
+  position: static !important;
+  overflow: visible !important;
   width: 96px;
   aspect-ratio: 4 / 5;
   background: #f8f8f8;
+  container-type: normal !important;
+}
+
+.galway-complete .card-gallery .product-media-container,
+.galway-complete .card-gallery slideshow-component,
+.galway-complete .card-gallery slideshow-slides,
+.galway-complete .card-gallery .product-media {
+  width: 96px;
+  aspect-ratio: 4 / 5;
+  height: auto;
+  max-height: none;
 }
 
 .galway-complete .card-gallery img {
@@ -5186,25 +5591,37 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   object-fit: contain;
 }
 
-/* Duplicate title carried for the zoomed-out grid view. */
+.galway-complete .card-gallery slideshow-controls,
+.galway-complete .card-gallery slideshow-arrows {
+  display: none;
+}
+
+.galway-complete .card-gallery .product-badges {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 96px;
+  aspect-ratio: 4 / 5;
+  pointer-events: none;
+}
+
+.galway-complete .card-gallery .product-badges__badge {
+  pointer-events: auto;
+}
+
 .galway-complete .product-card__content > h3 {
   display: none;
 }
 
-/* The overlay quick-add would double up with the card's own Add button. */
-.galway-complete .quick-add {
-  display: none;
-}
-
-/* `product-price` also carries `.text-block`, so the title cell is scoped to
-   the div or the two land in the same grid row. */
-/* The title link is `display: contents`, so its div is the grid item while its
-   DOM parent is still the anchor - a child combinator would miss it. */
 .galway-complete .product-card__content div.text-block {
   grid-area: 1 / 2 / 2 / 3;
+  align-self: end;
+  padding: 0 !important;
+  margin: 0;
 }
 
 .galway-complete .product-card__content div.text-block p {
+  margin: 0;
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.35;
@@ -5214,6 +5631,9 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 
 .galway-complete product-price {
   grid-area: 2 / 2 / 3 / 3;
+  align-self: center;
+  padding: 0 !important;
+  margin: 0;
 }
 
 .galway-complete product-price .price {
@@ -5234,18 +5654,90 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   text-decoration: line-through;
 }
 
-.galway-complete .product-card__content > span:has(add-to-cart-component),
-.galway-complete .product-card__content > span:last-child {
+/* Spacer so row 3 exists; quick-add paints over it. */
+.galway-complete .product-card__content.product-grid__card::after {
+  content: '';
   grid-area: 3 / 2 / 4 / 3;
   justify-self: start;
+  width: 120px;
+  height: 44px;
 }
 
-#MainContent .galway-complete .add-to-cart-button.button-secondary {
-  width: 120px;
-  min-width: 0;
+.galway-complete .quick-add,
+.galway-complete .product-card__quick-add {
+  display: block;
+  position: absolute;
+  inset: auto auto 0 calc(96px + 18px);
+  width: auto;
+  height: auto;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.galway-complete .card-gallery:hover .quick-add__button,
+#MainContent .galway-complete .quick-add__button.quick-add__button,
+#MainContent .galway-complete .quick-add__button.quick-add__button:is(:hover, :focus-visible),
+#MainContent .galway-complete .quick-add__button.quick-add__button[data-added='true'] {
+  position: static;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 120px !important;
+  min-width: 120px;
+  max-inline-size: none;
   height: 44px;
   min-height: 44px;
   padding: 0;
+  border: 1px solid #cfc9c0;
+  border-radius: 0;
+  background: #fff;
+  color: #1a1a1a;
+  opacity: 1 !important;
+  overflow: visible;
+  transform: none;
+  scale: none !important;
+  translate: none;
+  box-shadow: none;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition-property: background-color, color, border-color;
+  transition-duration: 0.1s;
+  backdrop-filter: none;
+}
+
+#MainContent .galway-complete .quick-add__button.quick-add__button:is(:hover, :focus-visible)::before {
+  content: none;
+}
+
+#MainContent .galway-complete .quick-add__button.quick-add__button--choose {
+  font-size: 0 !important;
+  letter-spacing: 0 !important;
+}
+
+#MainContent .galway-complete .quick-add__button.quick-add__button--choose::after {
+  content: 'Add';
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#MainContent .galway-complete .quick-add__button.quick-add__button:hover {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #fff;
+}
+
+#MainContent .galway-complete .quick-add__button--choose:hover::after {
+  color: #fff;
+}
+
+.galway-complete .quick-add__button .add-to-cart-icon {
+  display: none;
 }
 
 /* ============================================================================
@@ -5326,11 +5818,20 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 /* Cells carry their own padding so the column wash reaches the row edges. */
 .galway-spec-row > .group-block-content > * {
   padding: 12px 16px;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid #e8e1d8;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.6;
   text-align: left;
+}
+
+/* Feature labels stay left; product columns center like the SpecTable. */
+.galway-spec-row > .group-block-content > .text-block:nth-of-type(n + 2) {
+  text-align: center;
+}
+
+.galway-spec-row > .group-block-content > .text-block:nth-of-type(n + 2) > * {
+  text-align: center;
 }
 
 /* Cells render as `rte-formatter.text-block`, and Horizon can emit a <style>
@@ -5364,7 +5865,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
    on text, so the dash is emitted inside <em> - one of the few tags rich text
    keeps - and the italics are reset here. */
 .galway-spec-row .text-block em {
-  color: #ababaa;
+  color: #7d705f;
   font-style: normal;
 }
 
@@ -5396,7 +5897,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     /* Background runs full width while the content stays on the comp's
        1840px column (1776px inside its 32px padding). */
     padding: 14px max(32px, calc((100% - 1776px) / 2));
-    border-top: 1px solid #ebebeb;
+    border-top: 1px solid #e8e1d8;
     border-radius: 0;
     box-shadow: 0 0 40px rgb(0 0 0 / 7.5%);
     transform: translateY(100%);
@@ -5512,7 +6013,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   }
 
   #MainContent .galway-sticky-swatch[aria-pressed='true'] {
-    border-color: #00182d;
+    border-color: #383b28;
   }
 
   #MainContent .galway-sticky-swatch[data-unavailable='true'] {
@@ -5526,7 +6027,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     border: 1px solid #d5d5d5;
     border-radius: 0;
     background: transparent;
-    color: #00182d;
+    color: #383b28;
     font-size: 0.8125rem;
   }
 
@@ -5653,8 +6154,8 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   .galway-buy-sheet__stars {
     background: linear-gradient(
       90deg,
-      #00182d 0,
-      #00182d var(--galway-rating, 100%),
+      #383b28 0,
+      #383b28 var(--galway-rating, 100%),
       #d5d5d5 var(--galway-rating, 100%)
     );
     background-clip: text;
@@ -5692,7 +6193,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   }
 
   #MainContent .galway-buy-sheet__swatch[aria-pressed='true'] {
-    border-color: #00182d;
+    border-color: #383b28;
   }
 
   .galway-buy-sheet__swatch .swatch {
@@ -5733,7 +6234,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     display: none;
     gap: 16px;
     padding-top: 4px;
-    border-top: 1px solid #ebebeb;
+    border-top: 1px solid #e8e1d8;
   }
 
   .galway-buy-sheet[data-open='true'] .galway-buy-sheet__sizes {
@@ -5863,4 +6364,8 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     grid-template-columns: 7fr 5fr;
     column-gap: 72px;
   }
+}
+.galway-pdp-price-row .text-block.h4
+product-price{
+  margin-top: 15px;
 }

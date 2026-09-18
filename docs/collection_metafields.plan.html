@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PDP data collections — Option B (LIVE)</title>
+  <style>
+    :root { --ink:#1a1a1a; --muted:#5c5c5b; --line:#e5e5e3; --bg:#f7f6f3; --card:#fff; --accent:#383b28; --chip:#eaeed7; --ok:#2f5d3a; --warn:#7d705f; }
+    * { box-sizing: border-box; }
+    body { margin:0; padding:32px 20px 80px; font:15px/1.45 system-ui,-apple-system,sans-serif; color:var(--ink); background:var(--bg); }
+    h1 { font-size:1.35rem; margin:0 0 8px; color:var(--accent); }
+    h2 { font-size:1.05rem; margin:0 0 6px; color:var(--accent); }
+    .hint { color:var(--muted); margin:0 0 24px; max-width:48rem; }
+    .banner { max-width:48rem; margin:0 auto 20px; padding:14px 16px; background:var(--chip); border:1px solid var(--line); border-radius:8px; color:var(--ok); font-weight:600; }
+    .steps { max-width:48rem; margin:0 auto 28px; padding:16px 18px; background:var(--card); border:1px solid var(--line); border-radius:8px; }
+    .steps ol { margin:8px 0 0; padding-left:1.2rem; }
+    .steps li { margin:6px 0; }
+    .card { max-width:48rem; margin:0 auto 16px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:18px 18px 12px; }
+    .tag { display:inline-block; font-size:11px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; background:var(--chip); color:var(--accent); padding:2px 8px; border-radius:3px; margin-bottom:8px; }
+    .tag.live { background:#d8eadc; color:var(--ok); }
+    table { width:100%; border-collapse:collapse; margin:8px 0 4px; }
+    th, td { text-align:left; vertical-align:top; padding:7px 8px; border-top:1px solid var(--line); font-size:13.5px; }
+    th { width:9.5rem; color:var(--muted); font-weight:500; }
+    td.copy { user-select:all; cursor:text; font-family:ui-monospace,Menlo,monospace; font-size:12.5px; }
+    .chips { display:flex; flex-wrap:wrap; gap:6px; }
+    .chip { font:12px/1.3 ui-monospace,Menlo,monospace; background:var(--chip); color:var(--accent); padding:5px 8px; border-radius:4px; user-select:all; cursor:text; }
+    .prods { font-size:13px; color:var(--muted); margin:8px 0 0; }
+    .prods code { font-size:12px; color:var(--ink); }
+    .note { font-size:13px; color:var(--muted); margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); }
+    .warn { border-left:3px solid var(--warn); padding-left:12px; }
+  </style>
+</head>
+<body>
+  <h1>Option B — exclusive PDP data collections</h1>
+  <p class="hint">
+    Live on galwaybay as of 2026-09-19. 7 collections · 35 products · 0 overlaps.
+    Theme inherits: product metafield → else first metafielded collection.
+  </p>
+
+  <div class="banner">✓ LIVE — all 7 collections created/verified. Online Store only. No nav entries.</div>
+
+  <div class="steps warn">
+    <strong>One cleanup still recommended</strong>
+    <p class="prods" style="margin:8px 0 0">
+      Merch collection <code>eyre-pro</code> (“Eyre Pro”) still has Product Family + Feature Callouts.
+      Clear those metafields so only <code>pdp-eyre-pro</code> drives inheritance.
+      Do <strong>not</strong> put family/callouts on other merch collections.
+    </p>
+  </div>
+
+  <article class="card">
+    <div class="tag live">1 / 7 · live</div>
+    <h2>PDP Data — Eyre Pro</h2>
+    <table>
+      <tr><th>Handle</th><td class="copy">pdp-eyre-pro</td></tr>
+      <tr><th>Product Family</th><td class="copy">eyre-pro</td></tr>
+      <tr><th>Feature Callouts</th><td>
+        <div class="chips">
+          <span class="chip">feat-30k-waterproof-breathable</span>
+          <span class="chip">feat-4-way-stretch</span>
+          <span class="chip">feat-weather-protection</span>
+        </div>
+      </td></tr>
+    </table>
+    <p class="prods"><code>claddagh-chino-rain-pant-new</code>, <code>clifden-golf-rain-jacket</code>, <code>nimmo-rain-vest</code>, <code>silverstrand-pull-up-pant</code></p>
+  </article>
+
+  <article class="card">
+    <div class="tag live">2 / 7 · live</div>
+    <h2>PDP Data — Lightweight Rain</h2>
+    <table>
+      <tr><th>Handle</th><td class="copy">pdp-lightweight-rain</td></tr>
+      <tr><th>Product Family</th><td class="copy">lightweight-rain</td></tr>
+      <tr><th>Feature Callouts</th><td>
+        <div class="chips">
+          <span class="chip">feat-20k-waterproof-breathable</span>
+          <span class="chip">feat-lightweight</span>
+          <span class="chip">feat-packable</span>
+        </div>
+      </td></tr>
+    </table>
+    <p class="prods"><code>ayle-rain-pant</code>, <code>erris-short-sleeve-rain-jacket</code>, <code>cleggan-rain-pull-over</code>, <code>tawin-rain-vest</code></p>
+  </article>
+
+  <article class="card">
+    <div class="tag live">3 / 7 · live</div>
+    <h2>PDP Data — Eyre Flex</h2>
+    <table>
+      <tr><th>Handle</th><td class="copy">pdp-eyre-flex</td></tr>
+      <tr><th>Product Family</th><td class="copy">eyre-flex</td></tr>
+      <tr><th>Feature Callouts</th><td>
+        <div class="chips">
+          <span class="chip">feat-4-way-stretch</span>
+          <span class="chip">feat-wind-protection</span>
+          <span class="chip">feat-weather-ready</span>
+        </div>
+      </td></tr>
+    </table>
+    <p class="prods"><code>barna-softshell-rain-quarter-zip</code>, <code>roundstone-softshell-jacket</code>, <code>inagh-softshell-vest</code>, <code>lombard-softshell-hoodie</code>, <code>spiddal-five-pocket-pant</code>, <code>leenane-softshell-jacket</code>, <code>monivea-softshell-pant</code>, <code>glynsk-softshell-skirt</code>, <code>clarinbridge-softshell-dress</code></p>
+  </article>
+
+  <article class="card">
+    <div class="tag live">4 / 7 · live</div>
+    <h2>PDP Data — Eyre Shield</h2>
+    <table>
+      <tr><th>Handle</th><td class="copy">pdp-eyre-shield</td></tr>
+      <tr><th>Product Family</th><td class="copy">eyre-shield</td></tr>
+      <tr><th>Feature Callouts</th><td>
+        <div class="chips">
+          <span class="chip">feat-upf-sun-protection</span>
+          <span class="chip">feat-lightweight</span>
+          <span class="chip">feat-breathable</span>
+        </div>
+      </td></tr>
+    </table>
+    <p class="prods"><code>taylor-upf-hoodie</code>, <code>mannin-upf-crewneck</code>, <code>gurteen-upf-quarter-zip</code>, <code>coral-upf-boatneck</code>, <code>ardra-women-s-upf-short-sleeve</code>, <code>renvy-women-s-upf-sleeves</code></p>
+  </article>
+
+  <article class="card">
+    <div class="tag live">5 / 7 · live</div>
+    <h2>PDP Data — Hybrid</h2>
+    <table>
+      <tr><th>Handle</th><td class="copy">pdp-hybrid</td></tr>
+      <tr><th>Product Family</th><td class="copy">hybrid</td></tr>
+      <tr><th>Feature Callouts</th><td>
+        <div class="chips">
+          <span class="chip">feat-lightweight-warmth</span>
+          <span class="chip">feat-low-bulk-comfort</span>
+          <span class="chip">feat-built-to-move</span>
+        </div>
+      </td></tr>
+    </table>
+    <p class="prods"><code>tullycross-hybrid-hoodie</code>, <code>moycullen-hybrid-vest</code>, <code>kylemore-hybrid-pullover</code>, <code>mens-fergus-hybrid-pullover-hoodie</code>, <code>loughrea-hybrid-jacket</code>, <code>athenry-hybrid-skirt</code>, <code>laune-womens-hybrid-midlayer</code>, <code>fane-hybrid-vest</code></p>
+  </article>
+
+  <article class="card">
+    <div class="tag live">6 / 7 · live</div>
+    <h2>PDP Data — Women’s Rain</h2>
+    <table>
+      <tr><th>Handle</th><td class="copy">pdp-womens-rain</td></tr>
+      <tr><th>Product Family</th><td class="copy">womens-rain</td></tr>
+      <tr><th>Feature Callouts</th><td>
+        <div class="chips">
+          <span class="chip">feat-waterproof-breathable</span>
+          <span class="chip">feat-4-way-stretch</span>
+          <span class="chip">feat-weather-protection</span>
+        </div>
+      </td></tr>
+    </table>
+    <p class="prods"><code>nore-golf-rain-jacket</code>, <code>clare-golf-rain-pant</code></p>
+  </article>
+
+  <article class="card">
+    <div class="tag live">7 / 7 · live</div>
+    <h2>PDP Data — Performance Layers</h2>
+    <table>
+      <tr><th>Handle</th><td class="copy">pdp-performance</td></tr>
+      <tr><th>Product Family</th><td class="copy">performance-layers</td></tr>
+      <tr><th>Feature Callouts</th><td>
+        <div class="chips">
+          <span class="chip">feat-performance-stretch</span>
+          <span class="chip">feat-breathable-comfort</span>
+          <span class="chip">feat-all-day-comfort</span>
+        </div>
+      </td></tr>
+    </table>
+    <p class="prods"><code>cashel-performance-quarter-zip</code>, <code>glassilaun-leggings</code></p>
+  </article>
+
+  <div class="steps">
+    <strong>Ongoing</strong>
+    <ol>
+      <li>New tech SKUs → add to the matching <code>pdp-*</code> collection only.</li>
+      <li>Product Feature Callouts only when that SKU needs different / extra chips.</li>
+      <li>Collection Promo tiles stay on merch collections (Best Sellers, etc.) — separate from PDP data.</li>
+    </ol>
+  </div>
+</body>
+</html>

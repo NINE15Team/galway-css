@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Product Family — copy into Shopify</title>
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --muted: #5c5c5b;
+      --line: #e5e5e3;
+      --bg: #f7f6f3;
+      --card: #fff;
+      --accent: #383b28;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 32px 20px 64px;
+      font: 15px/1.45 system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+    h1 { font-size: 1.35rem; margin: 0 0 8px; color: var(--accent); }
+    .hint { color: var(--muted); margin: 0 0 28px; max-width: 52rem; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px 22px 8px;
+      margin: 0 auto 20px;
+      max-width: 52rem;
+    }
+    .card h2 {
+      margin: 0 0 4px;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+    .handle {
+      font: 12px/1.4 ui-monospace, Menlo, monospace;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 12px;
+    }
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 8px 10px;
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+    }
+    th {
+      width: 9.5rem;
+      color: var(--muted);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    td {
+      user-select: all;
+      cursor: text;
+    }
+    td.empty { color: #bbb; font-style: italic; user-select: none; }
+    .copy-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0 0 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Product Family entries</h1>
+  <p class="hint">
+    Open this file in a browser. Click any value cell to select it, then ⌘C / Ctrl+C and paste into Shopify
+    <strong>Content → Metaobjects → Product Family</strong>. Skip empty cells.
+  </p>
+
+  <article class="card">
+    <h2>Eyre Pro™ — Premium Rain</h2>
+    <div class="handle">handle: eyre-pro</div>
+    <p class="copy-hint">Click a value → copy → paste into Admin</p>
+    <table>
+      <tr><th>Name</th><td>Eyre Pro™ — Premium Rain</td></tr>
+      <tr><th>Badge</th><td>Never Miss a Day</td></tr>
+      <tr><th>Title</th><td>Powered by Eyre Pro™</td></tr>
+      <tr><th>Body</th><td>Our highest-performing waterproof fabric combines a laminated 3-layer construction with exceptional breathability, stretch, and durability.</td></tr>
+      <tr><th>Show module</th><td>true</td></tr>
+      <tr><th>Spec 1 label</th><td>Protection</td></tr>
+      <tr><th>Spec 1 icon</th><td>waterproof</td></tr>
+      <tr><th>Spec 2 label</th><td>Breathability</td></tr>
+      <tr><th>Spec 2 icon</th><td>sew</td></tr>
+      <tr><th>Spec 3 label</th><td>Mobility</td></tr>
+      <tr><th>Spec 3 icon</th><td>measure</td></tr>
+    </table>
+  </article>
+
+  <article class="card">
+    <h2>Lightweight Rain</h2>
+    <div class="handle">handle: lightweight-rain</div>
+    <table>
+      <tr><th>Name</th><td>Lightweight Rain</td></tr>
+      <tr><th>Badge</th><td>Ready When Weather Shifts</td></tr>
+      <tr><th>Title</th><td>Lightweight Rain Protection</td></tr>
+      <tr><th>Body</th><td>20K waterproof / 20K breathable protection in a packable build designed for fast deployment when weather turns.</td></tr>
+      <tr><th>Show module</th><td>true</td></tr>
+      <tr><th>Spec 1 label</th><td>Protection</td></tr>
+      <tr><th>Spec 1 icon</th><td>waterproof</td></tr>
+      <tr><th>Spec 2 label</th><td>Lightweight</td></tr>
+      <tr><th>Spec 2 icon</th><td>diamond</td></tr>
+      <tr><th>Spec 3 label</th><td>Packable</td></tr>
+      <tr><th>Spec 3 icon</th><td>zipper</td></tr>
+    </table>
+  </article>
+
+  <article class="card">
+    <h2>Eyre Flex™ — Softshell</h2>
+    <div class="handle">handle: eyre-flex</div>
+    <table>
+      <tr><th>Name</th><td>Eyre Flex™ — Softshell</td></tr>
+      <tr><th>Badge</th><td>Stretch Meets Shelter</td></tr>
+      <tr><th>Title</th><td>Powered by Eyre Flex™</td></tr>
+      <tr><th>Body</th><td>Softshell performance with stretch, wind protection, and weather resistance for versatile layering on and off the course.</td></tr>
+      <tr><th>Show module</th><td>true</td></tr>
+      <tr><th>Spec 1 label</th><td>Stretch</td></tr>
+      <tr><th>Spec 1 icon</th><td>measure</td></tr>
+      <tr><th>Spec 2 label</th><td>Wind</td></tr>
+      <tr><th>Spec 2 icon</th><td>diamond</td></tr>
+      <tr><th>Spec 3 label</th><td>Weather</td></tr>
+      <tr><th>Spec 3 icon</th><td>waterproof</td></tr>
+    </table>
+  </article>
+
+  <article class="card">
+    <h2>Eyre Shield™ — UPF</h2>
+    <div class="handle">handle: eyre-shield</div>
+    <table>
+      <tr><th>Name</th><td>Eyre Shield™ — UPF</td></tr>
+      <tr><th>Badge</th><td>Sun-Ready Performance</td></tr>
+      <tr><th>Title</th><td>Powered by Eyre Shield™</td></tr>
+      <tr><th>Body</th><td>UPF protection with a lightweight, breathable hand feel designed for long days in the sun.</td></tr>
+      <tr><th>Show module</th><td>true</td></tr>
+      <tr><th>Spec 1 label</th><td>UPF</td></tr>
+      <tr><th>Spec 1 icon</th><td>diamond</td></tr>
+      <tr><th>Spec 2 label</th><td>Lightweight</td></tr>
+      <tr><th>Spec 2 icon</th><td>measure</td></tr>
+      <tr><th>Spec 3 label</th><td>Breathability</td></tr>
+      <tr><th>Spec 3 icon</th><td>waterproof</td></tr>
+    </table>
+  </article>
+
+  <article class="card">
+    <h2>Hybrid</h2>
+    <div class="handle">handle: hybrid</div>
+    <table>
+      <tr><th>Name</th><td>Hybrid</td></tr>
+      <tr><th>Badge</th><td>Warmth Without Bulk</td></tr>
+      <tr><th>Title</th><td>Hybrid Performance Layering</td></tr>
+      <tr><th>Body</th><td>Targeted insulation with lightweight warmth and mobility for swing-ready layering in changing conditions.</td></tr>
+      <tr><th>Show module</th><td>true</td></tr>
+      <tr><th>Spec 1 label</th><td>Warmth</td></tr>
+      <tr><th>Spec 1 icon</th><td>diamond</td></tr>
+      <tr><th>Spec 2 label</th><td>Lightweight</td></tr>
+      <tr><th>Spec 2 icon</th><td>measure</td></tr>
+      <tr><th>Spec 3 label</th><td>Mobility</td></tr>
+      <tr><th>Spec 3 icon</th><td>zipper</td></tr>
+    </table>
+  </article>
+
+  <article class="card">
+    <h2>Women's Rain</h2>
+    <div class="handle">handle: womens-rain</div>
+    <table>
+      <tr><th>Name</th><td>Women's Rain</td></tr>
+      <tr><th>Badge</th><td>Never Miss a Day</td></tr>
+      <tr><th>Title</th><td>Women’s Rain Performance</td></tr>
+      <tr><th>Body</th><td>Waterproof protection, breathability, and mobility in a fit designed for women’s golf.</td></tr>
+      <tr><th>Show module</th><td>true</td></tr>
+      <tr><th>Spec 1 label</th><td>Protection</td></tr>
+      <tr><th>Spec 1 icon</th><td>waterproof</td></tr>
+      <tr><th>Spec 2 label</th><td>Mobility</td></tr>
+      <tr><th>Spec 2 icon</th><td>measure</td></tr>
+      <tr><th>Spec 3 label</th><td>Weather</td></tr>
+      <tr><th>Spec 3 icon</th><td>diamond</td></tr>
+    </table>
+  </article>
+
+  <article class="card">
+    <h2>Performance Layers</h2>
+    <div class="handle">handle: performance-layers</div>
+    <table>
+      <tr><th>Name</th><td>Performance Layers</td></tr>
+      <tr><th>Badge</th><td>Built to Move</td></tr>
+      <tr><th>Title</th><td>Performance Layering</td></tr>
+      <tr><th>Body</th><td>Stretch, breathability, and versatile layering for everyday golf performance.</td></tr>
+      <tr><th>Show module</th><td>true</td></tr>
+      <tr><th>Spec 1 label</th><td>Mobility</td></tr>
+      <tr><th>Spec 1 icon</th><td>measure</td></tr>
+      <tr><th>Spec 2 label</th><td>Breathability</td></tr>
+      <tr><th>Spec 2 icon</th><td>waterproof</td></tr>
+      <tr><th>Spec 3 label</th><td>Versatility</td></tr>
+      <tr><th>Spec 3 icon</th><td>diamond</td></tr>
+    </table>
+  </article>
+
+  <article class="card">
+    <h2>None / Suppress</h2>
+    <div class="handle">handle: none</div>
+    <table>
+      <tr><th>Name</th><td>None / Suppress</td></tr>
+      <tr><th>Badge</th><td class="empty">(leave empty)</td></tr>
+      <tr><th>Title</th><td class="empty">(leave empty)</td></tr>
+      <tr><th>Body</th><td class="empty">(leave empty)</td></tr>
+      <tr><th>Show module</th><td>false</td></tr>
+      <tr><th>Specs</th><td class="empty">(leave all empty)</td></tr>
+    </table>
+  </article>
+</body>
+</html>
