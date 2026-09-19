@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Galway — PDP content guide</title>
+  <title>Galway — Product content guide</title>
   <style>
     :root {
       --green: #383b28;
@@ -13,187 +13,415 @@
       --line: #e5e5e3;
       --bg: #f7f6f3;
       --card: #fff;
+      --taupe: #e8e1d8;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      font: 16px/1.5 system-ui, -apple-system, sans-serif;
+      font: 17px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
       color: var(--ink);
       background: var(--bg);
     }
     .hero {
       background: var(--green);
       color: var(--mint);
-      padding: 40px 24px;
+      padding: 44px 24px 40px;
       text-align: center;
     }
     .hero h1 {
-      margin: 0 0 8px;
-      font-size: 1.6rem;
+      margin: 0 0 10px;
+      font-size: clamp(1.5rem, 4vw, 2rem);
       color: #fff;
       font-weight: 600;
+      letter-spacing: -0.02em;
     }
-    .hero p { margin: 0 auto; max-width: 28rem; opacity: 0.85; }
-    .wrap { max-width: 640px; margin: 0 auto; padding: 32px 20px 72px; }
+    .hero p {
+      margin: 0 auto;
+      max-width: 32rem;
+      opacity: 0.88;
+      font-size: 1.05rem;
+    }
+    .wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
     h2 {
-      margin: 36px 0 10px;
-      font-size: 1.15rem;
+      margin: 40px 0 12px;
+      font-size: 1.35rem;
+      color: var(--green);
+      letter-spacing: -0.01em;
+    }
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
       color: var(--green);
     }
-    p, li { color: var(--ink); }
-    .muted { color: var(--muted); font-size: 0.95rem; }
+    p { margin: 0 0 12px; }
+    .lede {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 20px;
+    }
     .card {
       background: var(--card);
       border: 1px solid var(--line);
-      border-radius: 10px;
-      padding: 16px 18px;
-      margin: 12px 0;
+      border-radius: 12px;
+      padding: 20px 20px 16px;
+      margin: 16px 0;
     }
-    .card h3 { margin: 0 0 6px; font-size: 1rem; color: var(--green); }
-    .map {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-      margin: 12px 0;
-    }
-    .map th, .map td {
-      text-align: left;
-      padding: 10px 8px;
-      border-top: 1px solid var(--line);
-      vertical-align: top;
-    }
-    .map th { color: var(--muted); font-weight: 500; width: 38%; }
-    code {
-      font: 13px/1.3 ui-monospace, Menlo, monospace;
+    .card .where {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
       background: var(--mint);
       color: var(--green);
-      padding: 1px 6px;
+      padding: 3px 8px;
       border-radius: 4px;
+      margin-bottom: 10px;
     }
-    ol, ul { padding-left: 1.2rem; }
-    li { margin: 8px 0; }
-    .tip {
-      background: var(--mint);
-      border-radius: 8px;
-      padding: 12px 14px;
-      margin: 16px 0;
-      font-size: 0.95rem;
-    }
-    .warn {
-      border-left: 3px solid #7d705f;
-      padding: 4px 0 4px 12px;
-      margin: 16px 0;
+    .card .shows {
       color: var(--muted);
       font-size: 0.95rem;
+      margin: 0 0 10px;
     }
-    a { color: var(--green); }
+    .card ol, .card ul {
+      margin: 8px 0 0;
+      padding-left: 1.2rem;
+    }
+    .card li { margin: 6px 0; }
+    .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--green);
+      color: var(--mint);
+      font-size: 14px;
+      font-weight: 700;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    .flow {
+      background: var(--mint);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 20px 0;
+    }
+    .flow strong { color: var(--green); }
+    .arrow {
+      text-align: center;
+      color: var(--green);
+      font-size: 1.4rem;
+      margin: 4px 0;
+      opacity: 0.6;
+    }
+    table.simple {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      margin: 8px 0 0;
+    }
+    table.simple th,
+    table.simple td {
+      text-align: left;
+      vertical-align: top;
+      padding: 10px 8px;
+      border-top: 1px solid var(--line);
+    }
+    table.simple th {
+      width: 42%;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .note {
+      font-size: 0.95rem;
+      color: var(--muted);
+      border-left: 3px solid var(--taupe);
+      padding: 4px 0 4px 12px;
+      margin: 16px 0;
+    }
+    .list-plain {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .list-plain li {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin: 10px 0;
+    }
+    .list-plain strong { color: var(--green); }
+    .list-plain span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-top: 4px;
+    }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 24px;
+    }
   </style>
 </head>
 <body>
+
   <header class="hero">
-    <h1>PDP content — where to edit</h1>
-    <p>Update product page story + feature chips via 7 data collections.</p>
+    <h1>How to update product page content</h1>
+    <p>A plain-English guide for Galway. No coding needed — just Shopify Admin.</p>
   </header>
 
   <div class="wrap">
 
-    <h2>What shows on the product page</h2>
-    <table class="map">
-      <tr>
-        <th>On the PDP</th>
-        <td><strong>What controls it</strong></td>
-      </tr>
-      <tr>
-        <th>Eyre / tech story block<br><span class="muted">badge, title, body, 3 specs</span></th>
-        <td><strong>Product Family</strong> metaobject<br>attached to the product’s <code>pdp-*</code> collection</td>
-      </tr>
-      <tr>
-        <th>Feature chips + features grid<br><span class="muted">icons + headlines</span></th>
-        <td><strong>Feature Callouts</strong> list<br>attached to the same <code>pdp-*</code> collection</td>
-      </tr>
-    </table>
+    <p class="lede">
+      Think of it like this: you write the words in a content library, then point each product
+      (or a group of products) at that content. The website fills in the rest.
+    </p>
 
-    <h2>How it works (simple)</h2>
-    <ol>
-      <li><strong>Metaobjects</strong> = the content library<br>
-        <span class="muted">Content → Metaobjects → <em>Product Family</em> or <em>PDP Feature</em>. Edit the copy there.</span>
+    <!-- BIG PICTURE -->
+    <h2>The big picture</h2>
+    <div class="flow">
+      <p style="margin:0"><strong>1. Content library</strong> — reusable text &amp; images (called “metaobjects” in Shopify)</p>
+      <div class="arrow">↓</div>
+      <p style="margin:0"><strong>2. Attach to a group of products</strong> — we use 7 special collections for this</p>
+      <div class="arrow">↓</div>
+      <p style="margin:0"><strong>3. Product page shows it</strong> — story block, chips, badges, and more</p>
+    </div>
+    <p class="note">
+      For one product only (like a badge unique to Claddagh), you edit that product directly.
+      For a whole fabric family (like all Eyre Pro pieces), you edit the shared collection.
+    </p>
+
+    <!-- PRODUCT PAGE MAP -->
+    <h2>What appears where on the product page</h2>
+    <p class="lede">Each piece of custom content maps to a section shoppers see.</p>
+
+    <div class="card">
+      <span class="where">Near the title &amp; price</span>
+      <h3>1. Product badges</h3>
+      <p class="shows">Small labels under or near the product name (e.g. waterproof callouts).</p>
+      <p><strong>Where to edit:</strong> open the <em>product</em> → scroll to Metafields → <strong>Badges</strong></p>
+      <p class="note" style="margin-bottom:0">Set on each product individually.</p>
+    </div>
+
+    <div class="card">
+      <span class="where">Under the product name</span>
+      <h3>2. Short description</h3>
+      <p class="shows">The one-line blurb (e.g. “Classic chino style. Rain-ready performance.”).</p>
+      <p><strong>Where to edit:</strong> open the <em>product</em> → Metafields → <strong>Short description</strong></p>
+      <p class="note" style="margin-bottom:0">Set on each product individually.</p>
+    </div>
+
+    <div class="card">
+      <span class="where">Near reviews / above Buy</span>
+      <h3>3. Handpicked review</h3>
+      <p class="shows">The featured quote and who said it (e.g. Gene V.).</p>
+      <p><strong>Where to edit:</strong> open the <em>product</em> → Metafields →</p>
+      <ul>
+        <li><strong>Handpicked review quote</strong> — the words in quotes</li>
+        <li><strong>Handpicked review author</strong> — the name</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="where">Near Add to cart · and again lower on the page</span>
+      <h3>4. Feature callouts (chips &amp; feature grid)</h3>
+      <p class="shows">
+        The icon + text pills (e.g. “30K Waterproof &amp; Breathable”) and the longer
+        “Why Choose…” feature cards further down.
+      </p>
+      <p><strong>Usually edited on a shared collection</strong> (see the 7 collections below), not on every product.</p>
+      <p><strong>Content library:</strong> Content → Metaobjects → <strong>PDP Feature</strong></p>
+      <p><strong>Attach here:</strong> Collection → Metafields → <strong>Feature Callouts</strong> (pick several features, in order)</p>
+      <p class="note" style="margin-bottom:0">
+        Only set Feature Callouts on a single product if that product needs different chips than its family.
+      </p>
+    </div>
+
+    <div class="card">
+      <span class="where">The big fabric / tech story section</span>
+      <h3>5. Product family (Eyre story)</h3>
+      <p class="shows">
+        The large block like “Powered by Eyre Pro™” — badge line, title, paragraph,
+        three specs (Protection / Breathability / Mobility), and optional lifestyle image.
+      </p>
+      <p><strong>Usually edited on a shared collection</strong> so the whole family matches.</p>
+      <p><strong>Content library:</strong> Content → Metaobjects → <strong>Product Family</strong></p>
+      <p><strong>Attach here:</strong> Collection → Metafields → <strong>Product Family</strong> (pick one family)</p>
+    </div>
+
+    <div class="card">
+      <span class="where">Collection listing pages (not the product page)</span>
+      <h3>6. Collection promo tile</h3>
+      <p class="shows">The promotional card mixed into a collection grid (image, eyebrow, title, button).</p>
+      <p><strong>Content library:</strong> Content → Metaobjects → <strong>Collection Promo</strong></p>
+      <p><strong>Attach here:</strong> open a shopping collection (e.g. Best Sellers) → Metafields → <strong>Collection Promo</strong></p>
+      <p class="note" style="margin-bottom:0">This is separate from the 7 PDP data collections.</p>
+    </div>
+
+    <!-- HOW COLLECTIONS PASS CONTENT -->
+    <h2>How the 7 collections pass content to products</h2>
+    <p class="lede">
+      Instead of filling the same family story on 35 products, we put each product in one
+      “data” collection and attach the family + features there once.
+    </p>
+
+    <div class="flow">
+      <p style="margin:0 0 8px"><strong>Example — Clifden Golf Rain Jacket</strong></p>
+      <ol style="margin:0; padding-left:1.2rem">
+        <li>Clifden sits in the collection <strong>PDP Data — Eyre Pro</strong></li>
+        <li>That collection has Product Family = Eyre Pro, and 3 Feature Callouts</li>
+        <li>Clifden’s product page reads those automatically</li>
+      </ol>
+    </div>
+
+    <p><strong>Important rules</strong></p>
+    <ul>
+      <li>Each product should be in <em>only one</em> of these 7 collections</li>
+      <li>Don’t put Product Family / Feature Callouts on normal shopping collections (Men’s, Rainwear, Best Sellers…)</li>
+      <li>These 7 collections are for content only — they are not menu links for shoppers</li>
+    </ul>
+
+    <h2>The 7 collections (already created)</h2>
+    <p class="lede">In Admin: Products → Collections → search the name below.</p>
+
+    <ul class="list-plain">
+      <li>
+        <strong>PDP Data — Eyre Pro</strong>
+        <span>Premium rain family · Claddagh, Clifden, Nimmo, Silverstrand</span>
       </li>
-      <li><strong>Metafields on a collection</strong> = “use this content for these products”<br>
-        <span class="muted">Products → Collections → open a <code>pdp-*</code> collection → Metafields → Product Family / Feature Callouts.</span>
+      <li>
+        <strong>PDP Data — Lightweight Rain</strong>
+        <span>Packable rain · Ayle, Erris, Cleggan, Tawin</span>
       </li>
-      <li>Products in that collection pick it up automatically.<br>
-        <span class="muted">Leave product metafields empty unless one SKU needs different chips.</span>
+      <li>
+        <strong>PDP Data — Eyre Flex</strong>
+        <span>Softshell · Barna, Roundstone, Inagh, Lombard, Spiddal, Leenane, Monivea, Glynsk, Clarinbridge</span>
       </li>
-    </ol>
+      <li>
+        <strong>PDP Data — Eyre Shield</strong>
+        <span>UPF sun · Taylor, Mannin, Gurteen, Coral, Ardra, Renvy</span>
+      </li>
+      <li>
+        <strong>PDP Data — Hybrid</strong>
+        <span>Hybrid layers · Tullycross, Moycullen, Kylemore, Fergus, Loughrea, Athenry, Laune, Fane</span>
+      </li>
+      <li>
+        <strong>PDP Data — Women’s Rain</strong>
+        <span>Nore, Clare</span>
+      </li>
+      <li>
+        <strong>PDP Data — Performance Layers</strong>
+        <span>Cashel, Glassilaun</span>
+      </li>
+    </ul>
 
-    <div class="tip">
-      <strong>Where to change wording</strong><br>
-      Change family story → edit the <em>Product Family</em> entry.<br>
-      Change chip text → edit the <em>PDP Feature</em> entry.<br>
-      Change which products get which story → move products between the 7 collections below (or change that collection’s metafields).
-    </div>
-
-    <h2>The 7 collections (already set up)</h2>
-    <p class="muted">These are data collections — Online Store only, not in the menu. Search by handle in Admin.</p>
+    <!-- DAY TO DAY -->
+    <h2>Common tasks</h2>
 
     <div class="card">
-      <h3><code>pdp-eyre-pro</code> — Eyre Pro</h3>
-      <p class="muted">Family: Eyre Pro · Claddagh, Clifden, Nimmo, Silverstrand</p>
-    </div>
-    <div class="card">
-      <h3><code>pdp-lightweight-rain</code> — Lightweight Rain</h3>
-      <p class="muted">Family: Lightweight Rain · Ayle, Erris, Cleggan, Tawin</p>
-    </div>
-    <div class="card">
-      <h3><code>pdp-eyre-flex</code> — Eyre Flex (softshell)</h3>
-      <p class="muted">Family: Eyre Flex · Barna, Roundstone, Inagh, Lombard, Spiddal, Leenane, Monivea, Glynsk, Clarinbridge</p>
-    </div>
-    <div class="card">
-      <h3><code>pdp-eyre-shield</code> — Eyre Shield (UPF)</h3>
-      <p class="muted">Family: Eyre Shield · Taylor, Mannin, Gurteen, Coral, Ardra, Renvy</p>
-    </div>
-    <div class="card">
-      <h3><code>pdp-hybrid</code> — Hybrid</h3>
-      <p class="muted">Family: Hybrid · Tullycross, Moycullen, Kylemore, Fergus, Loughrea, Athenry, Laune, Fane</p>
-    </div>
-    <div class="card">
-      <h3><code>pdp-womens-rain</code> — Women’s Rain</h3>
-      <p class="muted">Family: Women’s Rain · Nore, Clare</p>
-    </div>
-    <div class="card">
-      <h3><code>pdp-performance</code> — Performance Layers</h3>
-      <p class="muted">Family: Performance Layers · Cashel, Glassilaun</p>
+      <h3><span class="num">A</span> Change the Eyre Pro story for everyone in that family</h3>
+      <ol>
+        <li>Go to <strong>Content → Metaobjects → Product Family</strong></li>
+        <li>Open <strong>Eyre Pro</strong></li>
+        <li>Edit the badge, title, body, or specs → Save</li>
+      </ol>
+      <p class="note" style="margin-bottom:0">Every product in “PDP Data — Eyre Pro” updates together.</p>
     </div>
 
-    <h2>Day-to-day tasks</h2>
     <div class="card">
-      <h3>New product in an existing family</h3>
-      <p class="muted">Add it to the matching <code>pdp-*</code> collection only. Don’t put family metafields on Rainwear / Men’s / Best Sellers.</p>
-    </div>
-    <div class="card">
-      <h3>Update shared chips for a whole family</h3>
-      <p class="muted">Open that <code>pdp-*</code> collection → Feature Callouts → pick different features (or edit the feature entries themselves).</p>
-    </div>
-    <div class="card">
-      <h3>One product needs different chips</h3>
-      <p class="muted">On that <strong>product</strong>, set Feature Callouts. Product overrides replace the collection list — include any shared chips you still want.</p>
-    </div>
-    <div class="card">
-      <h3>Hide the Eyre block (accessories)</h3>
-      <p class="muted">Don’t add to a <code>pdp-*</code> collection. Or set Product Family to <em>none</em> / leave blank.</p>
+      <h3><span class="num">B</span> Change the three chips for a whole family</h3>
+      <ol>
+        <li>Open the matching <strong>PDP Data — …</strong> collection</li>
+        <li>Find Metafields → <strong>Feature Callouts</strong></li>
+        <li>Add / remove / reorder features → Save</li>
+      </ol>
+      <p class="note" style="margin-bottom:0">
+        To change the wording of a chip itself: Content → Metaobjects → PDP Feature → open that feature.
+      </p>
     </div>
 
-    <div class="warn">
-      <strong>Don’t</strong> set Product Family or Feature Callouts on normal shopping collections (Rainwear, Men’s, Best Sellers, etc.). Only the 7 <code>pdp-*</code> collections above.<br><br>
-      If merch collection <strong>Eyre Pro</strong> still has those metafields, clear them — they can conflict with <code>pdp-eyre-pro</code>.
+    <div class="card">
+      <h3><span class="num">C</span> Update badges or short description for one product</h3>
+      <ol>
+        <li>Open that product</li>
+        <li>Metafields → <strong>Badges</strong> or <strong>Short description</strong></li>
+        <li>Save</li>
+      </ol>
     </div>
 
-    <h2>Quick check</h2>
-    <p class="muted">
-      Open a product in one of the 7 collections with empty product metafields.
-      You should see that family’s chips + story. If not: confirm membership + collection metafields are filled.
+    <div class="card">
+      <h3><span class="num">D</span> Add a new product to an existing family</h3>
+      <ol>
+        <li>Open the matching <strong>PDP Data — …</strong> collection</li>
+        <li>Add the product to that collection</li>
+        <li>Fill that product’s own Badges / Short description / Handpicked review as needed</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">E</span> One product needs different chips than its family</h3>
+      <ol>
+        <li>Open that product</li>
+        <li>Set <strong>Feature Callouts</strong> on the product</li>
+        <li>Include every chip you want shown (product list replaces the collection list)</li>
+      </ol>
+    </div>
+
+    <!-- QUICK REF -->
+    <h2>Quick reference</h2>
+    <div class="card">
+      <table class="simple">
+        <tr>
+          <th>I want to change…</th>
+          <td><strong>I edit…</strong></td>
+        </tr>
+        <tr>
+          <th>Badges on one product</th>
+          <td>That product → Badges</td>
+        </tr>
+        <tr>
+          <th>Short description</th>
+          <td>That product → Short description</td>
+        </tr>
+        <tr>
+          <th>Featured review quote</th>
+          <td>That product → Handpicked review fields</td>
+        </tr>
+        <tr>
+          <th>Family story (Eyre Pro, etc.)</th>
+          <td>Metaobjects → Product Family</td>
+        </tr>
+        <tr>
+          <th>Which chips a family shows</th>
+          <td>PDP Data collection → Feature Callouts</td>
+        </tr>
+        <tr>
+          <th>Chip wording / icon</th>
+          <td>Metaobjects → PDP Feature</td>
+        </tr>
+        <tr>
+          <th>Promo tile on a collection page</th>
+          <td>Shopping collection → Collection Promo</td>
+        </tr>
+      </table>
+    </div>
+
+    <p class="note">
+      Tip: After saving, open the live product page and refresh. If something is missing,
+      check the product is in the right PDP Data collection and that collection has its metafields filled in.
     </p>
 
   </div>
+
+  <footer>Galway Golf · Product content guide</footer>
 </body>
 </html>

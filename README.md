@@ -1,11 +1,11 @@
-# Galway CSS + PDP content guide
+# Galway CSS + product content guide
 
 ## GitHub Pages
 
-**Settings → Pages → Deploy from branch → `main` / `/docs`**
+**Settings → Pages → `main` / `/docs`**
 
-Guide: https://nine15team.github.io/galway-css/
+https://nine15team.github.io/galway-css/
 
-One page: where to edit PDP family story + feature chips via the 7 `pdp-*` collections.
+Plain-English guide: what shows on the product page, where to edit each piece of content, and how the 7 PDP data collections share family stories + feature chips.
 
-`base.css` at repo root is the theme CSS reference.
+`base.css` at the repo root is the theme CSS reference.
