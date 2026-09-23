@@ -4807,8 +4807,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 
 /* ============================================================================
    Galway - PDP size and CTA row
-   Remaining comp details: a five-up size grid, the Size Guide rendered as a
-   small underlined label rather than a button, and a 64px quantity/CTA row.
+   Remaining: five-up size grid + 64px quantity/CTA row.
    ============================================================================ */
 
 /* Comp lays the sizes out five per row. Horizon puts the grid on the fieldset
@@ -4844,18 +4843,30 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   line-height: 1;
 }
 
-/* Comp: 26px round colour chips in a wrapping row, 10px apart. */
+/* Comp: 26px round colour chips in a wrapping row. */
 .galway-pdp .product-details .variant-option--swatches {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 18px;
+  /* Room for the LIMITED caption under a swatch. */
+  padding-bottom: 20px;
+  overflow: visible;
 }
 
-.galway-pdp .product-details .variant-option--swatches .variant-option__button-label {
+/* Breathing room between colour swatches and the size option. */
+.galway-pdp .product-details .variant-option--swatches + .variant-option {
+  margin-top: 28px;
+}
+
+.galway-pdp .product-details .variant-option--swatches .variant-option__button-label,
+.galway-pdp .product-details .variant-option--swatches .variant-option__button-label--has-swatch {
+  position: relative;
   width: auto;
   min-width: 0;
   height: auto;
   min-height: 0;
+  /* Horizon clips labels; LIMITED sits below the chip. */
+  overflow: visible;
 }
 
 .galway-pdp .product-details .variant-option--swatches .swatch {
@@ -4863,23 +4874,23 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   height: 26px;
 }
 
-/* Size Guide is a label-sized link in the comp, not a full button. */
-#MainContent .galway-pdp .product-details .popup-link__button {
-  width: auto;
-  min-width: 0;
-  height: auto;
-  min-height: 0;
-  padding: 0 0 3px;
-  border: 0;
-  border-bottom: 1px solid #000;
-  border-radius: 0;
-  background: none;
-  color: #000;
-  font-size: 0.6875rem;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.08em;
+/* Live theme: LIMITED under Silver Cloud (fudge_limited_color). */
+.galway-pdp .product-details .galway-swatch-limited {
+  position: absolute;
+  /* Clear the selected ring (~2–3px outline + offset). */
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-body--family);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
+  color: #8a7a5e;
+  white-space: nowrap;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* Comp sizes the stepper and the CTA at 64px. */
@@ -6176,9 +6187,11 @@ html {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    padding-bottom: 12px;
   }
 
   #MainContent .galway-buy-sheet__swatch {
+    position: relative;
     display: flex;
     width: auto;
     min-width: 0;
@@ -6199,6 +6212,22 @@ html {
   .galway-buy-sheet__swatch .swatch {
     width: 20px;
     height: 20px;
+  }
+
+  .galway-buy-sheet__swatch .galway-swatch-limited {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-body--family);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #8a7a5e;
+    white-space: nowrap;
+    line-height: 1;
+    pointer-events: none;
   }
 
   /* The sheet is the buy box on mobile, exactly as the comp has it: the page
@@ -6368,4 +6397,758 @@ html {
 .galway-pdp-price-row .text-block.h4
 product-price{
   margin-top: 15px;
+}
+
+/* ============================================================================
+   Galway - internal page templates
+   Editorial system shared by content, contact, about, affiliate, rewards,
+   collabs, and size-guide templates.
+   ============================================================================ */
+
+.galway-internal-hero .custom-section-content,
+.galway-internal-band .custom-section-content,
+.galway-internal-feature .custom-section-content,
+.galway-internal-cards .custom-section-content,
+.galway-internal-page .custom-section-content,
+.galway-internal-contact .custom-section-content {
+  width: 100%;
+}
+
+.galway-internal-hero {
+  overflow: hidden;
+}
+
+.galway-internal-hero .custom-section-background img {
+  filter: saturate(0.82) contrast(1.04);
+  transform: scale(1.01);
+}
+
+.galway-internal-hero .section-content-wrapper {
+  min-height: 560px;
+  width: min(100%, 1440px);
+  margin-inline: auto;
+  padding-inline: max(32px, 5vw) !important;
+}
+
+.galway-internal-hero .text-block.h1,
+.galway-internal-hero .text-block.h2 {
+  max-width: 850px;
+}
+
+.galway-internal-hero .text-block.h1 h1,
+.galway-internal-hero .text-block.h2 h2 {
+  font-size: 5.25rem;
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: 0;
+}
+
+.galway-internal-hero .text-block.rte,
+.galway-internal-band .text-block.rte {
+  max-width: 610px;
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.galway-internal-hero .text-block.custom:first-child {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.galway-internal-hero .text-block.custom:first-child::before {
+  width: 36px;
+  height: 1px;
+  background: currentcolor;
+  content: '';
+}
+
+.galway-internal-hero--left .section-content-wrapper {
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.galway-internal-hero--left .text-block {
+  text-align: left !important;
+}
+
+.galway-internal-hero--left .text-block.custom:first-child {
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+}
+
+.galway-internal-hero--left .text-block.custom:first-child p {
+  width: auto;
+  max-width: none;
+}
+
+.galway-internal-feature .group-block,
+.galway-internal-cards .group-block,
+.galway-internal-contact .group-block {
+  min-width: 0;
+}
+
+.galway-internal-feature .section-content-wrapper,
+.galway-internal-contact .section-content-wrapper {
+  width: min(100%, 1360px);
+  margin-inline: auto;
+}
+
+.galway-internal-feature image-block,
+.galway-internal-feature .image-block {
+  overflow: hidden;
+}
+
+.galway-internal-feature image-block img,
+.galway-internal-feature .image-block img {
+  transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.galway-internal-feature:hover image-block img,
+.galway-internal-feature:hover .image-block img {
+  transform: scale(1.025);
+}
+
+.galway-internal-cards .section-content-wrapper {
+  flex-wrap: wrap;
+  width: min(100%, 1360px);
+  margin-inline: auto;
+}
+
+.galway-internal-panel {
+  border: 0 !important;
+  border-top: 2px solid #303627 !important;
+  background: #fff !important;
+}
+
+.galway-internal-card {
+  border: 0 !important;
+  border-top: 1px solid rgb(255 255 255 / 0.32) !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  position: relative;
+}
+
+.galway-internal-values .text-block {
+  --color: #f6f4ee !important;
+  --color-rgb: 246 244 238 !important;
+  color: #f6f4ee !important;
+}
+
+.galway-internal-values .galway-internal-card:nth-of-type(2)::before,
+.galway-internal-values .galway-internal-card:nth-of-type(3)::before,
+.galway-internal-values .galway-internal-card:nth-of-type(4)::before {
+  display: block;
+  margin-bottom: 0;
+  color: #b9c4a4;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.galway-internal-values .galway-internal-card:nth-of-type(2)::before { content: '01'; }
+.galway-internal-values .galway-internal-card:nth-of-type(3)::before { content: '02'; }
+.galway-internal-values .galway-internal-card:nth-of-type(4)::before { content: '03'; }
+
+.galway-internal-values h2 {
+  font-size: 3.5rem;
+}
+
+.galway-internal-values h3 {
+  margin-bottom: 14px;
+  color: #fff;
+  font-family: var(--font-heading--family);
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.galway-internal-values p {
+  color: rgb(246 244 238 / 0.76);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.galway-internal-values .galway-internal-card .group-block-content {
+  --vertical-alignment: flex-start !important;
+  justify-content: flex-start !important;
+}
+
+.galway-about-story h2,
+.galway-affiliate-feature h2 {
+  margin: 0 0 24px;
+  font-size: 3.75rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.galway-about-story h3,
+.galway-affiliate-feature strong {
+  color: #303627;
+  font-family: var(--font-subheading--family);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.galway-about-story .text-block.rte p,
+.galway-affiliate-feature .text-block.rte p {
+  max-width: 610px;
+  color: #4f5149;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+/* Collection-list cards do not receive title blocks when populated from JSON.
+   Their accessible link labels are promoted into permanent visual labels. */
+:is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .section-resource-list__content {
+  margin-bottom: 28px;
+}
+
+:is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .section-resource-list__content h2 {
+  max-width: 720px;
+  font-size: 3.5rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+:is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .collection-card {
+  overflow: hidden;
+  background: #303627;
+}
+
+:is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .collection-card__inner {
+  gap: 0;
+}
+
+:is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .collection-card__inner::after {
+  position: absolute;
+  inset: 38% 0 0;
+  z-index: 1;
+  background: linear-gradient(to bottom, transparent, rgb(10 13 8 / 0.78));
+  content: '';
+}
+
+:is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .collection-card__image,
+:is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .collection-card__image img {
+  aspect-ratio: 4 / 5;
+}
+
+:is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .collection-card__image img {
+  transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+:is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .collection-card:hover .collection-card__image img {
+  transform: scale(1.035);
+}
+
+:is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .collection-card__link {
+  z-index: 3;
+}
+
+:is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .collection-card__link .visually-hidden {
+  position: absolute !important;
+  right: 24px;
+  bottom: 24px;
+  left: 24px;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 34px 0 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  border: 0 !important;
+  color: #fff;
+  font-family: var(--font-subheading--family);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-transform: uppercase;
+  white-space: normal !important;
+}
+
+:is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .collection-card__link .visually-hidden::after {
+  position: absolute;
+  right: 0;
+  content: '\2197';
+  font-size: 1.15rem;
+  font-weight: 400;
+}
+
+.galway-internal-page .section-content-wrapper,
+.galway-default-page .section-content-wrapper {
+  width: min(100%, 960px);
+  margin-inline: auto;
+}
+
+.galway-internal-page .page-content,
+.galway-internal-rte.rte,
+.galway-internal-size .text-block.rte {
+  color: #42473d;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.galway-internal-page .page-content :is(h2, h3, h4),
+.galway-internal-rte.rte :is(h2, h3, h4),
+.galway-internal-size .text-block.rte :is(h2, h3, h4) {
+  color: #171a14;
+  font-family: var(--font-heading--family);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.galway-internal-page .page-content h2,
+.galway-internal-rte.rte h2,
+.galway-internal-size .text-block.rte h2 {
+  margin-block: 3rem 1.25rem;
+  font-size: 3rem;
+}
+
+.galway-internal-page .page-content h3,
+.galway-internal-rte.rte h3,
+.galway-internal-size .text-block.rte h3 {
+  margin-block: 2.25rem 0.75rem;
+  font-size: 1.7rem;
+}
+
+.galway-internal-page .page-content :is(ul, ol),
+.galway-internal-rte.rte :is(ul, ol),
+.galway-internal-size .text-block.rte :is(ul, ol) {
+  padding-inline-start: 1.2rem;
+}
+
+.galway-internal-page .page-content a,
+.galway-internal-rte.rte a,
+.galway-internal-size .text-block.rte a {
+  color: currentcolor;
+  text-underline-offset: 0.2em;
+}
+
+.galway-internal-page .page-content > :first-child,
+.galway-internal-rte.rte > :first-child,
+.galway-internal-size .text-block.rte > :first-child {
+  margin-block-start: 0;
+}
+
+.galway-internal-page .page-content rte-formatter > :first-child {
+  margin-block-start: 0;
+}
+
+.galway-internal-page .page-content rte-formatter > :last-child {
+  margin-block-end: 0;
+}
+
+.galway-internal-page .page-content h2:has(> br:only-child) {
+  display: none;
+}
+
+.galway-internal-page .page-content > :last-child,
+.galway-internal-rte.rte > :last-child,
+.galway-internal-size .text-block.rte > :last-child {
+  margin-block-end: 0;
+}
+
+.galway-internal-size table,
+.galway-internal-rte table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  overflow: hidden;
+  border: 1px solid #d7dbd0;
+  background: #fff;
+}
+
+.galway-internal-size :where(table) th,
+.galway-internal-size :where(table) td,
+.galway-internal-rte :where(table) th,
+.galway-internal-rte :where(table) td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e1e4dc;
+  text-align: left;
+  vertical-align: top;
+}
+
+.galway-internal-size :where(table) th,
+.galway-internal-rte :where(table) th {
+  background: #303627;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.galway-table-scroll {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.galway-internal-size .text-block.rte > ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-block: 20px 36px;
+  padding: 1px;
+  border: 0;
+  background: #d7dbd0;
+  list-style: none;
+}
+
+.galway-internal-size .text-block.rte > ul > li {
+  margin: 0;
+  padding: 16px 18px;
+  background: #f7f8f5;
+}
+
+.galway-internal-size .text-block.rte > ul > li strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #171a14;
+}
+
+.galway-size-categories .accordion {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+}
+
+.galway-internal-page.galway-size-categories .section-content-wrapper {
+  width: min(100%, 1200px);
+}
+
+.galway-size-categories .accordion > accordion-custom,
+.galway-size-categories .accordion > accordion-custom > .details {
+  display: contents;
+}
+
+.galway-size-categories .details__header {
+  grid-row: 1;
+  min-height: 62px;
+  padding: 18px 20px;
+  border: 1px solid #c9cec3;
+  border-inline-end-width: 0;
+  color: #252a20;
+  font-family: var(--font-subheading--family);
+  letter-spacing: 0;
+  background: #f4f5f1;
+}
+
+.galway-size-categories accordion-custom:last-child .details__header {
+  border-inline-end-width: 1px;
+}
+
+.galway-size-categories .details[open] .details__header {
+  color: #fff;
+  background: #303627;
+}
+
+.galway-size-categories .details-content {
+  grid-row: 2;
+  width: 300%;
+  padding-block-start: 36px;
+}
+
+.galway-size-categories accordion-custom:nth-child(2) .details-content {
+  margin-inline-start: -100%;
+}
+
+.galway-size-categories accordion-custom:nth-child(3) .details-content {
+  margin-inline-start: -200%;
+}
+
+.galway-size-categories .details-content .text-block {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+  padding-inline: 18px !important;
+}
+
+.galway-size-categories .text-block.rte h4 {
+  margin-block: 2rem 0.75rem;
+  font-size: 1.25rem;
+}
+
+.galway-size-guarantee .section-content-wrapper {
+  width: min(100%, 900px);
+  margin-inline: auto;
+}
+
+.galway-size-guarantee .text-block.rte > p:first-child {
+  margin: 0 0 10px;
+  color: #c9b98f;
+  font-family: var(--font-subheading--family);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.galway-size-guarantee .text-block.rte h2 {
+  margin: 0 0 16px;
+  color: #fff;
+  font-family: var(--font-heading--family);
+  font-size: 3rem;
+  font-weight: 400;
+}
+
+.galway-size-guarantee .text-block.rte h3 {
+  margin: 30px 0 8px;
+  color: #fff;
+  font-family: var(--font-subheading--family);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.galway-size-guarantee .text-block.rte a {
+  display: inline-block;
+  margin: 8px 4px 0;
+  color: #fff;
+  font-weight: 700;
+  text-underline-offset: 0.25em;
+}
+
+.galway-size-faq .text-block h2 {
+  margin: 0;
+  font-size: 3rem;
+  line-height: 1.05;
+}
+
+.galway-size-faq .details__header {
+  gap: 24px;
+  padding-block: 20px;
+  color: #252a20;
+}
+
+.galway-size-faq .details__header .svg-wrapper {
+  flex: 0 0 auto;
+}
+
+.galway-size-faq .details-content .text-block {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+  padding-block: 0 22px;
+  padding-inline: 0 !important;
+}
+
+.galway-size-faq .details-content .text-block > * {
+  width: 100% !important;
+  max-inline-size: none !important;
+  margin-inline: 0 !important;
+}
+
+.galway-size-faq .details-content p {
+  margin: 0;
+}
+
+.galway-internal-size .text-block.rte > h2:first-child,
+.galway-affiliate-steps .text-block.rte > h2:first-child {
+  margin-top: 0;
+}
+
+.galway-affiliate-steps h3 {
+  position: relative;
+  margin-top: 0;
+  padding: 24px 0 10px;
+  border-top: 1px solid #bcc2b6;
+  color: #303627;
+  font-family: var(--font-subheading--family);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.galway-affiliate-steps h3 + p {
+  margin: 0 0 36px;
+}
+
+.galway-internal-contact .section-content-wrapper {
+  gap: 20px;
+}
+
+.galway-internal-contact .galway-contact-details {
+  min-height: 420px;
+  background: #303627 !important;
+}
+
+.galway-internal-contact .galway-contact-details .text-block {
+  --color: #fff !important;
+  --color-rgb: 255 255 255 !important;
+  color: #fff !important;
+}
+
+.galway-internal-contact .galway-contact-details a,
+.galway-internal-contact .galway-contact-details p {
+  color: rgb(255 255 255 / 0.78);
+}
+
+.galway-internal-contact input,
+.galway-internal-contact textarea {
+  border-radius: 0;
+  border-color: #c8cbc3;
+  background: #f8f8f5;
+}
+
+[id$='__rewards_app'],
+[id$='__collabs'] {
+  background: #f2f1ed;
+}
+
+[id$='__rewards_app'] .section,
+[id$='__collabs'] .section {
+  width: min(100%, 1180px);
+  margin-inline: auto;
+  padding-block: 64px 80px;
+}
+
+@media screen and (max-width: 749px) {
+  .galway-internal-feature .section-content-wrapper,
+  .galway-internal-cards .section-content-wrapper,
+  .galway-internal-contact .section-content-wrapper {
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .galway-internal-feature .section-content-wrapper > *,
+  .galway-internal-cards .section-content-wrapper > *,
+  .galway-internal-contact .section-content-wrapper > * {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100%;
+  }
+
+  .galway-internal-feature .section-content-wrapper {
+    --gap: 28px !important;
+    gap: 28px !important;
+  }
+
+  .galway-internal-feature .group-block,
+  .galway-internal-feature .group-block-content {
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  .galway-internal-feature .group-block-content {
+    --vertical-alignment: flex-start !important;
+    justify-content: flex-start !important;
+  }
+
+  .galway-internal-hero .section-content-wrapper {
+    min-height: 470px;
+    padding-inline: 22px !important;
+  }
+
+  .galway-internal-hero .text-block.h1 h1,
+  .galway-internal-hero .text-block.h2 h2 {
+    font-size: 3.25rem;
+    line-height: 0.98;
+  }
+
+  .galway-internal-hero .text-block.rte {
+    font-size: 0.95rem;
+  }
+
+  .galway-about-story h2,
+  .galway-affiliate-feature h2,
+  .galway-internal-values h2,
+  :is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .section-resource-list__content h2,
+  .galway-internal-rte.rte h2,
+  .galway-internal-size .text-block.rte h2 {
+    font-size: 2.4rem;
+  }
+
+  .galway-internal-page .page-content h2 {
+    font-size: 2rem;
+  }
+
+  .galway-internal-values .galway-internal-card::before {
+    margin-bottom: 0 !important;
+  }
+
+  :is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .section-resource-list__content {
+    margin-bottom: 20px;
+  }
+
+  :is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .resource-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  :is(.galway-internal-collections, [id$='__collections'] .section-resource-list) .collection-card__link .visually-hidden {
+    right: 14px;
+    bottom: 14px;
+    left: 14px;
+    padding-right: 22px !important;
+    font-size: 0.68rem;
+  }
+
+  .galway-internal-panel {
+    padding: 26px 22px !important;
+  }
+
+  .galway-internal-contact .galway-contact-details {
+    min-height: 320px;
+  }
+
+  .galway-internal-page .page-content,
+  .galway-internal-rte.rte,
+  .galway-internal-size .text-block.rte {
+    font-size: 0.94rem;
+  }
+
+  .galway-internal-size .text-block.rte > ul {
+    grid-template-columns: 1fr;
+    margin-block: 18px 30px;
+  }
+
+  .galway-size-faq .text-block h2 {
+    font-size: 2.25rem;
+  }
+
+  .galway-size-categories .details__header {
+    min-height: var(--minimum-touch-target);
+    padding-inline: 12px;
+  }
+
+  .galway-size-categories .accordion,
+  .galway-size-categories .accordion > accordion-custom,
+  .galway-size-categories .accordion > accordion-custom > .details {
+    display: block;
+  }
+
+  .galway-size-categories .details__header {
+    border-inline-end-width: 1px;
+    border-block-end-width: 0;
+  }
+
+  .galway-size-categories accordion-custom:last-child .details__header {
+    border-block-end-width: 1px;
+  }
+
+  .galway-size-categories .details-content {
+    width: 100%;
+    margin-inline-start: 0 !important;
+    padding-block-start: 20px;
+  }
+
+  .galway-size-categories .details-content .text-block {
+    padding-inline: 12px !important;
+  }
+
+  .galway-size-guarantee .text-block.rte h2 {
+    font-size: 2.25rem;
+  }
+
+  .galway-size-faq .details__header {
+    gap: 16px;
+    padding-block: 18px;
+  }
+
+  .galway-size-faq .details-content .text-block {
+    padding-block-end: 20px;
+  }
+
+  [id$='__rewards_app'] .section,
+  [id$='__collabs'] .section {
+    padding-block: 44px 56px;
+  }
 }
