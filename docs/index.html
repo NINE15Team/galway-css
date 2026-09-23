@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Galway — Product content guide</title>
+  <title>Galway content guide</title>
   <style>
     :root {
       --green: #383b28;
@@ -164,6 +164,27 @@
       font-size: 0.92rem;
       margin-top: 4px;
     }
+    code {
+      font: 0.86em/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+      background: var(--mint);
+      color: var(--green);
+      padding: 1px 5px;
+      border-radius: 4px;
+      word-break: break-word;
+    }
+    .part {
+      margin: 56px 0 0;
+      padding-top: 28px;
+      border-top: 2px solid var(--green);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .scroll { overflow-x: auto; }
+    table.fields th { width: 34%; }
+    table.fields td:nth-child(3) { color: var(--muted); }
     footer {
       text-align: center;
       color: var(--muted);
@@ -175,7 +196,7 @@
 <body>
 
   <header class="hero">
-    <h1>How to update product page content</h1>
+    <h1>How to update product &amp; collection content</h1>
     <p>A plain-English guide for Galway. No coding needed — just Shopify Admin.</p>
   </header>
 
@@ -264,7 +285,7 @@
       <p class="shows">The promotional card mixed into a collection grid (image, eyebrow, title, button).</p>
       <p><strong>Content library:</strong> Content → Metaobjects → <strong>Collection Promo</strong></p>
       <p><strong>Attach here:</strong> open a shopping collection (e.g. Best Sellers) → Metafields → <strong>Collection Promo</strong></p>
-      <p class="note" style="margin-bottom:0">This is separate from the 7 PDP data collections.</p>
+      <p class="note" style="margin-bottom:0">This is separate from the 7 PDP data collections. Full setup steps are in <a href="#collections">Part 2 — Collection pages</a>.</p>
     </div>
 
     <!-- HOW COLLECTIONS PASS CONTENT -->
@@ -324,6 +345,34 @@
       </li>
     </ul>
 
+    <h2>Fields inside the product content library</h2>
+    <p class="lede">What to fill in each entry. Anything left blank simply doesn’t show.</p>
+
+    <div class="card">
+      <span class="where">Metaobject · Product Family</span>
+      <h3>Product Family</h3>
+      <div class="scroll"><table class="simple fields">
+        <tr><th>Field</th><td><strong>What it controls</strong></td><td>Type</td></tr>
+        <tr><th><code>badge</code></th><td>Small line above the title (e.g. “Powered by Eyre Pro™”)</td><td>Single line text</td></tr>
+        <tr><th><code>title</code></th><td>Big heading of the story block</td><td>Single line text</td></tr>
+        <tr><th><code>body</code></th><td>Story paragraph</td><td>Multi-line text</td></tr>
+        <tr><th><code>spec_1_label</code> · <code>spec_2_label</code> · <code>spec_3_label</code></th><td>The three spec labels (Protection / Breathability / Mobility)</td><td>Single line text</td></tr>
+        <tr><th><code>image</code></th><td>Lifestyle photo beside the story (falls back to <code>lifestyle_image</code>, then <code>module_image</code>)</td><td>File (image)</td></tr>
+        <tr><th><code>show_module</code></th><td>Turn the whole story block off for this family</td><td>True / false</td></tr>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <span class="where">Metaobject · PDP Feature</span>
+      <h3>PDP Feature (one chip / feature card)</h3>
+      <div class="scroll"><table class="simple fields">
+        <tr><th>Field</th><td><strong>What it controls</strong></td><td>Type</td></tr>
+        <tr><th><code>headline</code></th><td>Chip text, and the feature card title</td><td>Single line text</td></tr>
+        <tr><th><code>body</code></th><td>Longer text on the “Why Choose…” feature card</td><td>Multi-line text</td></tr>
+        <tr><th><code>icon</code></th><td>Icon name: <code>waterproof</code>, <code>measure</code>, <code>diamond</code>, <code>sew</code>, <code>zipper</code> or <code>none</code>. Leave blank to auto-pick from the headline wording.</td><td>Single line text</td></tr>
+      </table></div>
+    </div>
+
     <!-- DAY TO DAY -->
     <h2>Common tasks</h2>
 
@@ -376,6 +425,152 @@
       </ol>
     </div>
 
+    <!-- ================= COLLECTION PAGES ================= -->
+    <p class="part" id="collections">Part 2 — Collection pages</p>
+    <h2 style="margin-top:8px">What appears where on a collection page</h2>
+    <p class="lede">
+      Every shopping collection (Men’s, Rainwear, Best Sellers…) uses the same page layout.
+      Three optional blocks are driven by collection metafields. If a collection has nothing
+      filled in, that block is simply hidden — the page never shows empty boxes.
+    </p>
+
+    <div class="card">
+      <span class="where">Top banner</span>
+      <h3>1. Hero (title, intro, background)</h3>
+      <p class="shows">The big image banner with breadcrumb, collection name and intro text.</p>
+      <p><strong>Where to edit:</strong> the collection’s built-in fields — no metafields needed.</p>
+      <ul>
+        <li><strong>Title</strong> → the heading</li>
+        <li><strong>Description</strong> → the intro text under the heading</li>
+        <li><strong>Collection image</strong> → the background photo (if empty, the default golfer image is used)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <span class="where">Strip under the hero</span>
+      <h3>2. Callout bar (4 icons + text)</h3>
+      <p class="shows">A row of up to four small icon + text items (e.g. “Free shipping over $100”).</p>
+      <p><strong>Content library:</strong> Content → Metaobjects → the callout bar definition</p>
+      <p><strong>Attach here:</strong> Collection → Metafields → <strong>Callout bar</strong> <code>custom.callout_bar</code></p>
+      <p class="note" style="margin-bottom:0">Hidden when the collection has no callout bar attached.</p>
+    </div>
+
+    <div class="card">
+      <span class="where">Inside the product grid</span>
+      <h3>3. Promo tile</h3>
+      <p class="shows">A promotional card that sits in the grid in the <strong>5th slot</strong>, first page only (image, eyebrow, title, text, button).</p>
+      <p><strong>Content library:</strong> Content → Metaobjects → <strong>Collection Promo</strong></p>
+      <p><strong>Attach here:</strong> Collection → Metafields → <strong>Collection Promo</strong> <code>custom.collection_promo</code></p>
+      <p class="note" style="margin-bottom:0">Hidden when nothing is attached. The slot number is a theme setting (Collection grid → Promo position).</p>
+    </div>
+
+    <div class="card">
+      <span class="where">Below the product grid</span>
+      <h3>4. Feature section (heading + 3 cards)</h3>
+      <p class="shows">A heading, intro paragraph and three icon cards explaining the collection’s technology.</p>
+      <p><strong>Content library:</strong> Content → Metaobjects → the feature section definition</p>
+      <p><strong>Attach here:</strong> Collection → Metafields → <strong>Feature section</strong> <code>custom.feature_section</code></p>
+      <p class="note" style="margin-bottom:0">Hidden unless the attached entry has a <code>heading</code>.</p>
+    </div>
+
+    <p class="note">
+      Reviews, Rewards and FAQ below these are the same on every collection and are edited in the theme editor, not per collection.
+    </p>
+
+    <h2>One-time setup (developer / admin)</h2>
+    <p class="lede">
+      Only needed if the definitions don’t exist yet (e.g. on a new store). Keys must match exactly —
+      the theme looks them up by key, not by name.
+    </p>
+
+    <div class="card">
+      <h3><span class="num">1</span> Create the metaobject definitions</h3>
+      <p>Settings → Custom data → <strong>Metaobjects</strong> → Add definition. Create three, with these field keys:</p>
+
+      <p style="margin-top:14px"><strong>Collection Callout Bar</strong></p>
+      <div class="scroll"><table class="simple fields">
+        <tr><th>Field key</th><td><strong>Shows as</strong></td><td>Type</td></tr>
+        <tr><th><code>callout_1_icon</code> … <code>callout_4_icon</code></th><td>Icon for each item (small SVG/PNG)</td><td>File (image)</td></tr>
+        <tr><th><code>callout_1_text</code> … <code>callout_4_text</code></th><td>Text for each item</td><td>Single line text</td></tr>
+      </table></div>
+      <p class="note">Item 1 text is required for the bar to show. Leave 3 and 4 empty if you only need two.</p>
+
+      <p style="margin-top:14px"><strong>Collection Feature Section</strong></p>
+      <div class="scroll"><table class="simple fields">
+        <tr><th>Field key</th><td><strong>Shows as</strong></td><td>Type</td></tr>
+        <tr><th><code>heading</code></th><td>Section heading (required)</td><td>Single line text</td></tr>
+        <tr><th><code>body</code></th><td>Intro paragraph</td><td>Multi-line text</td></tr>
+        <tr><th><code>card_1_icon</code> · <code>card_2_icon</code> · <code>card_3_icon</code></th><td>Card icon</td><td>File (image)</td></tr>
+        <tr><th><code>card_1_heading</code> · <code>card_2_heading</code> · <code>card_3_heading</code></th><td>Card title</td><td>Single line text</td></tr>
+        <tr><th><code>card_1_body</code> · <code>card_2_body</code> · <code>card_3_body</code></th><td>Card text</td><td>Multi-line text</td></tr>
+      </table></div>
+
+      <p style="margin-top:14px"><strong>Collection Promo</strong></p>
+      <div class="scroll"><table class="simple fields">
+        <tr><th>Field key</th><td><strong>Shows as</strong></td><td>Type</td></tr>
+        <tr><th><code>image</code></th><td>Tile background photo</td><td>File (image)</td></tr>
+        <tr><th><code>eyebrow</code></th><td>Small uppercase line</td><td>Single line text</td></tr>
+        <tr><th><code>title</code></th><td>Tile heading</td><td>Single line text</td></tr>
+        <tr><th><code>body</code></th><td>Short text (line breaks kept)</td><td>Multi-line text</td></tr>
+        <tr><th><code>button_label</code></th><td>Button text (no button if empty)</td><td>Single line text</td></tr>
+        <tr><th><code>button_link</code></th><td>Where the tile and button go</td><td>URL</td></tr>
+      </table></div>
+      <p class="note" style="margin-bottom:0">Turn on <strong>Storefronts</strong> access on each definition, or the theme can’t read it.</p>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">2</span> Create the collection metafield definitions</h3>
+      <p>Settings → Custom data → <strong>Collections</strong> → Add definition:</p>
+      <div class="scroll"><table class="simple fields">
+        <tr><th>Namespace &amp; key</th><td><strong>Type</strong></td><td>Used on</td></tr>
+        <tr><th><code>custom.callout_bar</code></th><td>Metaobject → Collection Callout Bar (one)</td><td>Shopping collections</td></tr>
+        <tr><th><code>custom.feature_section</code></th><td>Metaobject → Collection Feature Section (one)</td><td>Shopping collections</td></tr>
+        <tr><th><code>custom.collection_promo</code></th><td>Metaobject → Collection Promo (one)</td><td>Shopping collections</td></tr>
+        <tr><th><code>custom.product_family</code></th><td>Metaobject → Product Family (one)</td><td>7 PDP Data collections only</td></tr>
+        <tr><th><code>custom.feature_callouts</code></th><td>Metaobject → PDP Feature (<strong>list</strong>)</td><td>7 PDP Data collections only</td></tr>
+      </table></div>
+      <p class="note" style="margin-bottom:0">
+        <code>product_family</code> and <code>feature_callouts</code> also need matching <em>product</em> metafield definitions
+        (Settings → Custom data → Products) so a single product can override its family.
+      </p>
+    </div>
+
+    <h2>Filling in a collection</h2>
+
+    <div class="card">
+      <h3><span class="num">F</span> Give a collection its callout bar, promo and feature section</h3>
+      <ol>
+        <li>Go to <strong>Content → Metaobjects</strong>, pick the definition (e.g. Collection Promo) → <strong>Add entry</strong></li>
+        <li>Name the entry clearly (e.g. “Rainwear promo — autumn”), fill the fields → Save</li>
+        <li>Open <strong>Products → Collections</strong> → the collection (e.g. Rainwear)</li>
+        <li>Scroll to <strong>Metafields</strong> → click <strong>Callout bar</strong> / <strong>Collection Promo</strong> / <strong>Feature section</strong> → choose the entry → Save</li>
+        <li>View the collection on the site and refresh</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">G</span> Reuse the same content on several collections</h3>
+      <p>Attach the <em>same</em> entry to each collection. Editing the entry later updates every collection that uses it — handy for a store-wide callout bar.</p>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">H</span> Remove a block from one collection</h3>
+      <ol>
+        <li>Open the collection → Metafields</li>
+        <li>Clear the field (e.g. Collection Promo) → Save</li>
+      </ol>
+      <p class="note" style="margin-bottom:0">Don’t delete the metaobject entry itself if other collections still use it.</p>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">I</span> Swap the promo for a sale</h3>
+      <ol>
+        <li>Create a new Collection Promo entry for the sale</li>
+        <li>On each collection, point <strong>Collection Promo</strong> at the new entry</li>
+        <li>After the sale, point it back to the old entry (keep it — don’t delete)</li>
+      </ol>
+    </div>
+
     <!-- QUICK REF -->
     <h2>Quick reference</h2>
     <div class="card">
@@ -409,8 +604,20 @@
           <td>Metaobjects → PDP Feature</td>
         </tr>
         <tr>
-          <th>Promo tile on a collection page</th>
+          <th>Collection heading, intro, banner image</th>
+          <td>Collection → Title / Description / Collection image</td>
+        </tr>
+        <tr>
+          <th>Icon strip under the collection banner</th>
+          <td>Shopping collection → Callout bar</td>
+        </tr>
+        <tr>
+          <th>Promo tile in the collection grid</th>
           <td>Shopping collection → Collection Promo</td>
+        </tr>
+        <tr>
+          <th>Heading + 3 cards under the grid</th>
+          <td>Shopping collection → Feature section</td>
         </tr>
       </table>
     </div>
@@ -418,10 +625,11 @@
     <p class="note">
       Tip: After saving, open the live product page and refresh. If something is missing,
       check the product is in the right PDP Data collection and that collection has its metafields filled in.
+      On a collection page, check the metafield is attached to <em>that</em> collection and the metaobject definition has Storefronts access on.
     </p>
 
   </div>
 
-  <footer>Galway Golf · Product content guide</footer>
+  <footer>Galway Golf · Product &amp; collection content guide</footer>
 </body>
 </html>
